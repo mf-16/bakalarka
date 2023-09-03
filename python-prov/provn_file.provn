@@ -1,0 +1,4 @@
+document
+default <https://example.org/>
+entity(1,[test = "value" %% xsd:string, test = "value2" %% xsd:string])
+endDocument
