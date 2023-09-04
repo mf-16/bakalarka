@@ -23,7 +23,7 @@ document
     wasGeneratedBy(Requirements, ReqGathering, -)
     wasStartedBy(ProjPlanning, Bell, -, -)
   endBundle
-  bundle DesignBundle
+  bundle DesignPhase
     default <https://example.org/>
     
     agent(SystemArchitect)
@@ -53,7 +53,7 @@ document
     wasInfluencedBy(DbDesign, DesignCoordination)
     wasDerivedFrom(UIUXArtifacts2, UIUXArtifacts1, -, -, -, [prov:type="prov:Revision"])
   endBundle
-  bundle ImplementationBundle
+  bundle ImplementationPhase
     default <https://example.org/>
     
     agent(ScrumMaster)
@@ -88,5 +88,36 @@ document
     alternateOf(WebVersion, DesktopVersion)
     alternateOf(DesktopVersion, MobileVersion)
     alternateOf(MobileVersion, WebVersion)
+  endBundle
+  bundle TestingPhase
+    default <https://example.org/>
+    
+    agent(QALead)
+    agent(Tester)
+    agent(AutomationTester)
+    activity(TestPlanning, -, -)
+    activity(WritingTests, -, -)
+    activity(TestReview, -, -)
+    entity(TestPlan, [prov:type="prov:Plan"])
+    entity(System)
+    entity(UpdatedSystem)
+    entity(TestSuite)
+    entity(TestCase1)
+    entity(TestCase2)
+    entity(TestCase3)
+    hadMember(TestSuite, TestCase1)
+    hadMember(TestSuite, TestCase2)
+    hadMember(TestSuite, TestCase3)
+    wasAssociatedWith(TestPlanning, QALead, -)
+    wasAssociatedWith(WritingTests, Tester, TestPlan)
+    wasAssociatedWith(WritingTests, AutomationTester, TestPlan)
+    wasAssociatedWith(TestReview, QALead, -)
+    wasAttributedTo(TestPlan, QALead)
+    wasGeneratedBy(TestPlan, TestPlanning, -)
+    wasGeneratedBy(TestSuite, WritingTests, -)
+    wasGeneratedBy(UpdatedSystem, TestReview, -)
+    wasDerivedFrom(UpdatedSystem, System, -, -, -)
+    used(WritingTests, System, -)
+    wasInformedBy(TestReview, WritingTests)
   endBundle
 endDocument

@@ -1,6 +1,5 @@
 import datetime
 
-import prov.dot
 from prov.model import ProvDocument, ProvBundle, ProvAgent, ProvActivity, ProvEntity
 import prov.graph
 
@@ -14,7 +13,7 @@ from prov.model import ProvDocument
 from prov.dot import prov_to_dot
 
 
-def project_planning_bundle(document :ProvDocument):
+def project_planning_bundle(document: ProvDocument):
     ppp_bundle = document.bundle("ProjectPlanningPhase")
 
     ba : ProvAgent = ppp_bundle.agent("BusinessAnalyst")
@@ -40,7 +39,7 @@ def project_planning_bundle(document :ProvDocument):
     ppp_bundle.wasStartedBy(pp, b)
 
 def design_bundle(document : ProvDocument):
-    db: ProvBundle = document.bundle("DesignBundle")
+    db: ProvBundle = document.bundle("DesignPhase")
     sa: ProvAgent = db.agent("SystemArchitect")
     uidsgnrs: ProvAgent = db.agent("UIUXDesigners")
     dba: ProvAgent = db.agent("DbArchitect")
@@ -78,7 +77,7 @@ def design_bundle(document : ProvDocument):
 
 def implementation_bundle(document: ProvDocument):
 
-    impl: ProvBundle = document.bundle("ImplementationBundle")
+    impl: ProvBundle = document.bundle("ImplementationPhase")
     sm = impl.agent("ScrumMaster")
     dev = impl.agent("Developers")
     pm = impl.agent("ProjectManager")
@@ -117,6 +116,45 @@ def implementation_bundle(document: ProvDocument):
     impl.alternate(mv, wv)
 
 
+def testing_bundle(document: ProvDocument):
+    test: ProvBundle = document.bundle("TestingPhase")
+
+    qal = test.agent("QALead")
+    tstr = test.agent("Tester")
+    at = test.agent("AutomationTester")
+
+    tplanning = test.activity("TestPlanning")
+    wt = test.activity("WritingTests")
+    tr = test.activity("TestReview")
+
+    tp = test.entity("TestPlan")
+    tp.add_asserted_type("prov:Plan")
+    sys = test.entity("System")
+    usys = test.entity("UpdatedSystem")
+    ts = test.entity("TestSuite")
+    tc1 = test.entity("TestCase1")
+    tc2 = test.entity("TestCase2")
+    tc3 = test.entity("TestCase3")
+    ts.hadMember(tc1)
+    ts.hadMember(tc2)
+    ts.hadMember(tc3)
+
+    test.wasAssociatedWith(tplanning,qal)
+    test.wasAssociatedWith(wt,tstr,tp)
+    test.wasAssociatedWith(wt, at,tp)
+    test.wasAssociatedWith(tr, qal)
+    test.wasAttributedTo(tp,qal)
+    test.wasGeneratedBy(tp,tplanning)
+    test.wasGeneratedBy(ts,wt)
+    test.wasGeneratedBy(usys,tr)
+    test.wasDerivedFrom(usys,sys)
+    test.usage(wt,sys)
+    test.wasInformedBy(tr,wt)
+
+
+
+
+
 
 
 
@@ -128,13 +166,14 @@ def implementation_bundle(document: ProvDocument):
 
 
 if __name__ == "__main__":
-    document = ProvDocument()
-    document.set_default_namespace("https://example.org/")
-    project_planning_bundle(document)
-    design_bundle(document)
-    implementation_bundle(document)
-    document.serialize(r"C:\Users\Matúš\PROV-JAVA\test\temp.provn", format="provn")
-    dot = prov_to_dot(document)
+    doc = ProvDocument()
+    doc.set_default_namespace("https://example.org/")
+    project_planning_bundle(doc)
+    design_bundle(doc)
+    implementation_bundle(doc)
+    testing_bundle(doc)
+    doc.serialize(r"temp.provn", format="provn")
+    dot = prov_to_dot(doc)
     print(dot)
 
 #bad_uri.perform()
