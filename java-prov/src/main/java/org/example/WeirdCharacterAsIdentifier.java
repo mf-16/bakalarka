@@ -8,10 +8,5 @@ public class WeirdCharacterAsIdentifier {
         var inf = new InteropFramework();
         var document = inf.readDocumentFromFile("weird_char_as_id.provn");
         inf.writeDocument("temp.provn",document);
-
-
-
-
-        //BadUri.perform();
     }
 }

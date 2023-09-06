@@ -37,9 +37,9 @@ public class Main {
 //        document.getStatementOrBundle().add(activity);
 //        document.getStatementOrBundle().add(generatedBy);
 //        document.setNamespace(ns);
-        var inf = new InteropFramework();
-        var document = inf.readDocumentFromFile("temp.provn");
-        inf.writeDocument("java_temp.dot",document);
+//        var inf = new InteropFramework();
+//        var document = inf.readDocumentFromFile("temp.provn");
+//        inf.writeDocument("java_temp.dot",document);
 
 
 

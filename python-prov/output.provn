@@ -1,5 +1,0 @@
-document
-  prefix ex <http://example.com/>
-  
-  entity(ex:cake, [prov:type="ex:Cake"])
-endDocument

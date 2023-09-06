@@ -8,11 +8,5 @@ public class IdWithSpace {
         var inf = new InteropFramework();
         var document = inf.readDocumentFromFile("id_with_space.provn");
         inf.writeDocument("temp.provn",document);
-
-
-
-
-        //BadUri.perform();
-        WeirdCharacterAsIdentifier.perform();
     }
 }
