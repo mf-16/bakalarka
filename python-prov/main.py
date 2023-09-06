@@ -152,17 +152,48 @@ def testing_bundle(document: ProvDocument):
     test.wasInformedBy(tr,wt)
 
 
+def deployment_bundle(document: ProvDocument):
+    depl: ProvBundle = document.bundle("DeploymentPhase")
+    dm = depl.agent("DeploymentManager")
+    dba = depl.agent("DBAdmin")
+    sa = depl.agent("ServerAdmin")
+    dt = depl.agent("DeploymentTeam")
+    u = depl.agent("User")
 
+    dplning = depl.activity("DeploymentPlanning")
+    es = depl.activity("EnvironmentSetup")
+    vat = depl.activity("VerificationAndTesting")
+    ut = depl.activity("UserTraining")
+    dex = depl.activity("DeploymentExecution")
 
+    dplan = depl.entity("DeploymentPlan")
+    ug = depl.entity("UserGuides")
+    denv = depl.entity("DeploymentEnvironment")
+    dr = depl.entity("DeploymentReports")
+    s = depl.entity("Server")
+    db = depl.entity("DB")
+    os = depl.entity("OS")
+    denv.hadMember(s)
+    denv.hadMember(db)
+    denv.hadMember(os)
 
-
-
-
-
-
-
-
-
+    depl.wasAssociatedWith(dplning,dm)
+    depl.wasAssociatedWith(es,sa)
+    depl.wasAssociatedWith(es,dba)
+    depl.wasAssociatedWith(vat,dt)
+    depl.wasAssociatedWith(ut, dt)
+    depl.wasAssociatedWith(ut,u)
+    depl.wasAttributedTo(s,sa)
+    depl.wasAttributedTo(db, dba)
+    depl.wasAttributedTo(ug, dt)
+    depl.usage(ut,ug)
+    depl.usage(es,denv)
+    depl.usage(dex, denv)
+    depl.wasGeneratedBy(dplan,dplning)
+    depl.wasGeneratedBy(dr, vat)
+    depl.wasStartedBy(dex,dplan)
+    depl.wasEndedBy(dex, dplan)
+    depl.wasInformedBy(dex,es)
 
 
 if __name__ == "__main__":
@@ -172,6 +203,7 @@ if __name__ == "__main__":
     design_bundle(doc)
     implementation_bundle(doc)
     testing_bundle(doc)
+    deployment_bundle(doc)
     doc.serialize(r"temp.provn", format="provn")
     dot = prov_to_dot(doc)
     print(dot)
