@@ -196,6 +196,39 @@ def deployment_bundle(document: ProvDocument):
     depl.wasInformedBy(dex,es)
 
 
+def maintenance_phase(document:ProvDocument):
+    main: ProvBundle = document.bundle("MaintenancePhase")
+    dt = main.agent("DeveloperTeam")
+    ld = main.agent("LeadDeveloper")
+    u = main.agent("User")
+    st = main.agent("SupportTeam")
+
+    resi = main.activity("ResolvingIssues")
+    repi = main.activity("ReportingIssues")
+    ud = main.activity("UpdateDeployment")
+    gi = main.activity("GatheringIssues")
+
+    p = main.entity("Patch")
+    uv = main.entity("UpdatedVersion")
+    ov = main.entity("OldVersion")
+    ir = main.entity("IssueReport")
+
+    main.wasAssociatedWith(resi,dt)
+    main.wasAssociatedWith(ud,ld)
+    main.wasAssociatedWith(repi,u)
+    main.wasAssociatedWith(gi,st)
+    main.wasGeneratedBy(ir,gi)
+    main.wasGeneratedBy(p,resi)
+    main.usage(ud,uv)
+    main.usage(resi,ir)
+    main.wasInformedBy(gi,repi)
+    main.wasInvalidatedBy(ov,ud)
+    main.wasInfluencedBy(uv,p)
+    main.wasAttributedTo(ir,st)
+
+
+
+
 if __name__ == "__main__":
     doc = ProvDocument()
     doc.set_default_namespace("https://example.org/")
@@ -204,6 +237,7 @@ if __name__ == "__main__":
     implementation_bundle(doc)
     testing_bundle(doc)
     deployment_bundle(doc)
+    maintenance_phase(doc)
     doc.serialize(r"temp.provn", format="provn")
     dot = prov_to_dot(doc)
     print(dot)
