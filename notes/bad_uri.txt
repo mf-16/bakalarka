@@ -1,0 +1,1 @@
+Aj python aj java povoluju zaregistrovat namespace, kde má uri medzeru

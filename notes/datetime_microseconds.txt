@@ -1,0 +1,6 @@
+Pri PROVN file sa mikrosekundy stratia v momente, kde sa cas men na XMLGregorianCalendar v metode convert, TreeTraversal.class
+Pri JSON file sa mikrosekundy stratia v momente, kde sa cas meni na XMLGregorianCalendar v metode decodeStatement ProvDocumentDeserialize.class
+
+V jave aj v pythone sa da povedat z akou timezone chceme robit.
+Ak pride cas v nejakom formate, tak java vo funkcii newISOTime, zoberie z tohto stringu DatatypeConverter.parseDateTime(time).getTime() (takze iba cas). Casovu zonu potom prida systemovu.
+V pythone sa da pridat timezone jednoducho pridanim +02:00 za cas, parser to sparsuje a spraví z toho datetime.

@@ -1,0 +1,2 @@
+Python dovoli, do prov recordov davat hocico. Takze napr. generacia moze byt. wasGeneratedBy(activity,entity).
+Java to nasledne nekontroluje, ci to sedi alebo nie, len to zparsuje a da tam qualified names.

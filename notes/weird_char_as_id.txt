@@ -1,0 +1,1 @@
+kedze python library ocakava, ze : nemoze byt validny znak, tak vo fcii, ktora parsuje qualified names to pri kazdom znaku : splitne na prefix a local part, preto to pada

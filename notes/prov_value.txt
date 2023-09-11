@@ -1,0 +1,4 @@
+newActivity: ked sa prov:value deserializuje do dokumentu, tak sa najprv pozrie ci tento typ moze mat prov:value, kedze activity nemoze tak to uplne ignoruje
+newAgent: ked je to agent tak program spadne, pretoze sa do populateAttributes dava null ako pole a ked vojdeme do funkcie tak sa do toho pola dava ta value (neviem preco)
+
+
