@@ -1,3 +1,5 @@
 do 0.8.0, sa factory a dokument vytvarali inak. Po 0.8.0 uz cez org.openprovenance.prov.vanilla
 
 vo verzii 2.0.0 je JSON aj JSONLD aj TURTLE serializacia neimplementovana.
+
+jedine funkcne verzie prov-interop su 0.8.0 a 2.0.0.
