@@ -1,5 +1,6 @@
 package org.example;
 
+import org.openprovenance.prov.interop.Formats;
 import org.openprovenance.prov.interop.InteropFramework;
 import org.openprovenance.prov.model.*;
 import org.openprovenance.prov.model.Activity;
@@ -26,8 +27,8 @@ public class Main {
 //        var document = new org.openprovenance.prov.vanilla.Document();
 //        var ns = new Namespace();
 //        ns.addKnownNamespaces();
-//        ns.register("ex","http://www.w3. org/ns/prov#");
-//        var eqn = ns.qualifiedName("prov","entity",factory);
+//        ns.register("ex ex","exex");
+//        var eqn = ns.qualifiedName("ex ex","entity",factory);
 //        var aqn = ns.qualifiedName("prov","activity",factory);
 //        Entity entity = factory.newEntity(eqn);
 //        XMLGregorianCalendar xmlGregorianCalendar = null;
@@ -51,20 +52,21 @@ public class Main {
 //        document.getStatementOrBundle().add(activity);
 //        document.getStatementOrBundle().add(generatedBy);
 //        document.setNamespace(ns);
-
-//        var inf = new InteropFramework();
-//        var document = inf.readDocumentFromFile("temp.provn");
-//        inf.writeDocument("java_temp.provn",document);
+//
+        var inf = new InteropFramework();
+        var document = inf.readDocumentFromFile("temp.provn");
+        inf.writeDocument("java_temp.provn",document);
+//        inf.writeDocument(System.out, Formats.ProvFormat.JSON, document);
 
 
 
 
         //BadUri.perform();
-        //WeirdCharacterAsIdentifier.perform();
+        WeirdCharacterAsIdentifier.perform();
         //IdWithSpace.perform();
         //DateTimeMicroseconds.perform();
         //InvalidRecords.perform();
-        ProvValue.perform();
+        //ProvValue.perform();
 
     }
 }
