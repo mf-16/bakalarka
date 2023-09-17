@@ -6,8 +6,9 @@ import prov.graph
 
 def perform():
     document = ProvDocument()
-    ns = document.add_namespace("ex", "https://example.org/")
-    a = document.activity("ex:a")
-    document.wasGeneratedBy(a,a,datetime.datetime.now())
+    document.set_default_namespace("def")
+    ns = document.add_namespace("ex ex", "https://example.org/")
+    a = document.activity("ex ex:a",datetime.datetime.now())
+    g = document.wasGeneratedBy(a,a)
     document.serialize(r"..\java-prov\invalid_records.provn", format="provn")
     print(document.get_provn())

@@ -6,12 +6,14 @@ import prov.graph
 import bad_uri
 import datetime_microseconds
 import invalid_records
+import java_serialization_problems
 import prov_value
 import provn_deserializer_not_implemented
 import weird_character_as_identifier
 import id_with_space
 
 from prov.model import ProvDocument
+from prov.identifier import *
 from prov.dot import prov_to_dot
 from prov.graph import prov_to_graph
 
@@ -247,15 +249,30 @@ def create_document(doc):
 
 if __name__ == "__main__":
     doc = ProvDocument()
-    create_document(doc)
-    # doc.set_default_namespace("def")
-    # rq = doc.entity("Requirements", {"prov:value": "prov:Collection"})
-    # doc.wasGeneratedBy(rq)
+    #create_document(doc)
+    ns = doc.add_namespace("ex","https://example.org")
+    doc.entity("ex:1")
+    doc.entity("ex:2")
+    doc.entity("ex:3")
+    b1 = doc.bundle("ex:b1")
+    b1.entity("ex:1")
+    b2 = doc.bundle("ex:b2")
+    b2.add_namespace("ex","https://example.com")
+    b2.entity("ex:2")
+    b3 = doc.bundle("ex:b3")
+    b3.add_namespace("ok", "https://example.org123")
+    b3.entity("ok:3")
+    qn = QualifiedName(ns,"1")
+    i = Identifier("http://example.org")
+    b3.entity(i)
+    b3.entity(qn)
+    #doc.add_namespace("ah","https://example.org")
+    #doc.serialize(r"temp.provn", format="provn")
     #doc.serialize(r"..\java-prov\temp.provn", format="provn")
-    # print(doc.get_provn())
-    dot = prov_to_dot(doc)
-    prov_to_graph(doc)
-    print(dot)
+    print(doc.get_provn())
+    # dot = prov_to_dot(doc)
+    # prov_to_graph(doc)
+    # print(dot)
     #bad_uri.perform()
     #provn_deserializer_not_implemented.perform()
     #weird_character_as_identifier.perform()
@@ -263,3 +280,4 @@ if __name__ == "__main__":
     #datetime_microseconds.perform()
     #invalid_records.perform()
     #prov_value.perform()
+    #java_serialization_problems.perform()

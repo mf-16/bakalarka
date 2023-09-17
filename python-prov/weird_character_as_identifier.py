@@ -9,7 +9,7 @@ from prov.model import ProvDocument
 def perform():
     document = ProvDocument()
     document.set_default_namespace("default")
-    document.add_namespace("_","https://example.org/")
-    document.entity("--")
+    document.add_namespace("ex","https://example.org/")
+    document.entity(".")
     document.serialize(r"..\java-prov\weird_char_as_id.provn", format="provn")
     print(document.get_provn())
