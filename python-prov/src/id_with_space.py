@@ -12,5 +12,5 @@ from prov.model import ProvDocument
 def perform():
     document = ProvDocument()
     document.entity("prov:a b c")
-    document.serialize(r"..\java-prov\id_with_space.provn", format="provn")
+    document.serialize(r"..\java-prov\data\id_with_space.provn", format="provn")
     print(document.get_provn())

@@ -14,5 +14,5 @@ from prov.model import ProvDocument
 def perform():
     document = ProvDocument()
     document.activity("prov:a","2023-09-08T14:12:45.109-04:00",datetime.datetime.now())
-    document.serialize(r"..\java-prov\datetime_microseconds.provn", format="provn")
+    document.serialize(r"..\java-prov\data\datetime_microseconds.provn", format="provn")
     print(document.get_provn())

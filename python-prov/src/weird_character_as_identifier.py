@@ -11,5 +11,5 @@ def perform():
     document.set_default_namespace("default")
     document.add_namespace("ex","https://example.org/")
     document.entity("\=")
-    document.serialize(r"..\java-prov\weird_char_as_id.provn", format="provn")
+    document.serialize(r"..\java-prov\data\weird_char_as_id.provn", format="provn")
     print(document.get_provn())
