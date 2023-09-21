@@ -11,13 +11,11 @@ import prov_value
 import provn_deserializer_not_implemented
 import weird_character_as_identifier
 import id_with_space
-import create_main_document
 
 from prov.model import ProvDocument
 from prov.identifier import *
 from prov.dot import prov_to_dot
 from prov.graph import prov_to_graph
-
 
 
 def project_planning_bundle(bundle: ProvBundle):
@@ -249,32 +247,7 @@ def create_document(doc):
     maintenance_phase(mb)
 
 
-if __name__ == "__main__":
+def perform():
     doc = ProvDocument()
-    # doc.set_default_namespace("https://example.org")
-    # doc.add_namespace("ex","https://example.org")
-    # doc.entity("1")
-    # doc.entity("2")
-    # doc.entity("3")
-    # b1 = doc.bundle("ex:b1")
-    # b1.entity("ex:1")
-    # b2 = doc.bundle("ex:b2")
-    # b2.set_default_namespace("https://example.com")
-    # b2.entity("2")
-    # b3 = doc.bundle("ex:b3")
-    # b3.add_namespace("ok", "https://example.org")
-    # b3.add_namespace("ex", "https://example.org")
-    # b3.entity("ok:3")
-    # doc.serialize(r"temp.provn", format="provn")
-    # print(doc.get_provn())
-
-
-    #bad_uri.perform()
-    #provn_deserializer_not_implemented.perform()
-    #weird_character_as_identifier.perform()
-    #id_with_space.perform()
-    #datetime_microseconds.perform()
-    #invalid_records.perform()
-    #prov_value.perform()
-    #java_serialization_problems.perform()
-    #create_main_document.perform()
+    create_document(doc)
+    print(prov_to_dot(doc))

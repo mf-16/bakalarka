@@ -32,34 +32,37 @@ public class Main {
         var document = new org.openprovenance.prov.vanilla.Document();
         var ns = new Namespace();
         ns.addKnownNamespaces();
-        ns.register("ex","https://example.org");
-        //ns.register("ex","https://example.com");
+        ns.register("_","https://example.org");
+        ns.register("ex","https://example.com");
         var ns2 = new Namespace();
         ns2.addKnownNamespaces();
-        var eqn = ns.qualifiedName("ex","1",factory);
+        var eqn = ns.qualifiedName("_","1",factory);
         var aqn = ns.qualifiedName("ex","2",factory);
-        var bqn = ns.qualifiedName("ex","3",factory);
         Entity entity = factory.newEntity(eqn);
         Activity activity = factory.newActivity(aqn);
         WasGeneratedBy generatedBy = factory.newWasGeneratedBy(ns.qualifiedName("ex","1",factory),aqn,aqn);
-        Collection<Statement> s = new ArrayList<>();
-        s.add(generatedBy);
-        var bundle = factory.newNamedBundle(bqn,s);
+
+//        BUNDLE
+//        var bqn = ns.qualifiedName("ex","3",factory);
+//        Collection<Statement> s = new ArrayList<>();
+//        s.add(generatedBy);
+//        var bundle = factory.newNamedBundle(bqn,s);
+//        document.getStatementOrBundle().add(bundle);
+//        bundle.setNamespace(ns2);
+
         document.getStatementOrBundle().add(entity);
         document.getStatementOrBundle().add(activity);
-        document.getStatementOrBundle().add(bundle);
+        document.getStatementOrBundle().add(generatedBy);
         document.setNamespace(ns);
-        bundle.setNamespace(ns2);
-//
+
 //        var inf = new InteropFramework();
 //        var document = inf.readDocumentFromFile("temp.provn");
         inf.writeDocument("java_temp.provn",document);
-////
-//        File file = new File("../python-prov/java_temp.xml");
+
+//        File file = new File("java_temp.provn");
 //        try {
-//            // Create an OutputStream using FileOutputStream
 //            OutputStream outputStream = new FileOutputStream(file);
-//            inf.writeDocument(outputStream, Formats.ProvFormat.XML, document);
+//            inf.writeDocument(outputStream, Formats.ProvFormat.PROVN, document);
 //        } catch (IOException e) {
 //            e.printStackTrace();
 //        }
