@@ -12,6 +12,7 @@ import provn_deserializer_not_implemented
 import weird_character_as_identifier
 import id_with_space
 import create_main_document
+import json_default_namespace
 
 from prov.model import ProvDocument
 from prov.identifier import *
@@ -278,3 +279,4 @@ if __name__ == "__main__":
     #prov_value.perform()
     #java_serialization_problems.perform()
     #create_main_document.perform()
+    json_default_namespace.perform()
