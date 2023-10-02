@@ -1,0 +1,8 @@
+description:
+
+input:
+document
+  prefix ex <https://example.org>
+  
+  activity(ex:a, 2023-09-08T14:12:45.109-04:00, 2023-09-08T14:12:45.109+04:00)
+endDocument

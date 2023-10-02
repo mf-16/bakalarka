@@ -1,0 +1,10 @@
+description:
+
+input:
+document
+  prefix ex <https://example.org/>
+  
+  entity(ex:e)
+  activity(ex:a, -, -)
+  wasGeneratedBy(ex:e, ex:a, -)
+endDocument

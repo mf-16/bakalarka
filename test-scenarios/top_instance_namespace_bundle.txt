@@ -1,0 +1,13 @@
+description:
+
+input:
+document
+  default <https://example.com>
+  prefix ex <https://example.org>
+  
+  entity(ex:e)
+  activity(ex:ac, -, -)
+  bundle ex:b
+    entity(ex:e2)
+  endBundle
+endDocument

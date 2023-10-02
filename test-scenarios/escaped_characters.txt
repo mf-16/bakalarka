@@ -1,0 +1,8 @@
+description:
+
+input:
+document
+  default <https://example.org/>
+  
+  entity(:='(),-;[].)
+endDocument

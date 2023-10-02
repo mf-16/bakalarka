@@ -1,0 +1,7 @@
+description:
+
+input:
+document
+  prefix ex <http://www.w3. org/ns/prov#>
+  
+endDocument

@@ -1,0 +1,9 @@
+description:
+
+input:
+document
+  prefix ex <https://example.org/>
+  
+  entity(ex:e)
+  activity(ex:ac, -, -, [prov:value=4])
+endDocument

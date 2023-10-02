@@ -1,0 +1,9 @@
+description:
+
+input:
+document
+prefix ex ex <https://example.org>
+prefix ex <https://example.com>
+entity(ex ex:1)
+activity(ex:2,-,-)
+endDocument

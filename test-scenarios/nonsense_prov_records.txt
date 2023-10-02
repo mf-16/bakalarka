@@ -1,0 +1,26 @@
+description:
+
+input:
+document
+  prefix ex <https://example.org/>
+  
+  entity(ex:e1)
+  agent(ex:ag1)
+  activity(ex:ac1, -, -)
+  wasGeneratedBy(ex:ag1, ex:e1, -)
+  used(ex:ag1, ex:ac1, -)
+  wasInformedBy(ex:e1, ex:e1)
+  wasStartedBy(ex:e1, ex:ag1, ex:ac1, -)
+  wasEndedBy(ex:e1, ex:ag1, ex:ac1, -)
+  wasInvalidatedBy(ex:ag1, ex:e1, -)
+  wasDerivedFrom(ex:ac1, ex:ag1, ex:e1, ex:e1, ex:ag1)
+  wasAttributedTo(ex:ac1, ex:ac1)
+  wasAssociatedWith(ex:e1, ex:e1, -)
+  actedOnBehalfOf(ex:e1, ex:ac1, -)
+  wasInfluencedBy(ex:ag1, ex:ac1)
+  alternateOf(ex:ag1, ex:ac1)
+  specializationOf(ex:e1, ex:ac1)
+  entity(ex:c, [prov:type='prov:Collection'])
+  hadMember(ex:c, ex:ag1)
+  hadMember(ex:c, ex:ac1)
+endDocument
