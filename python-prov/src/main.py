@@ -13,6 +13,7 @@ import weird_character_as_identifier
 import id_with_space
 import create_main_document
 import json_default_namespace
+import prov_relation_without_id
 
 from prov.model import ProvDocument
 from prov.identifier import *
@@ -252,12 +253,17 @@ def create_document(doc):
 
 if __name__ == "__main__":
     doc = ProvDocument()
-    # doc.set_default_namespace("https://example.org")
-    # doc.add_namespace("ex","https://example.org")
-    # doc.entity("1")
-    # doc.entity("2")
-    # doc.entity("3")
-    # b1 = doc.bundle("ex:b1")
+    # doc = doc.deserialize("../data/temp.json")
+    # print(doc.get_provn())
+    doc.set_default_namespace("https://example.com")
+    doc.add_namespace("ex","https://example.org")
+    e = doc.entity("ex:e")
+    ac = doc.activity("ex:ac")
+    doc.wasGeneratedBy(e,ac)
+
+    doc.serialize("../data/temp.rdf",format="rdf")
+
+    # b1 = doc.bundle("b1")
     # b1.entity("ex:1")
     # b2 = doc.bundle("ex:b2")
     # b2.set_default_namespace("https://example.com")
@@ -266,7 +272,7 @@ if __name__ == "__main__":
     # b3.add_namespace("ok", "https://example.org")
     # b3.add_namespace("ex", "https://example.org")
     # b3.entity("ok:3")
-    # doc.serialize(r"temp.provn", format="provn")
+    # doc.serialize(r"../../java-prov/data/temp.json", format="json",indent=2)
     # print(doc.get_provn())
 
 
@@ -279,4 +285,5 @@ if __name__ == "__main__":
     #prov_value.perform()
     #java_serialization_problems.perform()
     #create_main_document.perform()
-    json_default_namespace.perform()
+    #json_default_namespace.perform()
+    #prov_relation_without_id.perform()
