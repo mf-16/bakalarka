@@ -1,6 +1,11 @@
-description:
+DESCRIPTION:
+This test verifies whether the libraries correctly identifies and rejects identifier with space in its local part 
 
-input:
+INPUT:
 document
   entity(prov:a b c)
 endDocument
+
+EXPECTED RESULT:
+serialization:   should not be possible to serialize
+deserialization: should not be possible to deserialize

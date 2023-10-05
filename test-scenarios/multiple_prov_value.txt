@@ -1,4 +1,12 @@
-description:
+DESCRIPTION:
+This test evaluates the capability of library to correctly identify and reject entity records that contain multiple prov:value arguments, which is not allowed according to PROV-N
 
-input:
-TODO
+INPUT:
+document
+  prefix ex <https://example.org/>
+  entity(ex:c, [prov:value=1, prov:value=2, prov:value=3])
+endDocument
+
+EXPECTED RESULT:
+serialization:   should not serialize
+deserialization: should not deserialize

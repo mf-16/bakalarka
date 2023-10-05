@@ -1,8 +1,13 @@
-description:
+DESCRIPTION:
+This test evaluates the ability to preserve timezones.
 
-input:
+INPUT:
 document
   prefix ex <https://example.org>
   
   activity(ex:a, 2023-09-08T14:12:45.109-04:00, 2023-09-08T14:12:45.109+04:00)
 endDocument
+
+EXPECTED RESULT:
+serialization:   the timezone should be preserved in file
+deserialization: the timezone should be preserved in memory

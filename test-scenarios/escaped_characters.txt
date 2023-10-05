@@ -1,8 +1,13 @@
-description:
+DESCRIPTION:
+The test examines capability of library to detect and reject unescaped characters in local part of identifier.
 
-input:
+INPUT:
 document
   default <https://example.org/>
   
   entity(:='(),-;[].)
 endDocument
+
+EXPECTED RESULT:
+serialization:   should not be serialized or serialized with - as local part of id
+deserialization: should not be deserialized or deserialized with - as local part of id

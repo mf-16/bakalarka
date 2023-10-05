@@ -1,9 +1,14 @@
-description:
+DESCRIPTION:
+This test checks if library is capable of preserving prefix with space
 
-input:
+INPUT:
 document
 prefix ex ex <https://example.org>
 prefix ex <https://example.com>
 entity(ex ex:1)
 activity(ex:2,-,-)
 endDocument
+
+EXPECTED RESULT:
+serialization:   the prefix should be preserved in file
+deserialization: the prefix should be preserved in memory

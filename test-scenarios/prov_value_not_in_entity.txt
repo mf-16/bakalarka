@@ -1,9 +1,14 @@
-description:
+DESCRIPTION:
+The test evaluates the capability of library to identify and reject prov:value attributes not in entity, which is not allowed according to PROVN
 
-input:
+INPUT:
 document
   prefix ex <https://example.org/>
   
   entity(ex:e)
   activity(ex:ac, -, -, [prov:value=4])
 endDocument
+
+EXPECTED RESULT:
+serialization:   should not be serialized
+deserialization: should not be deserialized

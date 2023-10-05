@@ -1,6 +1,7 @@
-description:
+DESCRIPTION:
+This test asseses the ability of the library to correctly identify and reject PROV records that do not make sense according to PROV-N notation
 
-input:
+INPUT:
 document
   prefix ex <https://example.org/>
   
@@ -24,3 +25,7 @@ document
   hadMember(ex:c, ex:ag1)
   hadMember(ex:c, ex:ac1)
 endDocument
+
+EXPECTED RESULT:
+serialization:   document like this should not be serialized
+deserialization: should not allow this
