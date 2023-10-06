@@ -1,5 +1,13 @@
-description:
+DESCRIPTION:
+This test evaluates library`s capability to safely use and preserve default namespace.
 
+INPUT:
+document
+  default <default>
+  prefix ex <https://example.org>
+  entity(ex:entity,[prov:value = "1" %% xsd:string])
+endDocument
 
-input:
-TODO
+EXPECTED RESULT:
+serialization:   default namespace is preserved in file
+deserialization: default namespace is preserved in memory

@@ -1,4 +1,5 @@
-description:
+DESCRIPTION:
+This test evaluates ability to correctly handle relations without id.
 
 input:
 document
@@ -8,3 +9,7 @@ document
   activity(ex:a, -, -)
   wasGeneratedBy(ex:e, ex:a, -)
 endDocument
+
+EXPECTED RESULT:
+serialization:	 relation without id is preserved in file
+deserialization: relation without id is preserved in memory

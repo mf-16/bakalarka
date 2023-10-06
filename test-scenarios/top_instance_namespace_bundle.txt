@@ -1,6 +1,7 @@
-description:
+DESCRIPTION:
+This test evaluates the capability to accurately serialize and deserialize bundles that have identifier with prefix from top-level instance namespace. 
 
-input:
+INPUT:
 document
   default <https://example.com>
   prefix ex <https://example.org>
@@ -11,3 +12,7 @@ document
     entity(ex:e2)
   endBundle
 endDocument
+
+EXPECTED RESULT:
+serialization:   bundle should be correctly in file
+deserialization: bundle should be correctly in memory
