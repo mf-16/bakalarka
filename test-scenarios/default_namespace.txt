@@ -3,10 +3,12 @@ This test evaluates library`s capability to safely use and preserve default name
 
 INPUT:
 document
-  default <default>
-  prefix ex <https://example.org>
-  entity(ex:entity,[prov:value = "1" %% xsd:string])
+  default <https://default.org/>
+  prefix ex <https://example.org/>
+
+  entity(ex:e)
 endDocument
+
 
 EXPECTED RESULT:
 serialization:   default namespace is preserved in file

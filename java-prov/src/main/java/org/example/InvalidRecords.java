@@ -6,11 +6,14 @@ import org.openprovenance.prov.model.Namespace;
 import org.openprovenance.prov.model.ProvFactory;
 
 
-public class InvalidRecords {
-    public static void perform() {
-        var inf = new InteropFramework();
-        Document document = inf.readDocumentFromFile("invalid_records.provn");
-        inf.writeDocument("temp.provn",document);
+public class InvalidRecords implements TestCase {
 
+    public void serialize(String format) {
+        //TODO
+    }
+
+    public void deserialize(String format) {
+        var inf = new InteropFramework();
+        Document document = inf.readDocumentFromFile(String.format("data/invalid_records.%s", format));
     }
 }

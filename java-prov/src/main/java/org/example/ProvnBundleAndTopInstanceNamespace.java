@@ -15,8 +15,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 
-public class ProvnBundleAndTopInstanceNamespace {
+public class ProvnBundleAndTopInstanceNamespace implements TestCase {
     public static void perform() {
+
+    }
+
+    public void serialize(String format) {
         ProvFactory factory = new ProvFactory();
         var document = new org.openprovenance.prov.vanilla.Document();
         var ns = new Namespace();
@@ -36,16 +40,19 @@ public class ProvnBundleAndTopInstanceNamespace {
 
 
         var inf = new InteropFramework();
+        var formatType = inf.getTypeForFormat(format);
 
-        //inf.writeDocument("../python-prov/java_temp.provn",document);
-
-        File file = new File("data/temp.provn");
+        File file = new File(String.format("../python-prov/data/provn_bundle_and_top_instance.%s", format));
         try {
             OutputStream outputStream = new FileOutputStream(file);
-            inf.writeDocument(outputStream, Formats.ProvFormat.PROVN, document);
+            inf.writeDocument(outputStream, formatType , document);
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
 
+    public void deserialize(String format) {
+        var inf = new InteropFramework();
+        var document = inf.readDocumentFromFile(String.format("data/provn_bundle_and_top_instance.%s", format));
     }
 }

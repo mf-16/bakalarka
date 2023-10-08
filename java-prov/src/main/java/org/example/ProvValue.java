@@ -4,11 +4,14 @@ import org.openprovenance.prov.interop.InteropFramework;
 import org.openprovenance.prov.model.Document;
 
 
-public class ProvValue {
-    public static void perform() {
-        var inf = new InteropFramework();
-        Document document = inf.readDocumentFromFile("prov_value.provn");
-        inf.writeDocument("temp.provn",document);
+public class ProvValue implements TestCase {
 
+    public void serialize(String format) {
+        //TODO
+    }
+
+    public void deserialize(String format) {
+        var inf = new InteropFramework();
+        var document = inf.readDocumentFromFile(String.format("data/prov_value.%s", format));
     }
 }

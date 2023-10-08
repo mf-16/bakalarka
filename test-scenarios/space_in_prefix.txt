@@ -3,10 +3,10 @@ This test checks if library is capable of preserving prefix with space
 
 INPUT:
 document
-prefix ex ex <https://example.org>
-prefix ex <https://example.com>
-entity(ex ex:1)
-activity(ex:2,-,-)
+  prefix ex ex <https://example.org>
+  prefix ex <https://example.com>
+  entity(ex ex:e)
+  activity(ex:a,-,-)
 endDocument
 
 EXPECTED RESULT:

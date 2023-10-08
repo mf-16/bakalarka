@@ -5,8 +5,7 @@ INPUT:
 document
   prefix ex <https://example.org/>
   
-  entity(ex:e)
-  activity(ex:ac, -, -, [prov:value=4])
+  activity(ex:ac, -, -, [prov:value=1])
 endDocument
 
 EXPECTED RESULT:

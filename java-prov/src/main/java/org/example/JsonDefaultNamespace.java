@@ -12,11 +12,13 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 
-public class JsonDefaultNamespace {
-    public static void perform() {
+public class JsonDefaultNamespace implements TestCase {
+
+    public void serialize(String format) {
         ProvFactory factory = new ProvFactory();
         var document = new org.openprovenance.prov.vanilla.Document();
         var ns = new Namespace();
+        ns.addKnownNamespaces();
         ns.registerDefault("default");
         ns.register("ex","https://example.org");
         var eqn = ns.qualifiedName("ex","entity",factory);
@@ -28,16 +30,19 @@ public class JsonDefaultNamespace {
 
 
         var inf = new InteropFramework();
+        var formatType = inf.getTypeForFormat(format);
 
-        //inf.writeDocument("../python-prov/java_temp.provn",document);
-
-        File file = new File("../python-prov/data/json_default_namespace.json");
+        File file = new File(String.format("../python-prov/data/json_default_namespace.%s", format));
         try {
             OutputStream outputStream = new FileOutputStream(file);
-            inf.writeDocument(outputStream, Formats.ProvFormat.JSON, document);
+            inf.writeDocument(outputStream, formatType, document);
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
 
+    public void deserialize(String format) {
+        var inf = new InteropFramework();
+        var document = inf.readDocumentFromFile(String.format("data/json_default_namespace.%s", format));
     }
 }

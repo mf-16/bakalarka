@@ -4,7 +4,7 @@ This test evaluates the capability of library to correctly identify and reject e
 INPUT:
 document
   prefix ex <https://example.org/>
-  entity(ex:c, [prov:value=1, prov:value=2, prov:value=3])
+  entity(ex:e, [prov:value=1, prov:value=2, prov:value=3])
 endDocument
 
 EXPECTED RESULT:

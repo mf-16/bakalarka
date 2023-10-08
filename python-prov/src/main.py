@@ -2,24 +2,27 @@ import datetime
 
 from prov.model import ProvDocument, ProvBundle, ProvAgent, ProvActivity, ProvEntity
 import prov.graph
-
-import bad_uri
-import datetime_microseconds
-import invalid_records
+import sys
+import checking_uri_syntax
+import loss_of_microseconds
+import nonsense_prov_records
 import java_serialization_problems
-import prov_value
+import multiple_prov_value
 import provn_deserializer_not_implemented
-import weird_character_as_identifier
-import id_with_space
+import escaped_characters
+import local_part_of_id_with_space
 import create_main_document
-import json_default_namespace
-import prov_relation_without_id
+import default_namespace
+import prov_record_without_id
+import loss_of_timezone
+import prov_value_not_in_entity
+import space_in_prefix
+import top_instance_namespace_bundle
 
 from prov.model import ProvDocument
 from prov.identifier import *
 from prov.dot import prov_to_dot
 from prov.graph import prov_to_graph
-
 
 
 def project_planning_bundle(bundle: ProvBundle):
@@ -252,16 +255,26 @@ def create_document(doc):
 
 
 if __name__ == "__main__":
-    doc = ProvDocument()
-    # doc = doc.deserialize("../data/temp.json")
-    # print(doc.get_provn())
-    doc.set_default_namespace("https://example.com")
-    doc.add_namespace("ex","https://example.org")
-    e = doc.entity("ex:e")
-    ac = doc.activity("ex:ac")
-    doc.wasGeneratedBy(e,ac)
-
-    doc.serialize("../data/temp.rdf",format="rdf")
+    temp = {"checking_uri_syntax":checking_uri_syntax,"loss_of_microseconds":loss_of_microseconds,"local_part_of_id_with_space":local_part_of_id_with_space,
+            "nonsense_prov_records":nonsense_prov_records,"default_namespace":default_namespace,
+            "prov_record_without_id":prov_record_without_id,"multiple_prov_value":multiple_prov_value,
+            "escaped_characters":escaped_characters,"loss_of_timezone":loss_of_timezone,
+            "prov_value_not_in_entity":prov_value_not_in_entity, "space_in_prefix":space_in_prefix,
+            "top_instance_namespace_bundle":top_instance_namespace_bundle}
+    if sys.argv[3] == "s":
+        temp[sys.argv[1]].serialize(sys.argv[2])
+    elif sys.argv[3] == "d":
+        temp[sys.argv[1]].deserialize(sys.argv[2])
+    # doc = ProvDocument()
+    # # doc = doc.deserialize("../data/temp.json")
+    # # print(doc.get_provn())
+    # doc.set_default_namespace("https://example.com")
+    # doc.add_namespace("ex","https://example.org")
+    # e = doc.entity("ex:e")
+    # ac = doc.activity("ex:ac")
+    # doc.wasGeneratedBy(e,ac)
+    #
+    # doc.serialize("../data/temp.rdf",format="rdf")
 
     # b1 = doc.bundle("b1")
     # b1.entity("ex:1")
@@ -287,3 +300,5 @@ if __name__ == "__main__":
     #create_main_document.perform()
     #json_default_namespace.perform()
     #prov_relation_without_id.perform()
+    #id_with_space.perform()
+

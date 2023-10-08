@@ -3,14 +3,14 @@ import datetime
 from prov.model import ProvDocument, ProvBundle, ProvAgent, ProvActivity, ProvEntity
 import prov.graph
 
-import bad_uri
-import datetime_microseconds
-import invalid_records
+import checking_uri_syntax
+import loss_of_microseconds
+import nonsense_prov_records
 import java_serialization_problems
-import prov_value
+import multiple_prov_value
 import provn_deserializer_not_implemented
-import weird_character_as_identifier
-import id_with_space
+import escaped_characters
+import local_part_of_id_with_space
 
 from prov.model import ProvDocument
 from prov.identifier import *
