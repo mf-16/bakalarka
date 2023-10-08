@@ -1,0 +1,13 @@
+DESCRIPTION:
+This test evaluates if the library is capable of not losing the microseconds when working with times.
+
+INPUT:
+document
+  prefix ex <https://example.org>
+  
+  activity(ex:a, 2023-09-08T14:12:45.10931231236545213876, 2023-09-08T14:12:45.109321321312321432523)
+endDocument
+
+EXPECTED RESULT:
+serialization:   The microseconds should be preserved in file
+deserialization: The microseconds should be preserved in memory 
