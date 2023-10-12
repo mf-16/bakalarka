@@ -15,5 +15,5 @@ def serialize(format):
 
 def deserialize(format):
     document = ProvDocument()
-    document.deserialize(fr"..\data\space_in_prefix.{format}",format=format)
+    document = document.deserialize(fr"..\data\space_in_prefix.{format}",format=format)
     print(document.get_provn())

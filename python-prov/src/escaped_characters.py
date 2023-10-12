@@ -15,5 +15,5 @@ def serialize(format):
 
 def deserialize(format):
     document = ProvDocument()
-    document.serialize(fr"..\data\escaped_characters.{format}", format=format)
+    document = document.serialize(fr"..\data\escaped_characters.{format}", format=format)
     print(document.get_provn())

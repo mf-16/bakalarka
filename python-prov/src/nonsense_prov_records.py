@@ -33,5 +33,5 @@ def serialize(format):
 
 def deserialize(format):
     document = ProvDocument()
-    document.deserialize(fr"..\data\nonsense_prov_records.{format}", format=format)
+    document = document.deserialize(fr"..\data\nonsense_prov_records.{format}", format=format)
     print(document.get_provn())

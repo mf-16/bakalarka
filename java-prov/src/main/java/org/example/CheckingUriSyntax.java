@@ -11,30 +11,22 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 
-public class BadUri implements TestCase {
+public class CheckingUriSyntax implements TestCase {
     public void serialize(String format){
         var inf = new InteropFramework();
-        ProvFactory factory = InteropFramework.getDefaultFactory();
+        ProvFactory factory = new org.openprovenance.prov.vanilla.ProvFactory();
         var document = new Document();
         var ns = new Namespace();
         ns.addKnownNamespaces();
         ns.register("ex","http://www.w3. org/ns/prov#");
         document.setNamespace(ns);
 
-        var formatType = inf.getTypeForFormat(format);
-
-        File file = new File(String.format("../python-prov/data/bad_uri.%s", format));
-        try {
-            OutputStream outputStream = new FileOutputStream(file);
-            inf.writeDocument(outputStream, formatType, document);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        writeDocument(format,document,"checking_uri_syntax");
     }
     public void deserialize(String format) {
        var inf = new InteropFramework();
-       var document = inf.readDocumentFromFile(String.format("data/bad_uri.%s",format));
-       inf.writeDocument("data/temp.provn",document);
-
+       var document = inf.readDocumentFromFile(String.format("data/checking_uri_syntax.%s",format));
+       var formatType = inf.getTypeForFormat(format);
+       inf.writeDocument(System.out, formatType, document);
     }
 }

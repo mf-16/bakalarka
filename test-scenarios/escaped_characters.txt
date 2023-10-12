@@ -3,9 +3,9 @@ The test examines capability of library to detect and reject unescaped character
 
 INPUT:
 document
-  default <https://example.org/>
+  prefix ex <https://example.org/>
   
-  entity(:='(),-;[].)
+  entity(ex:='(),-:;[].)
 endDocument
 
 EXPECTED RESULT:

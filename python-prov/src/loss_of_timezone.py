@@ -20,5 +20,5 @@ def serialize(format):
 
 def deserialize(format):
     document = ProvDocument()
-    document.deserialize(fr"..\data\loss_of_timezone.{format}", format=format)
+    document = document.deserialize(fr"..\data\loss_of_timezone.{format}", format=format)
     print(document.get_provn())

@@ -13,5 +13,5 @@ def serialize(format):
 
 def deserialize(format):
     document = ProvDocument()
-    document.deserialize(fr"..\data\prov_record_without_id.{format}", format=format)
+    document = document.deserialize(fr"..\data\prov_record_without_id.{format}", format=format)
     print(document.get_provn())

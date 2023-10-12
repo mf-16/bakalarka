@@ -14,6 +14,5 @@ def serialize(format):
 
 def deserialize(format):
     document = ProvDocument()
-    doc = document.deserialize(fr"../data/default_namespace.{format}",format=format)
-    doc.serialize("temp.provn",format="provn")
-    print(doc.get_provn())
+    document = document.deserialize(fr"../data/default_namespace.{format}",format=format)
+    print(document.get_provn())

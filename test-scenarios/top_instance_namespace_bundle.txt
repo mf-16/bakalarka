@@ -3,12 +3,13 @@ This test evaluates the capability to accurately serialize and deserialize bundl
 
 INPUT:
 document
-  default <https://example.com>
   prefix ex <https://example.org>
   
   entity(ex:e)
   activity(ex:ac, -, -)
   bundle ex:b
+    prefix ex <https://example.com>
+    
     entity(ex:e2)
   endBundle
 endDocument

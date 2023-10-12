@@ -38,10 +38,6 @@ class Program
 
 
             }
-            catch (FormatException)
-            {
-                Console.WriteLine("Invalid argument. Use -h.");
-            }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
@@ -51,11 +47,12 @@ class Program
     }
     public static void RunPython(string testScenario, string technique, string format)
     {
-        Directory.SetCurrentDirectory("C:\\Users\\Matúš\\bakalarka\\python-prov\\src");
+        Directory.SetCurrentDirectory($"C:\\Users\\{Environment.UserName}\\bakalarka\\python-prov\\src");
         // Create a new process to run Python
         Process pythonProcess = new Process();
         pythonProcess.StartInfo.FileName = "python"; // or specify the path to your Python interpreter
         pythonProcess.StartInfo.RedirectStandardOutput = true;
+        pythonProcess.StartInfo.RedirectStandardError = true;
         pythonProcess.StartInfo.UseShellExecute = false;
         pythonProcess.StartInfo.CreateNoWindow = true;
 
@@ -67,8 +64,9 @@ class Program
 
         // Read the output (if needed)
         string output = pythonProcess.StandardOutput.ReadToEnd();
+        string errorOutput = pythonProcess.StandardError.ReadToEnd();
         Console.WriteLine("Python Output:");
-        Console.WriteLine(output);
+        Console.WriteLine(output + errorOutput);
 
         // Wait for the Python process to exit
         pythonProcess.WaitForExit();
@@ -81,22 +79,25 @@ class Program
     }
     public static void RunJava(string testScenario, string technique, string format)
     {
-        Directory.SetCurrentDirectory("C:\\Users\\Matúš\\bakalarka\\java-prov");
+        Directory.SetCurrentDirectory($"C:\\Users\\{Environment.UserName}\\bakalarka\\java-prov");
         // Create a new process to run the Java JAR file
         Process javaProcess = new Process();
         javaProcess.StartInfo.FileName = "java"; // or specify the full path to the java executable
-        javaProcess.StartInfo.Arguments = $"-jar test-1.0-SNAPSHOT-shaded.jar {testScenario} {format} {technique}"; // specify the JAR file
+        javaProcess.StartInfo.Arguments = $"-jar target\\test-1.0-SNAPSHOT-shaded.jar {testScenario} {format} {technique}"; // specify the JAR file
         javaProcess.StartInfo.RedirectStandardOutput = true;
+        javaProcess.StartInfo.RedirectStandardError= true;
         javaProcess.StartInfo.UseShellExecute = false;
         javaProcess.StartInfo.CreateNoWindow = true;
 
         // Start the Java process
         javaProcess.Start();
 
+
         // Read the output (if needed)
         string output = javaProcess.StandardOutput.ReadToEnd();
+        string errorOutput = javaProcess.StandardError.ReadToEnd();
         Console.WriteLine("Java Output:");
-        Console.WriteLine(output);
+        Console.WriteLine(output + errorOutput);
 
         // Wait for the Java process to exit
         javaProcess.WaitForExit();
@@ -106,10 +107,6 @@ class Program
 
         Console.WriteLine("Press any key to exit.");
         Console.ReadKey();
-    }
-    public void ParseArguments()
-    {
-        
     }
 }
 

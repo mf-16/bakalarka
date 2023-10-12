@@ -10,5 +10,5 @@ def serialize(format):
 
 def deserialize(format):
     document = ProvDocument()
-    document.deserialize(fr"..\data\checking_uri_syntax.{format}",format=format)
+    document = document.deserialize(fr"..\data\checking_uri_syntax.{format}",format=format)
     print(document.get_provn())

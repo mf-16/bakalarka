@@ -15,5 +15,5 @@ def serialize(format):
 
 def deserialize(format):
     document = ProvDocument()
-    document.deserialize(fr"..\data\multiple_prov_value.{format}", format=format)
+    document = document.deserialize(fr"..\data\multiple_prov_value.{format}", format=format)
     print(document.get_provn())
