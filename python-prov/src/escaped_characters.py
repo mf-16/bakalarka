@@ -1,3 +1,5 @@
+import sys
+
 import prov.dot
 from prov.model import ProvDocument
 import prov.graph
@@ -11,9 +13,9 @@ def serialize(format):
     document.add_namespace("ex","https://example.org/")
     document.entity("ex:='(),-:;[].")
     document.serialize(fr"..\..\java-prov\data\escaped_characters.{format}", format=format, indent=2)
-    print(document.get_provn())
+    document.serialize(sys.stdout, format=format, indent=2)
 
 def deserialize(format):
     document = ProvDocument()
-    document = document.serialize(fr"..\data\escaped_characters.{format}", format=format)
-    print(document.get_provn())
+    document = document.deserialize(fr"..\data\escaped_characters.{format}", format=format)
+    document.serialize(sys.stdout, format=format, indent=2)

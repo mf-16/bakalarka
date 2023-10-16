@@ -24,9 +24,8 @@ public class TopInstanceNamespaceBundle implements TestCase {
         ns.register("ex","https://example.org");
         var ns2 = new Namespace();
         ns2.addKnownNamespaces();
-        ns2.register("ex","https://example.com");
         var e = ns.qualifiedName("ex","e",factory);
-        var e2 = ns2.qualifiedName("ex","e2",factory);
+        var e2 = ns2.qualifiedName(null,"e2",factory);
         var a = ns.qualifiedName("ex","a",factory);
         Entity entity = factory.newEntity(e);
         Entity entity2 = factory.newEntity(e2);
@@ -35,7 +34,7 @@ public class TopInstanceNamespaceBundle implements TestCase {
         document.getStatementOrBundle().add(activity);
         document.setNamespace(ns);
         // BUNDLE
-        var b = ns.qualifiedName("ex","b",factory);
+        var b = ns.qualifiedName(null,"b",factory);
         var bundle = factory.newNamedBundle(b,new ArrayList<>());
         bundle.getStatement().add(entity2);
         bundle.setNamespace(ns2);

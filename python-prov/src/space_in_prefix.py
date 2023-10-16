@@ -1,3 +1,5 @@
+import sys
+
 import prov.dot
 from prov.model import ProvDocument
 import prov.graph
@@ -11,9 +13,9 @@ def serialize(format):
 
 
     document.serialize(fr"..\..\java-prov\data\space_in_prefix.{format}", format=format, indent=2)
-    print(document.get_provn())
+    document.serialize(sys.stdout, format=format, indent=2)
 
 def deserialize(format):
     document = ProvDocument()
     document = document.deserialize(fr"..\data\space_in_prefix.{format}",format=format)
-    print(document.get_provn())
+    document.serialize(sys.stdout, format=format, indent=2)

@@ -1,4 +1,5 @@
 import datetime
+import sys
 
 import prov.dot
 from prov.model import ProvDocument
@@ -11,9 +12,9 @@ def serialize(format):
     e.add_attributes({"prov:value":2})
     e.add_attributes({"prov:value":3})
     document.serialize(fr"..\..\java-prov\data\multiple_prov_value.{format}", format=format, indent=2)
-    print(document.get_provn())
+    document.serialize(sys.stdout, format=format, indent=2)
 
 def deserialize(format):
     document = ProvDocument()
     document = document.deserialize(fr"..\data\multiple_prov_value.{format}", format=format)
-    print(document.get_provn())
+    document.serialize(sys.stdout, format=format, indent=2)

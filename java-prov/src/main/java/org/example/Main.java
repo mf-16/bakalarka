@@ -55,19 +55,10 @@ public class Main {
 //        } catch (IOException e) {
 //            e.printStackTrace();
 //        }
-//        args = new String[3];
-//        args[0] = "checking_uri_syntax";
-//        args[1] = "xml";
-//        args[2] = "s";
-        var bu = new CheckingUriSyntax();
-        var dtm = new LossOfMicroseconds();
-        var iws = new LocalPartOfIdWithSpace();
-        var ir = new NonsenseProvRecords();
-        var jsn = new DefaultNamespace();
-        var pbatin = new TopInstanceNamespaceBundle();
-        var prwi = new ProvRecordWithoutId();
-        var pv = new MultipleProvValue();
-        var wchai = new EscapedCharacters();
+        args = new String[3];
+        args[0] = "prov_record_without_id";
+        args[1] = "json";
+        args[2] = "d";
         var hm = new HashMap<String,TestCase>();
         hm.put("checking_uri_syntax",new CheckingUriSyntax());
         hm.put("loss_of_microseconds",new LossOfMicroseconds());
@@ -87,16 +78,6 @@ public class Main {
         else if ("d".equals(args[2])){
             hm.get(args[0]).deserialize(args[1]);
         }
-        //WeirdCharacterAsIdentifier.perform();
-        //BadDate.perform();
-        //IdWithSpace.perform();
-        //DateTimeMicroseconds.perform();
-        //InvalidRecords.perform();
-        //ProvValue.perform();
-        //JavaSerializationProblems.perform();
-        //JsonDefaultNamespace.perform();
-        //ProvnBundleAndTopInstanceNamespace.perform();
-        //ProvRelationWithoutId.perform();
 
     }
 }

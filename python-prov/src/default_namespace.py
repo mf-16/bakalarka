@@ -1,4 +1,5 @@
 import datetime
+import sys
 
 import prov.dot
 from prov.model import ProvDocument
@@ -10,9 +11,9 @@ def serialize(format):
     ns = document.add_namespace("ex", "https://example.org/")
     a = document.entity("ex:e")
     document.serialize(fr"../../java-prov/data/default_namespace.{format}", format=format, indent=2)
-    print(document.get_provn())
+    document.serialize(sys.stdout, format=format, indent=2)
 
 def deserialize(format):
     document = ProvDocument()
     document = document.deserialize(fr"../data/default_namespace.{format}",format=format)
-    print(document.get_provn())
+    document.serialize(sys.stdout, format=format, indent=2)

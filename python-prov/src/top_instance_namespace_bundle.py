@@ -1,3 +1,5 @@
+import sys
+
 import prov.dot
 from prov.model import ProvDocument
 import prov.graph
@@ -12,9 +14,9 @@ def serialize(format):
     bundle.entity("ex:e2")
 
     document.serialize(fr"..\..\java-prov\data\top_instance_namespace_bundle.{format}", format=format, indent=2)
-    print(document.get_provn())
+    document.serialize(sys.stdout, format=format, indent=2)
 
 def deserialize(format):
     document = ProvDocument()
     document = document.deserialize(fr"..\data\top_instance_namespace_bundle.{format}",format=format)
-    print(document.get_provn())
+    document.serialize(sys.stdout, format=format, indent=2)

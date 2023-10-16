@@ -1,3 +1,5 @@
+import sys
+
 import prov.dot
 from prov.model import ProvDocument
 import prov.graph
@@ -14,9 +16,9 @@ def serialize(format):
     document.add_namespace("ex","https://example.org/")
     document.entity("ex:a b c")
     document.serialize(fr"..\..\java-prov\data\local_part_of_id_with_space.{format}", format=format, indent=2)
-    print(document.get_provn())
+    document.serialize(sys.stdout, format=format, indent=2)
 
 def deserialize(format):
     document = ProvDocument()
     document = document.deserialize(fr"..\data\local_part_of_id_with_space.{format}", format=format)
-    print(document.get_provn())
+    document.serialize(sys.stdout, format=format, indent=2)
