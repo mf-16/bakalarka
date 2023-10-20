@@ -12,5 +12,11 @@ def serialize(format):
 
 def deserialize(format):
     document = ProvDocument()
-    document = document.deserialize(fr"..\data\checking_uri_syntax.{format}",format=format)
+    document = document.deserialize(fr"data\checking_uri_syntax.{format}",format=format)
     document.serialize(sys.stdout, format=format, indent=2)
+
+    document2 = ProvDocument()
+    document2.add_namespace("ex1", "http://www.w2. org/ns/prov#")
+    document2.add_namespace("ex2", "a")
+    print(document2.__eq__(document))
+

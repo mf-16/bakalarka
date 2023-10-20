@@ -27,6 +27,17 @@ public class CheckingUriSyntax implements TestCase {
        var inf = new InteropFramework();
        var document = inf.readDocumentFromFile(String.format("data/checking_uri_syntax.%s",format));
        var formatType = inf.getTypeForFormat(format);
+
+        ProvFactory factory = new org.openprovenance.prov.vanilla.ProvFactory();
+        var document2 = new Document();
+        var ns = new Namespace();
+        ns.addKnownNamespaces();
+        ns.register("ex1","1");
+        ns.register("ex12","12");
+        document2.setNamespace(ns);
+        System.out.println(document2.equals(document));
+
        inf.writeDocument(System.out, formatType, document);
+
     }
 }

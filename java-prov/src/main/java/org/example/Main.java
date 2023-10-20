@@ -1,7 +1,11 @@
 package org.example;
 
-import java.util.HashMap;
+import java.io.FileReader;
+import java.io.IOException;
+import java.lang.reflect.Method;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 public class Main {
     public static void main(String[] args) {
@@ -56,28 +60,56 @@ public class Main {
 //            e.printStackTrace();
 //        }
         args = new String[3];
-        args[0] = "prov_record_without_id";
+        args[0] = "checking_uri_syntax";
         args[1] = "json";
         args[2] = "d";
-        var hm = new HashMap<String,TestCase>();
-        hm.put("checking_uri_syntax",new CheckingUriSyntax());
-        hm.put("loss_of_microseconds",new LossOfMicroseconds());
-        hm.put("local_part_of_id_with_space",new LocalPartOfIdWithSpace());
-        hm.put("nonsense_prov_records",new NonsenseProvRecords());
-        hm.put("default_namespace",new DefaultNamespace());
-        hm.put("top_instance_namespace_bundle",new TopInstanceNamespaceBundle());
-        hm.put("prov_record_without_id",new ProvRecordWithoutId());
-        hm.put("multiple_prov_value",new MultipleProvValue());
-        hm.put("escaped_characters",new EscapedCharacters());
-        hm.put("loss_of_timezone",new LossOfTimezone());
-        hm.put("prov_value_not_in_entity",new ProvValueNotInEntity());
-        hm.put("space_in_prefix",new SpaceInPrefix());
-        if ("s".equals(args[2])){
-            hm.get(args[0]).serialize(args[1]);
-        }
-        else if ("d".equals(args[2])){
-            hm.get(args[0]).deserialize(args[1]);
-        }
+//        var hm = new HashMap<String,TestCase>();
+//        hm.put("checking_uri_syntax",new CheckingUriSyntax());
+//        hm.put("loss_of_microseconds",new LossOfMicroseconds());
+//        hm.put("local_part_of_id_with_space",new LocalPartOfIdWithSpace());
+//        hm.put("nonsense_prov_records",new NonsenseProvRecords());
+//        hm.put("default_namespace",new DefaultNamespace());
+//        hm.put("top_instance_namespace_bundle",new TopInstanceNamespaceBundle());
+//        hm.put("prov_record_without_id",new ProvRecordWithoutId());
+//        hm.put("multiple_prov_value",new MultipleProvValue());
+//        hm.put("escaped_characters",new EscapedCharacters());
+//        hm.put("loss_of_timezone",new LossOfTimezone());
+//        hm.put("prov_value_not_in_entity",new ProvValueNotInEntity());
+//        hm.put("space_in_prefix",new SpaceInPrefix());
+//        if ("s".equals(args[2])){
+//            hm.get(args[0]).serialize(args[1]);
+//        }
+//        else if ("d".equals(args[2])){
+//            hm.get(args[0]).deserialize(args[1]);
+//        }
+        var config = loadConfig();
+        var cus = config.getAsJsonObject(args[0]);
+        var javaClass = cus.get("java_class").getAsString();
+        System.out.println("Current working directory: " + System.getProperty("user.dir"));
 
+        try {
+            Class<?> clazz = Class.forName(javaClass);
+            Object instance = clazz.getDeclaredConstructor().newInstance();
+            // Assuming there is a 'deserialize' method in the Java class
+            Method method = null;
+            if ("s".equals(args[2])){
+                 method = clazz.getMethod("serialize",String.class);
+            }
+            else if ("d".equals(args[2])){
+                 method = clazz.getMethod("deserialize",String.class);
+            }
+            method.invoke(instance,args[1]);
+        } catch (Exception e) {
+            System.err.println("Error running Java class: " + e.getMessage());
+        }
     }
+    private static JsonObject loadConfig() {
+        try (FileReader reader = new FileReader("C:\\Users\\forma\\bakalarka\\config.json")) {
+            return JsonParser.parseReader(reader).getAsJsonObject();
+        } catch (IOException e) {
+            System.err.println("Error loading the configuration file: " + e.getMessage());
+            return new JsonObject();
+        }
+    }
+
 }
