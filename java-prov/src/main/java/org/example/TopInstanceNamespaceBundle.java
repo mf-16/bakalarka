@@ -4,6 +4,7 @@ import org.openprovenance.prov.interop.InteropFramework;
 import org.openprovenance.prov.model.Activity;
 import org.openprovenance.prov.model.Entity;
 import org.openprovenance.prov.model.Namespace;
+import org.openprovenance.prov.vanilla.Document;
 import org.openprovenance.prov.vanilla.ProvFactory;
 
 import java.io.File;
@@ -50,5 +51,10 @@ public class TopInstanceNamespaceBundle implements TestCase {
         var document = inf.readDocumentFromFile(String.format("data/top_instance_namespace_bundle.%s", format));
         var formatType = inf.getTypeForFormat(format);
         inf.writeDocument(System.out, formatType, document);
+    }
+
+    @Override
+    public Document createDocument() {
+        return null;
     }
 }

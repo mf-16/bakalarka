@@ -14,22 +14,7 @@ import java.util.ArrayList;
 public class MultipleProvValue implements TestCase {
 
     public void serialize(String format) {
-        var factory = new ProvFactory();
-        var document = new Document();
-        var ns = new Namespace();
-        ns.addKnownNamespaces();
-        ns.register("ex","https://example.org");
-        var eqn = ns.qualifiedName("ex","e",factory);
-        var attributes = new ArrayList<Attribute>();
-        Attribute at = factory.newValue(1);
-        Attribute at2 = factory.newValue(2);
-        Attribute at3 = factory.newAttribute(ns.qualifiedName("prov","value",factory),3,ns.qualifiedName("xsd","int",factory));
-        attributes.add(at);
-        attributes.add(at2);
-        attributes.add(at3);
-        Entity entity = factory.newEntity(eqn,attributes);
-        document.getStatementOrBundle().add(entity);
-        document.setNamespace(ns);
+        var document = createDocument();
 
         writeDocument(format,document,"multiple_prov_value");
     }
@@ -37,7 +22,32 @@ public class MultipleProvValue implements TestCase {
     public void deserialize(String format) {
         var inf = new InteropFramework();
         var document = inf.readDocumentFromFile(String.format("data/multiple_prov_value.%s", format));
+
+        var expectedDocument = createDocument();
+        System.out.println(document.equals(expectedDocument));
+
         var formatType = inf.getTypeForFormat(format);
         inf.writeDocument(System.out, formatType, document);
+    }
+
+    @Override
+    public Document createDocument() {
+        var factory = new ProvFactory();
+        var document = new Document();
+        var ns = new Namespace();
+        ns.addKnownNamespaces();
+        ns.register("ex","https://example.org/");
+        var e = ns.qualifiedName("ex","e",factory);
+        var attributes = new ArrayList<Attribute>();
+        Attribute at = factory.newValue(1);
+        Attribute at2 = factory.newValue(2);
+        Attribute at3 = factory.newAttribute(ns.qualifiedName("prov","value",factory),3,ns.qualifiedName("xsd","int",factory));
+        attributes.add(at);
+        attributes.add(at2);
+        attributes.add(at3);
+        Entity entity = factory.newEntity(e,attributes);
+        document.getStatementOrBundle().add(entity);
+        document.setNamespace(ns);
+        return document;
     }
 }

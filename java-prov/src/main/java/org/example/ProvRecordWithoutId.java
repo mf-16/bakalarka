@@ -12,11 +12,29 @@ import org.openprovenance.prov.vanilla.ProvFactory;
 public class ProvRecordWithoutId implements TestCase {
 
     public void serialize(String format) {
+        var document = createDocument();
+
+        writeDocument(format,document,"prov_record_without_id");
+    }
+
+    public void deserialize(String format) {
+        var inf = new InteropFramework();
+        var document = inf.readDocumentFromFile(String.format("data/prov_record_without_id.%s", format));
+
+        var expectedDocument = createDocument();
+        System.out.println(document.equals(expectedDocument));
+
+        var formatType = inf.getTypeForFormat(format);
+        inf.writeDocument(System.out, formatType, document);
+    }
+
+    @Override
+    public Document createDocument() {
         var factory = new ProvFactory();
         var document = new Document();
         var ns = new Namespace();
         ns.addKnownNamespaces();
-        ns.register("ex","https://example.org");
+        ns.register("ex","https://example.org/");
         var e = ns.qualifiedName("ex","e",factory);
         var a = ns.qualifiedName("ex","a",factory);
         Entity entity = factory.newEntity(e);
@@ -26,14 +44,6 @@ public class ProvRecordWithoutId implements TestCase {
         document.getStatementOrBundle().add(activity);
         document.getStatementOrBundle().add(wasGeneratedBy);
         document.setNamespace(ns);
-
-        writeDocument(format,document,"prov_record_without_id");
-    }
-
-    public void deserialize(String format) {
-        var inf = new InteropFramework();
-        var document = inf.readDocumentFromFile(String.format("data/prov_record_without_id.%s", format));
-        var formatType = inf.getTypeForFormat(format);
-        inf.writeDocument(System.out, formatType, document);
+        return document;
     }
 }

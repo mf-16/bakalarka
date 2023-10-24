@@ -1,6 +1,7 @@
 package org.example;
 
 import org.openprovenance.prov.interop.InteropFramework;
+import org.openprovenance.prov.model.Entity;
 import org.openprovenance.prov.model.Namespace;
 import org.openprovenance.prov.model.ProvFactory;
 import org.openprovenance.prov.vanilla.Document;
@@ -13,13 +14,7 @@ import java.io.OutputStream;
 
 public class CheckingUriSyntax implements TestCase {
     public void serialize(String format){
-        var inf = new InteropFramework();
-        ProvFactory factory = new org.openprovenance.prov.vanilla.ProvFactory();
-        var document = new Document();
-        var ns = new Namespace();
-        ns.addKnownNamespaces();
-        ns.register("ex","http://www.w3. org/ns/prov#");
-        document.setNamespace(ns);
+        var document = createDocument();
 
         writeDocument(format,document,"checking_uri_syntax");
     }
@@ -28,16 +23,17 @@ public class CheckingUriSyntax implements TestCase {
        var document = inf.readDocumentFromFile(String.format("data/checking_uri_syntax.%s",format));
        var formatType = inf.getTypeForFormat(format);
 
-        ProvFactory factory = new org.openprovenance.prov.vanilla.ProvFactory();
-        var document2 = new Document();
+        var expectedDocument = createDocument();
+        System.out.println(document.equals(expectedDocument));
+        inf.writeDocument(System.out, formatType, document);
+
+    }
+    public Document createDocument(){
+        var document = new Document();
         var ns = new Namespace();
         ns.addKnownNamespaces();
-        ns.register("ex1","1");
-        ns.register("ex12","12");
-        document2.setNamespace(ns);
-        System.out.println(document2.equals(document));
-
-       inf.writeDocument(System.out, formatType, document);
-
+        ns.register("ex","http://www.w3. org/ns/prov#");
+        document.setNamespace(ns);
+        return document;
     }
 }

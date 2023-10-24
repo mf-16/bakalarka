@@ -36,4 +36,9 @@ public class ProvValueNotInEntity implements TestCase {
         var formatType = inf.getTypeForFormat(format);
         inf.writeDocument(System.out, formatType, document);
     }
+
+    @Override
+    public Document createDocument() {
+        return null;
+    }
 }

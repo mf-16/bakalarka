@@ -14,6 +14,7 @@ import java.io.OutputStream;
 public interface TestCase {
     void serialize(String format);
     void deserialize(String format);
+    Document createDocument();
 
     default void writeDocument(String format, Document document, String filename){
         var inf = new InteropFramework();

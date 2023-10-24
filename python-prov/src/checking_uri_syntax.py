@@ -12,7 +12,7 @@ def serialize(format):
 
 def deserialize(format):
     document = ProvDocument()
-    document = document.deserialize(fr"data\checking_uri_syntax.{format}",format=format)
+    document = document.deserialize(fr"..\data\checking_uri_syntax.{format}",format=format)
     document.serialize(sys.stdout, format=format, indent=2)
 
     document2 = ProvDocument()

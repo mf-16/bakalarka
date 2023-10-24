@@ -4,6 +4,7 @@ import org.apache.commons.collections4.collection.TransformedCollection;
 import org.openprovenance.prov.interop.InteropFramework;
 import org.openprovenance.prov.model.*;
 import org.openprovenance.prov.vanilla.ProvFactory;
+import org.openprovenance.prov.vanilla.Document;
 
 import java.util.ArrayList;
 
@@ -11,11 +12,29 @@ import java.util.ArrayList;
 public class NonsenseProvRecords implements TestCase {
 
     public void serialize(String format) {
+        var document = createDocument();
+
+        writeDocument(format,document,"nonsense_prov_records");
+    }
+
+    public void deserialize(String format) {
+        var inf = new InteropFramework();
+        var document = inf.readDocumentFromFile(String.format("data/nonsense_prov_records.%s", format));
+
+        var expectedDocument = createDocument();
+        System.out.println(document.equals(expectedDocument));
+
+        var formatType = inf.getTypeForFormat(format);
+        inf.writeDocument(System.out, formatType, document);
+    }
+
+    @Override
+    public Document createDocument() {
         var factory = new ProvFactory();
-        var document = new org.openprovenance.prov.vanilla.Document();
+        var document = new Document();
         var ns = new Namespace();
         ns.addKnownNamespaces();
-        ns.register("ex","https://example.org");
+        ns.register("ex","https://example.org/");
         var e = ns.qualifiedName("ex","e",factory);
         var c = ns.qualifiedName("ex","c",factory);
         var provqn = ns.qualifiedName("prov","QUALIFIED_NAME",factory);
@@ -39,12 +58,8 @@ public class NonsenseProvRecords implements TestCase {
         SpecializationOf specializationOf = factory.newSpecializationOf(e,ac);
         Entity collection = factory.newEntity(c);
         collection.getType().add(factory.newType("prov:Collection",provqn));
-        factory.newHadMember(c,ag);
-        factory.newHadMember(c,ac);
-
-
-
-
+        var hm = factory.newHadMember(c,ag);
+        var hm2 = factory.newHadMember(c,ac);
 
         document.getStatementOrBundle().add(entity);
         document.getStatementOrBundle().add(activity);
@@ -63,16 +78,11 @@ public class NonsenseProvRecords implements TestCase {
         document.getStatementOrBundle().add(alternateOf);
         document.getStatementOrBundle().add(specializationOf);
         document.getStatementOrBundle().add(collection);
+        document.getStatementOrBundle().add(hm);
+        document.getStatementOrBundle().add(hm2);
+
 
         document.setNamespace(ns);
-
-        writeDocument(format,document,"nonsense_prov_records");
-    }
-
-    public void deserialize(String format) {
-        var inf = new InteropFramework();
-        Document document = inf.readDocumentFromFile(String.format("data/nonsense_prov_records.%s", format));
-        var formatType = inf.getTypeForFormat(format);
-        inf.writeDocument(System.out, formatType, document);
+        return document;
     }
 }

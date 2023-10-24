@@ -11,7 +11,7 @@ def serialize(format):
     e = document.entity("ex:e")
     ac = document.activity("ex:ac")
     ag = document.agent("ex:ag")
-    document.wasGeneratedBy(ac,e)
+    document.wasGeneratedBy(ag,e)
     document.usage(ag,ac)
     document.wasInformedBy(e,e)
     document.wasStartedBy(e,ag,ac)

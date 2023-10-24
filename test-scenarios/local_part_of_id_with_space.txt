@@ -3,7 +3,9 @@ This test verifies whether the libraries correctly identifies and rejects identi
 
 INPUT:
 document
-  entity(prov:a b c)
+  prefix ex <https://example.org/>
+
+  entity(ex:a b c)
 endDocument
 
 EXPECTED RESULT:

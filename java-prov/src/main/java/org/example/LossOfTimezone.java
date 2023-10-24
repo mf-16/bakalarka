@@ -14,12 +14,30 @@ import java.util.ArrayList;
 public class LossOfTimezone implements TestCase {
 
     public void serialize(String format) {
+        var document = createDocument();
+
+        writeDocument(format,document,"loss_of_timezone");
+    }
+
+    public void deserialize(String format) {
+        var inf = new InteropFramework();
+        var document = inf.readDocumentFromFile(String.format("data/loss_of_timezone.%s", format));
+
+        var expectedDocument = createDocument();
+        System.out.println(document.equals(expectedDocument));
+
+        var formatType = inf.getTypeForFormat(format);
+        inf.writeDocument(System.out, formatType, document);
+    }
+
+    @Override
+    public Document createDocument() {
         var factory = new ProvFactory();
         var document = new Document();
         var ns = new Namespace();
         ns.addKnownNamespaces();
-        ns.register("ex", "https://example.org");
-        var eqn = ns.qualifiedName("ex", "a", factory);
+        ns.register("ex", "https://example.org/");
+        var a = ns.qualifiedName("ex", "a", factory);
 
 
         XMLGregorianCalendar firstXmlGregorianCalendar = null;
@@ -32,17 +50,9 @@ public class LossOfTimezone implements TestCase {
             e.printStackTrace();
         }
 
-        var activity = factory.newActivity(eqn, firstXmlGregorianCalendar, secondXmlGregorianCalendar1, new ArrayList<>());
+        var activity = factory.newActivity(a, firstXmlGregorianCalendar, secondXmlGregorianCalendar1, new ArrayList<>());
         document.getStatementOrBundle().add(activity);
         document.setNamespace(ns);
-
-        writeDocument(format,document,"loss_of_timezone");
-    }
-
-    public void deserialize(String format) {
-        var inf = new InteropFramework();
-        var document = inf.readDocumentFromFile(String.format("data/loss_of_timezone.%s", format));
-        var formatType = inf.getTypeForFormat(format);
-        inf.writeDocument(System.out, formatType, document);
+        return document;
     }
 }

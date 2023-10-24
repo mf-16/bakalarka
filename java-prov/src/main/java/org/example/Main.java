@@ -59,10 +59,10 @@ public class Main {
 //        } catch (IOException e) {
 //            e.printStackTrace();
 //        }
-        args = new String[3];
-        args[0] = "checking_uri_syntax";
-        args[1] = "json";
-        args[2] = "d";
+//        args = new String[3];
+//        args[0] = "nonsense_prov_records";
+//        args[1] = "provn";
+//        args[2] = "d";
 //        var hm = new HashMap<String,TestCase>();
 //        hm.put("checking_uri_syntax",new CheckingUriSyntax());
 //        hm.put("loss_of_microseconds",new LossOfMicroseconds());
@@ -83,14 +83,12 @@ public class Main {
 //            hm.get(args[0]).deserialize(args[1]);
 //        }
         var config = loadConfig();
-        var cus = config.getAsJsonObject(args[0]);
-        var javaClass = cus.get("java_class").getAsString();
-        System.out.println("Current working directory: " + System.getProperty("user.dir"));
+        var key = config.getAsJsonObject(args[0]);
+        var javaClass = key.get("java_class").getAsString();
 
         try {
             Class<?> clazz = Class.forName(javaClass);
             Object instance = clazz.getDeclaredConstructor().newInstance();
-            // Assuming there is a 'deserialize' method in the Java class
             Method method = null;
             if ("s".equals(args[2])){
                  method = clazz.getMethod("serialize",String.class);
@@ -100,11 +98,12 @@ public class Main {
             }
             method.invoke(instance,args[1]);
         } catch (Exception e) {
+            e.printStackTrace();
             System.err.println("Error running Java class: " + e.getMessage());
         }
     }
     private static JsonObject loadConfig() {
-        try (FileReader reader = new FileReader("C:\\Users\\forma\\bakalarka\\config.json")) {
+        try (FileReader reader = new FileReader("../config.json")) {
             return JsonParser.parseReader(reader).getAsJsonObject();
         } catch (IOException e) {
             System.err.println("Error loading the configuration file: " + e.getMessage());
