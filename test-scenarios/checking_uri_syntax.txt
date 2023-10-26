@@ -5,7 +5,8 @@ This test checks if library is validating the URI when creating namespaces. The 
 INPUT:
 document
   prefix ex <http://www.w3. org/ns/prov#>
-  
+
+  entity(ex:e)
 endDocument
 
 
