@@ -17,16 +17,34 @@ import java.util.ArrayList;
 public class TopInstanceNamespaceBundle implements TestCase {
 
     public void serialize(String format) {
+
+        var document = createDocument();
+
+        writeDocument(format,document,"top_instance_namespace_bundle");
+    }
+
+    public void deserialize(String format) {
+        var inf = new InteropFramework();
+        var document = inf.readDocumentFromFile(String.format("data/top_instance_namespace_bundle.%s", format));
+
+        var expectedDocument = createDocument();
+        System.out.println(document.equals(expectedDocument));
+
+        var formatType = inf.getTypeForFormat(format);
+        inf.writeDocument(System.out, formatType, document);
+    }
+
+    @Override
+    public Document createDocument() {
         ProvFactory factory = new ProvFactory();
         var document = new org.openprovenance.prov.vanilla.Document();
         var ns = new Namespace();
         ns.addKnownNamespaces();
-        ns.registerDefault("https://example.com");
-        ns.register("ex","https://example.org");
+        ns.register("ex","https://example.org/");
         var ns2 = new Namespace();
         ns2.addKnownNamespaces();
         var e = ns.qualifiedName("ex","e",factory);
-        var e2 = ns2.qualifiedName(null,"e2",factory);
+        var e2 = ns2.qualifiedName("ex","e2",factory);
         var a = ns.qualifiedName("ex","a",factory);
         Entity entity = factory.newEntity(e);
         Entity entity2 = factory.newEntity(e2);
@@ -35,26 +53,11 @@ public class TopInstanceNamespaceBundle implements TestCase {
         document.getStatementOrBundle().add(activity);
         document.setNamespace(ns);
         // BUNDLE
-        var b = ns.qualifiedName(null,"b",factory);
+        var b = ns.qualifiedName("ex","b",factory);
         var bundle = factory.newNamedBundle(b,new ArrayList<>());
         bundle.getStatement().add(entity2);
         bundle.setNamespace(ns2);
         document.getStatementOrBundle().add(bundle);
-
-
-
-        writeDocument(format,document,"top_instance_namespace_bundle");
-    }
-
-    public void deserialize(String format) {
-        var inf = new InteropFramework();
-        var document = inf.readDocumentFromFile(String.format("data/top_instance_namespace_bundle.%s", format));
-        var formatType = inf.getTypeForFormat(format);
-        inf.writeDocument(System.out, formatType, document);
-    }
-
-    @Override
-    public Document createDocument() {
-        return null;
+        return document;
     }
 }

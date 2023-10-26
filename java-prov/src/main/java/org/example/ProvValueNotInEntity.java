@@ -14,18 +14,7 @@ import java.util.ArrayList;
 public class ProvValueNotInEntity implements TestCase {
 
     public void serialize(String format) {
-        var factory = new ProvFactory();
-        var document = new Document();
-        var ns = new Namespace();
-        ns.addKnownNamespaces();
-        ns.register("ex","https://example.org");
-        var a = ns.qualifiedName("ex","ac",factory);
-        var attributes = new ArrayList<Attribute>();
-        Attribute at = factory.newValue(1);
-        attributes.add(at);
-        Activity activity = factory.newActivity(a,null,null,attributes);
-        document.getStatementOrBundle().add(activity);
-        document.setNamespace(ns);
+        var document = createDocument();
 
         writeDocument(format,document,"prov_value_not_in_entity");
     }
@@ -33,12 +22,28 @@ public class ProvValueNotInEntity implements TestCase {
     public void deserialize(String format) {
         var inf = new InteropFramework();
         var document = inf.readDocumentFromFile(String.format("data/prov_value_not_in_entity.%s", format));
+
+        var expectedDocument = createDocument();
+        System.out.println(document.equals(expectedDocument));
+
         var formatType = inf.getTypeForFormat(format);
         inf.writeDocument(System.out, formatType, document);
     }
 
     @Override
     public Document createDocument() {
-        return null;
+        var factory = new ProvFactory();
+        var document = new Document();
+        var ns = new Namespace();
+        ns.addKnownNamespaces();
+        ns.register("ex","https://example.org/");
+        var a = ns.qualifiedName("ex","ac",factory);
+        var attributes = new ArrayList<Attribute>();
+        Attribute at = factory.newValue(1);
+        attributes.add(at);
+        Activity activity = factory.newActivity(a,null,null,attributes);
+        document.getStatementOrBundle().add(activity);
+        document.setNamespace(ns);
+        return document;
     }
 }
