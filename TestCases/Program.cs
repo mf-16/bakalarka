@@ -71,7 +71,7 @@ class Program
         Directory.SetCurrentDirectory($"C:\\Users\\{Environment.UserName}\\bakalarka\\java-prov");
         Process javaProcess = new Process();
         javaProcess.StartInfo.FileName = "java";
-        javaProcess.StartInfo.Arguments = $"-jar target\\test-1.0-SNAPSHOT-shaded.jar {testScenario} {format} {technique}";
+        javaProcess.StartInfo.Arguments = $"-jar target\\test-1.0-SNAPSHOT.jar {testScenario} {format} {technique}";
         javaProcess.StartInfo.RedirectStandardOutput = true;
         javaProcess.StartInfo.RedirectStandardError= true;
         javaProcess.StartInfo.UseShellExecute = false;
