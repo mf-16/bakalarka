@@ -60,7 +60,7 @@ public class Main {
 //            e.printStackTrace();
 //        }
 //        args = new String[3];
-//        args[0] = "nonsense_prov_records";
+//        args[0] = "test_test_case";
 //        args[1] = "provn";
 //        args[2] = "d";
 //        var hm = new HashMap<String,TestCase>();

@@ -54,9 +54,8 @@ public class TopInstanceNamespaceBundle implements TestCase {
         document.setNamespace(ns);
         // BUNDLE
         var b = ns.qualifiedName("ex","b",factory);
-        var bundle = factory.newNamedBundle(b,new ArrayList<>());
+        var bundle = factory.newNamedBundle(b,ns2,new ArrayList<>());
         bundle.getStatement().add(entity2);
-        bundle.setNamespace(ns2);
         document.getStatementOrBundle().add(bundle);
         return document;
     }

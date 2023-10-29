@@ -46,5 +46,9 @@
   "top_instance_namespace_bundle": {
     "python_module": "top_instance_namespace_bundle",
     "java_class": "org.example.TopInstanceNamespaceBundle"
+  },
+  "test_test_case": {
+    "python_module": "test_test_case",
+    "java_class": "org.example.TestTestCase"
   }
 }

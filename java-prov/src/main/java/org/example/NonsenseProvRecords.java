@@ -37,6 +37,7 @@ public class NonsenseProvRecords implements TestCase {
         ns.register("ex","https://example.org/");
         var e = ns.qualifiedName("ex","e",factory);
         var c = ns.qualifiedName("ex","c",factory);
+        var colqn = ns.qualifiedName("prov","Collection",factory);
         var provqn = ns.qualifiedName("prov","QUALIFIED_NAME",factory);
         var ac = ns.qualifiedName("ex","ac",factory);
         var ag = ns.qualifiedName("ex","ag",factory);
@@ -57,7 +58,7 @@ public class NonsenseProvRecords implements TestCase {
         AlternateOf alternateOf = factory.newAlternateOf(ag, ac);
         SpecializationOf specializationOf = factory.newSpecializationOf(e,ac);
         Entity collection = factory.newEntity(c);
-        collection.getType().add(factory.newType("prov:Collection",provqn));
+        collection.getType().add(factory.newType(colqn,provqn));
         var hm = factory.newHadMember(c,ag);
         var hm2 = factory.newHadMember(c,ac);
 

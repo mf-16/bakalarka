@@ -3,8 +3,16 @@ import json
 import os
 import sys
 
+from prov.model import ProvDocument
 
 if __name__ == "__main__":
+    document = ProvDocument()
+    document.add_namespace("ex", "https://example.org/")
+    document.add_namespace("prov", "http://www.w3.org/ns/prov#")
+    document.entity("ex:e", {"prov:value": 1})
+    document.entity("ex:e", {"prov:type": 2})
+
+    document.serialize("../data/temp2.xml",format="xml",indent=2)
     with open(r"..\..\config.json", 'r') as f:
         config = json.load(f)
     # sys.argv = [".\main.py","checking_uri_syntax","json","d"]
