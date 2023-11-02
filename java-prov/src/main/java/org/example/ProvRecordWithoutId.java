@@ -9,23 +9,10 @@ import org.openprovenance.prov.vanilla.Document;
 import org.openprovenance.prov.vanilla.ProvFactory;
 
 
-public class ProvRecordWithoutId implements TestCase {
+public class ProvRecordWithoutId extends TestCase {
 
-    public void serialize(String format) {
-        var document = createDocument();
-
-        writeDocument(format,document,"prov_record_without_id");
-    }
-
-    public void deserialize(String format) {
-        var inf = new InteropFramework();
-        var document = inf.readDocumentFromFile(String.format("data/prov_record_without_id.%s", format));
-
-        var expectedDocument = createDocument();
-        System.out.println(document.equals(expectedDocument));
-
-        var formatType = inf.getTypeForFormat(format);
-        inf.writeDocument(System.out, formatType, document);
+    public ProvRecordWithoutId(){
+        setFilename("prov_record_without_id");
     }
 
     @Override

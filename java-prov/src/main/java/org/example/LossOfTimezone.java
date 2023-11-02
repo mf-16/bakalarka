@@ -11,23 +11,10 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import java.util.ArrayList;
 
 
-public class LossOfTimezone implements TestCase {
+public class LossOfTimezone extends TestCase {
 
-    public void serialize(String format) {
-        var document = createDocument();
-
-        writeDocument(format,document,"loss_of_timezone");
-    }
-
-    public void deserialize(String format) {
-        var inf = new InteropFramework();
-        var document = inf.readDocumentFromFile(String.format("data/loss_of_timezone.%s", format));
-
-        var expectedDocument = createDocument();
-        System.out.println(document.equals(expectedDocument));
-
-        var formatType = inf.getTypeForFormat(format);
-        inf.writeDocument(System.out, formatType, document);
+    public LossOfTimezone(){
+        setFilename("loss_of_timezone");
     }
 
     @Override

@@ -60,7 +60,7 @@ public class Main {
 //            e.printStackTrace();
 //        }
 //        args = new String[3];
-//        args[0] = "test_test_case";
+//        args[0] = "default_namespace";
 //        args[1] = "provn";
 //        args[2] = "d";
 //        var hm = new HashMap<String,TestCase>();

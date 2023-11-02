@@ -9,23 +9,10 @@ import org.openprovenance.prov.vanilla.Document;
 import java.util.ArrayList;
 
 
-public class NonsenseProvRecords implements TestCase {
+public class NonsenseProvRecords extends TestCase {
 
-    public void serialize(String format) {
-        var document = createDocument();
-
-        writeDocument(format,document,"nonsense_prov_records");
-    }
-
-    public void deserialize(String format) {
-        var inf = new InteropFramework();
-        var document = inf.readDocumentFromFile(String.format("data/nonsense_prov_records.%s", format));
-
-        var expectedDocument = createDocument();
-        System.out.println(document.equals(expectedDocument));
-
-        var formatType = inf.getTypeForFormat(format);
-        inf.writeDocument(System.out, formatType, document);
+    public NonsenseProvRecords(){
+        setFilename("nonsense_prov_records");
     }
 
     @Override

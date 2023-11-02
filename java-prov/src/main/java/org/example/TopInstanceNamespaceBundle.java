@@ -14,24 +14,10 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 
 
-public class TopInstanceNamespaceBundle implements TestCase {
+public class TopInstanceNamespaceBundle extends TestCase {
 
-    public void serialize(String format) {
-
-        var document = createDocument();
-
-        writeDocument(format,document,"top_instance_namespace_bundle");
-    }
-
-    public void deserialize(String format) {
-        var inf = new InteropFramework();
-        var document = inf.readDocumentFromFile(String.format("data/top_instance_namespace_bundle.%s", format));
-
-        var expectedDocument = createDocument();
-        System.out.println(document.equals(expectedDocument));
-
-        var formatType = inf.getTypeForFormat(format);
-        inf.writeDocument(System.out, formatType, document);
+    public TopInstanceNamespaceBundle(){
+        setFilename("top_instance_namespace_bundle");
     }
 
     @Override

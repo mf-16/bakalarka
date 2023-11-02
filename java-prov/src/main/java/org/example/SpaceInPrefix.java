@@ -8,22 +8,10 @@ import org.openprovenance.prov.vanilla.Document;
 import org.openprovenance.prov.vanilla.ProvFactory;
 
 
-public class SpaceInPrefix implements TestCase {
-    public void serialize(String format) {
-        var document = createDocument();
+public class SpaceInPrefix extends TestCase {
 
-        writeDocument(format,document,"space_in_prefix");
-    }
-
-    public void deserialize(String format) {
-        var inf = new InteropFramework();
-        var document = inf.readDocumentFromFile(String.format("data/space_in_prefix.%s", format));
-
-        var expectedDocument = createDocument();
-        System.out.println(document.equals(expectedDocument));
-
-        var formatType = inf.getTypeForFormat(format);
-        inf.writeDocument(System.out, formatType, document);
+    public SpaceInPrefix(){
+        setFilename("space_in_prefix");
     }
 
     @Override

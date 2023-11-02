@@ -12,21 +12,9 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 
-public class EscapedCharacters implements TestCase {
-    public void serialize(String format) {
-        var document = createDocument();
-        writeDocument(format,document,"escaped_characters");
-    }
-
-    public void deserialize(String format) {
-        var inf = new InteropFramework();
-        var document = inf.readDocumentFromFile(String.format("data/escaped_characters.%s", format));
-
-        var expectedDocument = createDocument();
-        System.out.println(document.equals(expectedDocument));
-
-        var formatType = inf.getTypeForFormat(format);
-        inf.writeDocument(System.out, formatType, document);
+public class EscapedCharacters extends TestCase {
+    public EscapedCharacters(){
+        setFilename("escaped_characters");
     }
 
     @Override

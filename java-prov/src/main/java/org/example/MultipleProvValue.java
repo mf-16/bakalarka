@@ -11,23 +11,10 @@ import org.openprovenance.prov.vanilla.ProvFactory;
 import java.util.ArrayList;
 
 
-public class MultipleProvValue implements TestCase {
+public class MultipleProvValue extends TestCase {
 
-    public void serialize(String format) {
-        var document = createDocument();
-
-        writeDocument(format,document,"multiple_prov_value");
-    }
-
-    public void deserialize(String format) {
-        var inf = new InteropFramework();
-        var document = inf.readDocumentFromFile(String.format("data/multiple_prov_value.%s", format));
-
-        var expectedDocument = createDocument();
-        System.out.println(document.equals(expectedDocument));
-
-        var formatType = inf.getTypeForFormat(format);
-        inf.writeDocument(System.out, formatType, document);
+    public MultipleProvValue(){
+        setFilename("multiple_prov_value");
     }
 
     @Override

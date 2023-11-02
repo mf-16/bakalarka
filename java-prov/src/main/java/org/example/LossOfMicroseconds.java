@@ -12,22 +12,9 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import java.util.ArrayList;
 
 
-public class LossOfMicroseconds implements TestCase {
-
-    public void serialize(String format) {
-        var document = createDocument();
-        writeDocument(format,document,"loss_of_microseconds");
-    }
-
-    public void deserialize(String format) {
-        var inf = new InteropFramework();
-        var document = inf.readDocumentFromFile(String.format("data/loss_of_microseconds.%s", format));
-
-        var expectedDocument = createDocument();
-        System.out.println(document.equals(expectedDocument));
-
-        var formatType = inf.getTypeForFormat(format);
-        inf.writeDocument(System.out, formatType, document);
+public class LossOfMicroseconds extends TestCase {
+    public LossOfMicroseconds(){
+        setFilename("loss_of_microseconds");
     }
 
     @Override

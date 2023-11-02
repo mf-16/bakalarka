@@ -11,12 +11,25 @@ import java.io.OutputStream;
 /**
  * @author Matus Formanek
  */
-public interface TestCase {
-    void serialize(String format);
-    void deserialize(String format);
-    Document createDocument();
+public abstract class TestCase {
+    private String filename;
+    public void serialize(String format){
+        var document = createDocument();
 
-    default void writeDocument(String format, Document document, String filename){
+        writeDocument(format,document,filename);
+    }
+    public void deserialize(String format){
+        var inf = new InteropFramework();
+        var document = inf.readDocumentFromFile(String.format("data/%s.%s", filename, format));
+
+        var expectedDocument = createDocument();
+        System.out.println(document.equals(expectedDocument));
+
+        var formatType = inf.getTypeForFormat(format);
+        inf.writeDocument(System.out, formatType, document);
+    }
+
+    public void writeDocument(String format, Document document, String filename){
         var inf = new InteropFramework();
         var formatType = inf.getTypeForFormat(format);
 
@@ -29,5 +42,13 @@ public interface TestCase {
             e.printStackTrace();
         }
     }
+    abstract Document createDocument();
 
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
+    }
 }

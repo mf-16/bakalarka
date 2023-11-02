@@ -12,21 +12,10 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 
-public class CheckingUriSyntax implements TestCase {
-    public void serialize(String format){
-        var document = createDocument();
+public class CheckingUriSyntax extends TestCase {
 
-        writeDocument(format,document,"checking_uri_syntax");
-    }
-    public void deserialize(String format) {
-       var inf = new InteropFramework();
-       var document = inf.readDocumentFromFile(String.format("data/checking_uri_syntax.%s",format));
-       var formatType = inf.getTypeForFormat(format);
-
-        var expectedDocument = createDocument();
-        System.out.println(document.equals(expectedDocument));
-        inf.writeDocument(System.out, formatType, document);
-
+    public CheckingUriSyntax(){
+        setFilename("checking_uri_syntax");
     }
     public Document createDocument(){
         var factory = new ProvFactory();

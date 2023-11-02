@@ -12,22 +12,10 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 
-public class DefaultNamespace implements TestCase {
+public class DefaultNamespace extends TestCase {
 
-    public void serialize(String format) {
-        var document = createDocument();
-        writeDocument(format,document,"default_namespace");
-    }
-
-    public void deserialize(String format) {
-        var inf = new InteropFramework();
-        var document = inf.readDocumentFromFile(String.format("data/default_namespace.%s", format));
-
-        var expectedDocument = createDocument();
-        System.out.println(document.equals(expectedDocument));
-
-        var formatType = inf.getTypeForFormat(format);
-        inf.writeDocument(System.out, formatType, document);
+    public DefaultNamespace(){
+        setFilename("default_namespace");
     }
 
     @Override
@@ -37,7 +25,7 @@ public class DefaultNamespace implements TestCase {
         var ns = new Namespace();
         ns.addKnownNamespaces();
         ns.registerDefault("https://default.org/");
-        ns.register("ex","https://example.org");
+        ns.register("ex","https://example.org/");
         var e = ns.qualifiedName("ex","e",factory);
         Entity entity = factory.newEntity(e);
         document.getStatementOrBundle().add(entity);

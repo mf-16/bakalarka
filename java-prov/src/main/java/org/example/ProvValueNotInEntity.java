@@ -11,23 +11,10 @@ import org.openprovenance.prov.vanilla.ProvFactory;
 import java.util.ArrayList;
 
 
-public class ProvValueNotInEntity implements TestCase {
+public class ProvValueNotInEntity extends TestCase {
 
-    public void serialize(String format) {
-        var document = createDocument();
-
-        writeDocument(format,document,"prov_value_not_in_entity");
-    }
-
-    public void deserialize(String format) {
-        var inf = new InteropFramework();
-        var document = inf.readDocumentFromFile(String.format("data/prov_value_not_in_entity.%s", format));
-
-        var expectedDocument = createDocument();
-        System.out.println(document.equals(expectedDocument));
-
-        var formatType = inf.getTypeForFormat(format);
-        inf.writeDocument(System.out, formatType, document);
+    public ProvValueNotInEntity(){
+        setFilename("prov_value_not_in_entity");
     }
 
     @Override
