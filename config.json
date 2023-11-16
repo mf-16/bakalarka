@@ -1,6 +1,6 @@
 {
   "checking_uri_syntax": {
-    "python_module": "checking_uri_syntax",
+    "python_module": "CheckingUriSyntax",
     "java_class": "org.example.CheckingUriSyntax"
   },
   "loss_of_microseconds": {
