@@ -1,54 +1,15 @@
 {
-  "checking_uri_syntax": {
-    "python_module": "CheckingUriSyntax",
-    "java_class": "org.example.CheckingUriSyntax"
-  },
-  "loss_of_microseconds": {
-    "python_module": "loss_of_microseconds",
-    "java_class": "org.example.LossOfMicroseconds"
-  },
-  "local_part_of_id_with_space": {
-    "python_module": "local_part_of_id_with_space",
-    "java_class": "org.example.LocalPartOfIdWithSpace"
-  },
-  "nonsense_prov_records": {
-    "python_module": "nonsense_prov_records",
-    "java_class": "org.example.NonsenseProvRecords"
-  },
-  "default_namespace": {
-    "python_module": "default_namespace",
-    "java_class": "org.example.DefaultNamespace"
-  },
-  "prov_record_without_id": {
-    "python_module": "prov_record_without_id",
-    "java_class": "org.example.ProvRecordWithoutId"
-  },
-  "multiple_prov_value": {
-    "python_module": "multiple_prov_value",
-    "java_class": "org.example.MultipleProvValue"
-  },
-  "escaped_characters": {
-    "python_module": "escaped_characters",
-    "java_class": "org.example.EscapedCharacters"
-  },
-  "loss_of_timezone": {
-    "python_module": "loss_of_timezone",
-    "java_class": "org.example.LossOfTimezone"
-  },
-  "prov_value_not_in_entity": {
-    "python_module": "prov_value_not_in_entity",
-    "java_class": "org.example.ProvValueNotInEntity"
-  },
-  "space_in_prefix": {
-    "python_module": "space_in_prefix",
-    "java_class": "org.example.SpaceInPrefix"
-  },
-  "top_instance_namespace_bundle": {
-    "python_module": "top_instance_namespace_bundle",
-    "java_class": "org.example.TopInstanceNamespaceBundle"
-  },
-  "test_test_case": {
-    "python_module": "test_test_case",
-    "java_class": "org.example.TestTestCase"
-  }
+  "checking_uri_syntax": "CheckingUriSyntax",
+  "loss_of_microseconds": "LossOfMicroseconds",
+  "local_part_of_id_with_space": "LocalPartOfIdWithSpace",
+  "nonsense_prov_records": "NonsenseProvRecords",
+  "default_namespace": "DefaultNamespace",
+  "prov_record_without_id": "ProvRecordWithoutId",
+  "multiple_prov_value": "MultipleProvValue",
+  "escaped_characters": "EscapedCharacters",
+  "loss_of_timezone": "LossOfTimezone",
+  "prov_value_not_in_entity": "ProvValueNotInEntity",
+  "space_in_prefix": "SpaceInPrefix",
+  "top_instance_namespace_bundle": "TopInstanceNamespaceBundle",
+  "test_test_case": "TestTestCase"
 }
