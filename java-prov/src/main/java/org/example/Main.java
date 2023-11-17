@@ -60,8 +60,8 @@ public class Main {
 //            e.printStackTrace();
 //        }
 //        args = new String[3];
-//        args[0] = "default_namespace";
-//        args[1] = "provn";
+//        args[0] = "implicit_existence_of_prov_namespace";
+//        args[1] = "json";
 //        args[2] = "d";
 //        var hm = new HashMap<String,TestCase>();
 //        hm.put("checking_uri_syntax",new CheckingUriSyntax());
@@ -83,8 +83,7 @@ public class Main {
 //            hm.get(args[0]).deserialize(args[1]);
 //        }
         var config = loadConfig();
-        var key = config.getAsJsonObject(args[0]);
-        var javaClass = key.get("java_class").getAsString();
+        var javaClass = "org.example." + config.get(args[0]).getAsString();
 
         try {
             Class<?> clazz = Class.forName(javaClass);
