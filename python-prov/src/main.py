@@ -24,11 +24,11 @@ if __name__ == "__main__":
     # print(document.__eq__(document2.unified()))
     with open(r"..\..\config.json", 'r') as f:
         config = json.load(f)
-    sys.argv = [".\main.py","checking_uri_syntax","provn","s"]
+    sys.argv = [".\main.py","multiple_prov_value","json","d"]
     key = sys.argv[1]
     if key in config:
-        class_name = config[key]["python_module"]
-        module = importlib.import_module(f"src.{sys.argv[1]}")
+        class_name = config[key]
+        module = importlib.import_module(f"{key}")
         class_ = getattr(module, class_name)()
         try:
             class_ = getattr(module, class_name)()
@@ -37,7 +37,7 @@ if __name__ == "__main__":
             elif sys.argv[3] == "d":
                 class_.deserialize(sys.argv[2])
         except AttributeError:
-            print(f"Class {class_name} does not have serialize or deserialize method")
+            print(f"Class {class_name} does not have method serialize or deserialize")
     else:
         print(f"Key {key} not found in the configuration.")
 

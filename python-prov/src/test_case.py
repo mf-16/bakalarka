@@ -13,8 +13,8 @@ class TestCase(ABC):
 
     def serialize(self, format_type):
         document = self.create_document()
-        document.serialize(fr"..\..\java-prov\data\{self.filename}.{format_type}", format={format_type}, indent=2)
-        document.serialize(sys.stdout, format={format_type}, indent=2)
+        document.serialize(fr"..\..\java-prov\data\{self.filename}.{format_type}", format=format_type, indent=2)
+        document.serialize(sys.stdout, format=format_type, indent=2)
 
     def deserialize(self, format_type):
         document = ProvDocument()
