@@ -45,7 +45,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>org.example.Main</mainClass>
+                            <mainClass>cz.muni.fi.bthesis.Main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -62,7 +62,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <mainClass>org.example.Main</mainClass> <!-- Replace with your main class -->
+                    <mainClass>cz.muni.fi.bthesis.Main</mainClass> <!-- Replace with your main class -->
                 </configuration>
             </plugin>
             <plugin>

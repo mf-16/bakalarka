@@ -1,4 +1,4 @@
-package org.example;
+package cz.muni.fi.bthesis;
 
 import org.openprovenance.prov.interop.InteropFramework;
 import org.openprovenance.prov.vanilla.Document;
@@ -13,12 +13,14 @@ import java.io.OutputStream;
  */
 public abstract class TestCase {
     private String filename;
-    public void serialize(String format){
+
+    public void serialize(String format) {
         var document = createDocument();
 
-        writeDocument(format,document,filename);
+        writeDocument(format, document, filename);
     }
-    public void deserialize(String format){
+
+    public void deserialize(String format) {
         var inf = new InteropFramework();
         var document = inf.readDocumentFromFile(String.format("data/%s.%s", filename, format));
 
@@ -29,11 +31,11 @@ public abstract class TestCase {
         inf.writeDocument(System.out, formatType, document);
     }
 
-    public void writeDocument(String format, Document document, String filename){
+    public void writeDocument(String format, Document document, String filename) {
         var inf = new InteropFramework();
         var formatType = inf.getTypeForFormat(format);
 
-        File file = new File(String.format("../python-prov/data/%s.%s", filename,format));
+        File file = new File(String.format("../python-prov/data/%s.%s", filename, format));
         try {
             OutputStream outputStream = new FileOutputStream(file);
             inf.writeDocument(outputStream, formatType, document);
@@ -42,6 +44,7 @@ public abstract class TestCase {
             e.printStackTrace();
         }
     }
+
     abstract Document createDocument();
 
     public String getFilename() {

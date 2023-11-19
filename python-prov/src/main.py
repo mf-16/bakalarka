@@ -24,7 +24,7 @@ if __name__ == "__main__":
     # print(document.__eq__(document2.unified()))
     with open(r"..\..\config.json", 'r') as f:
         config = json.load(f)
-    #sys.argv = [".\main.py","multiple_prov_value","json","d"]
+    sys.argv = [".\main.py","multiple_prov_value","xml","d"]
     key = sys.argv[1]
     if key in config:
         class_name = config[key]
@@ -36,8 +36,8 @@ if __name__ == "__main__":
                 class_.serialize(sys.argv[2])
             elif sys.argv[3] == "d":
                 class_.deserialize(sys.argv[2])
-        except AttributeError:
-            print(f"Class {class_name} does not have method serialize or deserialize")
+        except AttributeError as e:
+            raise e
     else:
         print(f"Key {key} not found in the configuration.")
 

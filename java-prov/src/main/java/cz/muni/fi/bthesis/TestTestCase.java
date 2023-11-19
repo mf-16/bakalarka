@@ -1,22 +1,16 @@
-package org.example;
+package cz.muni.fi.bthesis;
 
-import org.openprovenance.prov.interop.InteropFramework;
 import org.openprovenance.prov.model.Entity;
 import org.openprovenance.prov.model.HadMember;
 import org.openprovenance.prov.model.Namespace;
 import org.openprovenance.prov.vanilla.Document;
 import org.openprovenance.prov.vanilla.ProvFactory;
 
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
-import java.util.ArrayList;
-
 /**
  * @author Matus Formanek
  */
-public class TestTestCase extends TestCase{
-    public TestTestCase(){
+public class TestTestCase extends TestCase {
+    public TestTestCase() {
         setFilename("test_test_case");
     }
 
@@ -30,11 +24,11 @@ public class TestTestCase extends TestCase{
         var e = ns.qualifiedName("ex", "e", factory);
         var col_id = ns.qualifiedName("ex", "c", factory);
         var col_prefix = ns.qualifiedName("prov", "Collection", factory);
-        var provqn = ns.qualifiedName("prov","QUALIFIED_NAME",factory);
+        var provqn = ns.qualifiedName("prov", "QUALIFIED_NAME", factory);
         Entity collection = factory.newEntity(col_id);
         Entity entity = factory.newEntity(e);
-        collection.getType().add(factory.newType(col_prefix,provqn));
-        HadMember hadMember = factory.newHadMember(col_id,e);
+        collection.getType().add(factory.newType(col_prefix, provqn));
+        HadMember hadMember = factory.newHadMember(col_id, e);
         document.getStatementOrBundle().add(collection);
         document.getStatementOrBundle().add(entity);
         document.getStatementOrBundle().add(hadMember);

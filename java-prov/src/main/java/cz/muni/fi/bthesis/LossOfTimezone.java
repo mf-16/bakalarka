@@ -1,7 +1,5 @@
-package org.example;
+package cz.muni.fi.bthesis;
 
-import org.openprovenance.prov.interop.InteropFramework;
-import org.openprovenance.prov.model.Entity;
 import org.openprovenance.prov.model.Namespace;
 import org.openprovenance.prov.vanilla.Document;
 import org.openprovenance.prov.vanilla.ProvFactory;
@@ -12,9 +10,10 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import java.util.ArrayList;
 
 
-public class LossOfMicroseconds extends TestCase {
-    public LossOfMicroseconds(){
-        setFilename("loss_of_microseconds");
+public class LossOfTimezone extends TestCase {
+
+    public LossOfTimezone() {
+        setFilename("loss_of_timezone");
     }
 
     @Override
@@ -31,10 +30,10 @@ public class LossOfMicroseconds extends TestCase {
         XMLGregorianCalendar secondXmlGregorianCalendar1 = null;
         try {
             DatatypeFactory datatypeFactory = DatatypeFactory.newInstance();
-            firstXmlGregorianCalendar = datatypeFactory.newXMLGregorianCalendar("2023-09-08T14:12:45.10931231236545213876");
-            secondXmlGregorianCalendar1 = datatypeFactory.newXMLGregorianCalendar("2023-09-08T14:12:45.109321321312321432523");
-        } catch (DatatypeConfigurationException ex) {
-            ex.printStackTrace();
+            firstXmlGregorianCalendar = datatypeFactory.newXMLGregorianCalendar("2023-09-08T14:12:45.109-04:00");
+            secondXmlGregorianCalendar1 = datatypeFactory.newXMLGregorianCalendar("2023-09-08T14:12:45.109+04:00");
+        } catch (DatatypeConfigurationException e) {
+            e.printStackTrace();
         }
 
         var activity = factory.newActivity(a, firstXmlGregorianCalendar, secondXmlGregorianCalendar1, new ArrayList<>());

@@ -1,8 +1,7 @@
-package org.example;
+package cz.muni.fi.bthesis;
 
 import org.openprovenance.prov.interop.Formats;
 import org.openprovenance.prov.interop.InteropFramework;
-import org.openprovenance.prov.model.Attribute;
 import org.openprovenance.prov.model.Entity;
 import org.openprovenance.prov.model.Namespace;
 import org.openprovenance.prov.vanilla.ProvFactory;
@@ -19,11 +18,11 @@ public class JavaSerializationProblems {
         var document = new org.openprovenance.prov.vanilla.Document();
         var ns = new Namespace();
         ns.registerDefault("default");
-        ns.register("ex","https://example.org");
-        var eqn = ns.qualifiedName("ex","entity",factory);
+        ns.register("ex", "https://example.org");
+        var eqn = ns.qualifiedName("ex", "entity", factory);
         Entity entity = factory.newEntity(eqn);
-        var qn = ns.qualifiedName("xsd","string",factory);
-        entity.setValue(factory.newValue(1,qn));
+        var qn = ns.qualifiedName("xsd", "string", factory);
+        entity.setValue(factory.newValue(1, qn));
         document.getStatementOrBundle().add(entity);
         document.setNamespace(ns);
 

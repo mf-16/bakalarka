@@ -1,6 +1,5 @@
-package org.example;
+package cz.muni.fi.bthesis;
 
-import org.openprovenance.prov.interop.InteropFramework;
 import org.openprovenance.prov.model.Activity;
 import org.openprovenance.prov.model.Entity;
 import org.openprovenance.prov.model.Namespace;
@@ -11,7 +10,7 @@ import org.openprovenance.prov.vanilla.ProvFactory;
 
 public class ProvRecordWithoutId extends TestCase {
 
-    public ProvRecordWithoutId(){
+    public ProvRecordWithoutId() {
         setFilename("prov_record_without_id");
     }
 
@@ -21,12 +20,12 @@ public class ProvRecordWithoutId extends TestCase {
         var document = new Document();
         var ns = new Namespace();
         ns.addKnownNamespaces();
-        ns.register("ex","https://example.org/");
-        var e = ns.qualifiedName("ex","e",factory);
-        var a = ns.qualifiedName("ex","a",factory);
+        ns.register("ex", "https://example.org/");
+        var e = ns.qualifiedName("ex", "e", factory);
+        var a = ns.qualifiedName("ex", "a", factory);
         Entity entity = factory.newEntity(e);
         Activity activity = factory.newActivity(a);
-        WasGeneratedBy wasGeneratedBy = factory.newWasGeneratedBy(null,e,a);
+        WasGeneratedBy wasGeneratedBy = factory.newWasGeneratedBy(null, e, a);
         document.getStatementOrBundle().add(entity);
         document.getStatementOrBundle().add(activity);
         document.getStatementOrBundle().add(wasGeneratedBy);

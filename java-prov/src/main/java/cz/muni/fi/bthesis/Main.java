@@ -1,11 +1,11 @@
-package org.example;
+package cz.muni.fi.bthesis;
+
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import java.io.FileReader;
 import java.io.IOException;
 import java.lang.reflect.Method;
-
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 public class Main {
     public static void main(String[] args) {
@@ -83,24 +83,23 @@ public class Main {
 //            hm.get(args[0]).deserialize(args[1]);
 //        }
         var config = loadConfig();
-        var javaClass = "org.example." + config.get(args[0]).getAsString();
+        var javaClass = "cz.muni.fi.bthesis." + config.get(args[0]).getAsString();
 
         try {
             Class<?> clazz = Class.forName(javaClass);
             Object instance = clazz.getDeclaredConstructor().newInstance();
             Method method = null;
-            if ("s".equals(args[2])){
-                 method = clazz.getMethod("serialize",String.class);
+            if ("s".equals(args[2])) {
+                method = clazz.getMethod("serialize", String.class);
+            } else if ("d".equals(args[2])) {
+                method = clazz.getMethod("deserialize", String.class);
             }
-            else if ("d".equals(args[2])){
-                 method = clazz.getMethod("deserialize",String.class);
-            }
-            method.invoke(instance,args[1]);
+            method.invoke(instance, args[1]);
         } catch (Exception e) {
-            e.printStackTrace();
-            System.err.println("Error running Java class: " + e.getMessage());
+            throw new RuntimeException("Error running Java class", e);
         }
     }
+
     private static JsonObject loadConfig() {
         try (FileReader reader = new FileReader("../config.json")) {
             return JsonParser.parseReader(reader).getAsJsonObject();
