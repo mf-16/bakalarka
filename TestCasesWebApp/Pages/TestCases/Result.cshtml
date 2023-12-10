@@ -1,0 +1,27 @@
+﻿@page
+@model TestCasesWebApp.Pages.TestCases.ResultModel
+@{
+}
+<h1>RESULT PAGE</h1>
+
+<form method="post">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="textarea">
+                    <h4>Obsah Súboru 1</h4>
+                    <textarea readonly rows="10" class="form-control">@Model.TestCaseResult.SerializedDocument</textarea>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="textarea">
+                    <h4>Obsah Súboru 2</h4>
+                    <textarea readonly rows="10" class="form-control">@Model.TestCaseResult.DeserializedDocument</textarea>
+                </div>
+            </div>
+            <div class="col-md-12 text-center mt-3">
+                <button type="submit" class="btn btn-primary">Details</button>
+            </div>
+        </div>
+    </div>
+</form>

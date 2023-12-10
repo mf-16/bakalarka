@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace TestCases
 {
@@ -14,27 +15,53 @@ namespace TestCases
             { "java", new Tuple<string, string>("-jar target\\test-1.0-SNAPSHOT.jar",$"C:\\Users\\{Environment.UserName}\\bakalarka\\java-prov")}
         };
         public TestRunnerService() { }
-        public void RunProcess(string executable, string testScenario, string technique, string format)
+        public void RunProcess(TestCaseResult result, string executable, string testScenario, string technique, string format)
         {
-            
             Directory.SetCurrentDirectory(config[executable].Item2);
-            Process pythonProcess = new Process();
-            pythonProcess.StartInfo.FileName = executable;
-            pythonProcess.StartInfo.RedirectStandardOutput = true;
-            pythonProcess.StartInfo.RedirectStandardError = true;
-            pythonProcess.StartInfo.UseShellExecute = false;
-            pythonProcess.StartInfo.CreateNoWindow = true;
-            pythonProcess.StartInfo.Arguments = $"{config[executable].Item1} {testScenario} {format} {technique}";
+            Process process = new Process();
+            process.StartInfo.FileName = executable;
+            process.StartInfo.RedirectStandardOutput = true;
+            process.StartInfo.RedirectStandardError = true;
+            process.StartInfo.UseShellExecute = false;
+            process.StartInfo.CreateNoWindow = true;
+            process.StartInfo.Arguments = $"{config[executable].Item1} {testScenario} {format} {technique}";
 
-            pythonProcess.Start();
+            process.Start();
 
-            string output = pythonProcess.StandardOutput.ReadToEnd();
-            string errorOutput = pythonProcess.StandardError.ReadToEnd();
+            string output = process.StandardOutput.ReadToEnd();
+            string errorOutput = process.StandardError.ReadToEnd();
             Console.WriteLine($"{executable} output:");
             Console.WriteLine(output + errorOutput);
-            pythonProcess.WaitForExit();
-            pythonProcess.Close();
-            Console.ReadKey();
+            process.WaitForExit();
+            if (process.ExitCode != 0)
+            {
+                if (technique == "s")
+                {
+                    result.Exception = errorOutput;
+                }
+                else
+                {
+                    if (output != "")
+                    {
+                        result.Result = true;
+                    }
+                    result.Exception = errorOutput;
+                }
+            }
+            else
+            {
+                if (technique == "s")
+                {
+                    result.Result = true;
+                    result.SerializedDocument = output;
+                }
+                else
+                {
+                    result.Result = true;
+                    result.DeserializedDocument = output;
+                }
+            }
+            process.Close();
         }
     }
 }

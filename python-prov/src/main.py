@@ -24,7 +24,7 @@ if __name__ == "__main__":
     # print(document.__eq__(document2.unified()))
     with open(r"..\..\config.json", 'r') as f:
         config = json.load(f)
-    sys.argv = [".\main.py","multiple_prov_value","xml","d"]
+    #sys.argv = [".\main.py","multiple_prov_value","xml","d"]
     key = sys.argv[1]
     if key in config:
         class_name = config[key]

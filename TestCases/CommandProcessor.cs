@@ -13,24 +13,28 @@ namespace TestCases
         public CommandProcessor(TestRunnerService testRunner) {
             this.testRunner = testRunner;
         }
-        public void ParseInput(string input)
+        public TestCaseResult ProcessCommand(string input)
         {
             var args = input.Trim().Split(" ");
-            
+            TestCaseResult testCaseResult;
             var testCase = args[0];
             var format = args[1];
             var serialize = args[2];
             var deserialize = args[3];
+            string serOut = "";
+            string desOut = "";
             if (executables.Contains(serialize) && executables.Contains(deserialize))
             {
-                testRunner.RunProcess(serialize, testCase, "s", format);
-                testRunner.RunProcess(deserialize, testCase, "d", format);
+                testCaseResult = new TestCaseResult(testCase);
+                testRunner.RunProcess(testCaseResult, serialize, testCase, "s", format);
+                testRunner.RunProcess(testCaseResult, deserialize, testCase, "d", format);
             }
             else
             {
                 throw new Exception("invalid executable");
             }
 
+            return testCaseResult;
 
         }
 

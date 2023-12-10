@@ -18,7 +18,7 @@ class Program
             {   
                 Console.Write($">>> ");
                 input = Console.ReadLine();
-                parser.ParseInput(input);
+                parser.ProcessCommand(input);
 
 
             }
