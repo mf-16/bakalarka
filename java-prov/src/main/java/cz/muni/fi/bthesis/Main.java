@@ -60,7 +60,7 @@ public class Main {
 //            e.printStackTrace();
 //        }
 //        args = new String[3];
-//        args[0] = "implicit_existence_of_prov_namespace";
+//        args[0] = "multiple_prov_value";
 //        args[1] = "json";
 //        args[2] = "d";
 //        var hm = new HashMap<String,TestCase>();

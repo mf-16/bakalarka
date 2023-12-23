@@ -1,0 +1,55 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "PROV Interoperability Tester";
+}
+
+<div class="container text-center">
+    <h1>Welcome to the PROV Interoperability Tester!</h1>
+
+    <h2>Overview</h2>
+    <p>
+        Welcome to the PROV Interoperability Tester, a web application developed as part of my bachelor thesis. This platform
+        is dedicated to evaluating the compatibility between two of the most prominent libraries implementing the PROV standard.
+        The PROV (Provenance) standard, established to represent and interchange provenance information, plays a crucial role in
+        tracking the origins and transformations of digital entities.
+    </p>
+    <p>
+        In the landscape of PROV libraries, ProvToolbox and ProvPy stand out as two of the most comprehensive and widely-used
+        solutions. This tool focuses on meticulously testing the serialization and deserialization capabilities of these
+        libraries across three formats: PROVN, JSON, and XML.
+    </p>
+
+    <h2>How It Works</h2>
+    <div class="container">
+        <div class="row">
+            <div class="col-4">
+                <h4>Select a Test Case</h4>
+                <p>
+                    Choose a specific test case from the available options to evaluate the interoperability between the two
+                    PROV libraries. Each test case examines the serialization and deserialization processes in PROVN, JSON,
+                    and XML formats.
+                </p>
+            </div>
+            <div class="col-4">
+                <h4>Run the Test</h4>
+                <p>
+                    With a simple click, initiate the test and watch as the application executes the selected test case against
+                    the two libraries. The results will be displayed promptly, showcasing the serialized and deserialized
+                    documents.
+                </p>
+            </div>
+            <div class="col-4">
+                <h4>Interpret the Results</h4>
+                <p>
+                    If the test is successful, you'll see the serialized and deserialized documents for each format. In case of
+                    failure, a detailed exception message will be presented along with a brief description to help you understand
+                    the root cause of the issue.
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="mt-5">
+        <a asp-page="/TestCases/Index" class="btn btn-primary btn-lg">Explore Test Cases</a>
+    </div>
+</div>

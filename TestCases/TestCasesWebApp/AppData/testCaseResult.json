@@ -1,0 +1,1 @@
+{"Name":"default_namespace","Result":true,"SerializedDocument":"document\r\n  default <https://default.org/>\r\n  prefix ex <https://example.org/>\r\n  \r\n  entity(ex:e)\r\nendDocument","DeserializedDocument":"document\r\ndefault <https://default.org/>\r\nprefix ex <https://example.org/>\r\nentity(ex:e)\r\nendDocument","Exception":null,"Description":null}

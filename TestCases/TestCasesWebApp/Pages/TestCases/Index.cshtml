@@ -1,0 +1,35 @@
+﻿@page
+@model TestCasesWebApp.Pages.TestCases.IndexModel
+@{
+}
+
+<div class="container text-center">
+    <h1>Test Cases</h1>
+    <form method="post">
+        <div class="row mb-5">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Test Case:</label>
+                    <select class="form-control" asp-for="TestCase" asp-items="@Model.testCaseComboBox"></select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Format:</label>
+                    <select class="form-control" asp-for="Format" asp-items="@Model.formatComboBox"></select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Executable:</label>
+                    <select class="form-control" asp-for="Executable" asp-items="@Model.executableCombobox"></select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <button type="submit" class="btn btn-primary mx-auto">Run Test Case</button>
+            </div>
+        </div>
+    </form>
+</div>

@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33424.131
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestCases", "TestCases.csproj", "{55883EE9-3930-439C-8672-2CB1E6EABE98}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestCases", "TestCases\TestCases.csproj", "{55883EE9-3930-439C-8672-2CB1E6EABE98}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestCasesWebApp", "..\TestCasesWebApp\TestCasesWebApp.csproj", "{13F796F7-C0AF-475B-BC91-261740231E43}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestCasesWebApp", "TestCasesWebApp\TestCasesWebApp.csproj", "{13F796F7-C0AF-475B-BC91-261740231E43}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

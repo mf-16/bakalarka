@@ -26,7 +26,7 @@ public abstract class TestCase {
 
         var expectedDocument = createDocument();
         System.out.println(document.equals(expectedDocument));
-
+        System.out.println("----------");
         var formatType = inf.getTypeForFormat(format);
         inf.writeDocument(System.out, formatType, document);
     }

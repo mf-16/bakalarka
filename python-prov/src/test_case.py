@@ -22,5 +22,5 @@ class TestCase(ABC):
 
         expected_document = self.create_document()
         print(expected_document.__eq__(document))
-
+        print("----------")
         document.serialize(sys.stdout, format=format_type, indent=2)
