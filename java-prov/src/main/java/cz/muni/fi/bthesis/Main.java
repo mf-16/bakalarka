@@ -60,9 +60,9 @@ public class Main {
 //            e.printStackTrace();
 //        }
 //        args = new String[3];
-//        args[0] = "multiple_prov_value";
+//        args[0] = "default_namespace";
 //        args[1] = "json";
-//        args[2] = "d";
+//        args[2] = "s";
 //        var hm = new HashMap<String,TestCase>();
 //        hm.put("checking_uri_syntax",new CheckingUriSyntax());
 //        hm.put("loss_of_microseconds",new LossOfMicroseconds());

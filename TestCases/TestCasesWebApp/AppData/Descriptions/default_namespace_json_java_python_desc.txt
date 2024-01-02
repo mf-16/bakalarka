@@ -1,0 +1,19 @@
+Here we get KeyError: 'defaultNamespace' during the deserialization of the file in python.
+This is caused by interoperability between libraries, where ProvToolbox creates document which contains defaultNamespace key.
+This is not supported by PROV-JSON, which states that the default namespace should be defined like this:
+{
+    "prefix": {
+        "default": "http://example.org/default",
+        "ex": "http://example.org/"
+        ...
+    },
+    ...
+}
+
+When deserializing in fails in the def decode_json_container(jc, bundle): method.
+Which takes jc - json container and bundle - prov document which it creates.
+When going through the jc program iterates through every key and assigns type to it from PROV_RECORD_IDS_MAP map.
+This map contains all the valid keys defined by PROV-JSON.
+ When it gets to the defaultNamespace key it fails to KeyError: 'defaultNamespace' since this key is not defined by PROV-JSON.
+
+

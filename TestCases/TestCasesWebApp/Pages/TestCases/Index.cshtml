@@ -4,25 +4,30 @@
 }
 
 <div class="container text-center">
-    <h1>Test Cases</h1>
-    <form method="post">
+    <form method="post" class="mt-5">
         <div class="row mb-5">
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <div class="form-group">
                     <label>Test Case:</label>
                     <select class="form-control" asp-for="TestCase" asp-items="@Model.testCaseComboBox"></select>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-2">
                 <div class="form-group">
                     <label>Format:</label>
                     <select class="form-control" asp-for="Format" asp-items="@Model.formatComboBox"></select>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-2">
                 <div class="form-group">
-                    <label>Executable:</label>
-                    <select class="form-control" asp-for="Executable" asp-items="@Model.executableCombobox"></select>
+                    <label>Serialize in library:</label>
+                    <select id="serialize" class="form-control" asp-for="SerializeIn" asp-items="@Model.executableCombobox"></select>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label>Deserialize in library:</label>
+                    <input id="deserialize" class="form-control" asp-for="DeserializeIn" asp-items="@Model.executableCombobox" readonly />
                 </div>
             </div>
         </div>
@@ -33,3 +38,13 @@
         </div>
     </form>
 </div>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#serialize").change(function () {
+            var selectedValue = $(this).val();
+            console.log("Selected value: " + selectedValue);
+            $("#deserialize").val(selectedValue === "java" ? "python" : "java");
+        });
+    });
+</script>

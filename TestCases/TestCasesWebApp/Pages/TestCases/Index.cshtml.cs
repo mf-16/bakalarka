@@ -34,15 +34,18 @@ namespace TestCasesWebApp.Pages.TestCases
         }, "Value", "Text");
         public SelectList executableCombobox = new SelectList(new List<SelectListItem>
         {
-            new SelectListItem { Value = "java python", Text = "java-python" },
-            new SelectListItem { Value = "python java", Text = "python-java" }
+            new SelectListItem { Value = "java", Text = "java" },
+            new SelectListItem { Value = "python", Text = "python" }
         }, "Value", "Text");
         [BindProperty]
         public string? TestCase {  get; set; }
         [BindProperty]
         public string? Format { get; set; }
         [BindProperty]
-        public string? Executable {  get; set; }
+        public string? SerializeIn {  get; set; }
+        [BindProperty]
+        public string? DeserializeIn { get; set; }
+
         private TestRunnerService TestRunnerService { get; set; }
 
         private CommandProcessor CommandProcessor { get; set; }
@@ -55,11 +58,18 @@ namespace TestCasesWebApp.Pages.TestCases
 
         public void OnGet()
         {
+            SerializeIn = "java";
+            DeserializeIn = "python";
+
         }
         public IActionResult OnPost()
         {
-            string command = TestCase + " " + Format + " " + Executable;
+            string command = TestCase + " " + Format + " " + SerializeIn + " " + DeserializeIn;
             TestCaseResult testCaseResult = CommandProcessor.ProcessCommand(command);
+
+            string descFile = TestCase + "_" + Format + "_" + SerializeIn + "_" + DeserializeIn + "_desc.txt";
+            string descFilePath = Path.Combine("AppData", "Descriptions", descFile);
+            testCaseResult.Description = System.IO.File.ReadAllText(descFilePath);
 
             string testCaseResultJson = JsonConvert.SerializeObject(testCaseResult);
             string filePath = Path.Combine("AppData", "testCaseResult.json");
