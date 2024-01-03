@@ -1,5 +1,5 @@
-Here we get KeyError: 'defaultNamespace' during the deserialization of the file in python.
-This is caused by interoperability between libraries, where ProvToolbox creates document which contains defaultNamespace key.
+Here we get KeyError: 'defaultNamespace' exception, during the deserialization of the file in python.
+This is caused by interoperability between libraries, where ProvToolbox creates file which contains 'defaultNamespace' key.
 This is not supported by PROV-JSON, which states that the default namespace should be defined like this:
 {
     "prefix": {
@@ -10,10 +10,12 @@ This is not supported by PROV-JSON, which states that the default namespace shou
     ...
 }
 
-When deserializing in fails in the def decode_json_container(jc, bundle): method.
+When deserializing it fails in the def decode_json_container(jc, bundle): method.
 Which takes jc - json container and bundle - prov document which it creates.
 When going through the jc program iterates through every key and assigns type to it from PROV_RECORD_IDS_MAP map.
 This map contains all the valid keys defined by PROV-JSON.
- When it gets to the defaultNamespace key it fails to KeyError: 'defaultNamespace' since this key is not defined by PROV-JSON.
+When it gets to the defaultNamespace key it fails to KeyError: 'defaultNamespace' since this key is not defined by PROV-JSON.
 
-
+But, the mistake happens when ProvToolbox serializes the document. ProvToolbox uses jackson library https://github.com/FasterXML/jackson for JSON serialization. 
+In JSON_SortedDocument.java https://github.com/lucmoreau/ProvToolbox/blob/96dd235aba6072c6e7671929b57b61088b9f6a38/modules-core/prov-jsonld/src/main/java/org/openprovenance/prov/core/json/JSON_SortedDocument.java the defaultNamespace keyword was being serialized into the file (understanding this would require deeper knowledge in how jackson library works, so I am not going to explain it here).
+After reporting this issue to the author of ProvToolbox, in commit https://github.com/lucmoreau/ProvToolbox/commit/20a9edf219e84c383d28283bc199d9ac32903687, the issue was resolved by adding the getDefaultNamespace() method and adding @JsonIgnore annotation. This annotation is used in jackson ignore this element in the process of serialization and deserialization.
