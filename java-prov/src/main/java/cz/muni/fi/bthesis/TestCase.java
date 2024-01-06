@@ -7,6 +7,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * @author Matus Formanek
@@ -22,7 +24,9 @@ public abstract class TestCase {
 
     public void deserialize(String format) {
         var inf = new InteropFramework();
-        var document = inf.readDocumentFromFile(String.format("data/%s.%s", filename, format));
+
+        Path filePath = Paths.get("data", filename + "." + format);
+        var document = inf.readDocumentFromFile(filePath.toString());
 
         var expectedDocument = createDocument();
         System.out.println(document.equals(expectedDocument));
@@ -35,7 +39,8 @@ public abstract class TestCase {
         var inf = new InteropFramework();
         var formatType = inf.getTypeForFormat(format);
 
-        File file = new File(String.format("../python-prov/data/%s.%s", filename, format));
+        Path filePath = Paths.get("..", "python-prov", "data", filename + "." + format);
+        File file = filePath.toFile();
         try {
             OutputStream outputStream = new FileOutputStream(file);
             inf.writeDocument(outputStream, formatType, document);

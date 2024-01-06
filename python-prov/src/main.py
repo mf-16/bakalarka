@@ -22,7 +22,8 @@ if __name__ == "__main__":
     # document.serialize("../data/temp1.provn",format="provn",indent=2)
     # document2.serialize("../data/temp2.provn", format="provn", indent=2)
     # print(document.__eq__(document2.unified()))
-    with open(r"..\..\config.json", 'r') as f:
+    config_file_path = os.path.join('..', '..', 'config.json')
+    with open(config_file_path, 'r') as f:
         config = json.load(f)
     #sys.argv = [".\main.py","default_namespace","json","d"]
     key = sys.argv[1]

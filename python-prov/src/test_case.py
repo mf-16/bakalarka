@@ -1,3 +1,4 @@
+import os
 import sys
 from abc import ABC, abstractmethod
 
@@ -13,12 +14,14 @@ class TestCase(ABC):
 
     def serialize(self, format_type):
         document = self.create_document()
-        document.serialize(fr"..\..\java-prov\data\{self.filename}.{format_type}", format=format_type, indent=2)
+        file_path = os.path.join('..', '..', 'java-prov', 'data', f'{self.filename}.{format_type}')
+        document.serialize(file_path, format=format_type, indent=2)
         document.serialize(sys.stdout, format=format_type, indent=2)
 
     def deserialize(self, format_type):
         document = ProvDocument()
-        document = document.deserialize(fr"..\data\{self.filename}.{format_type}", format=format_type)
+        file_path = os.path.join('..', 'data', f'{self.filename}.{format_type}')
+        document = document.deserialize(file_path, format=format_type)
 
         expected_document = self.create_document()
         print(expected_document.__eq__(document))

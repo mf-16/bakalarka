@@ -3,9 +3,12 @@ package cz.muni.fi.bthesis;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class Main {
     public static void main(String[] args) {
@@ -59,10 +62,10 @@ public class Main {
 //        } catch (IOException e) {
 //            e.printStackTrace();
 //        }
-//        args = new String[3];
-//        args[0] = "default_namespace";
-//        args[1] = "json";
-//        args[2] = "s";
+        args = new String[3];
+        args[0] = "escaped_characters";
+        args[1] = "provn";
+        args[2] = "d";
 //        var hm = new HashMap<String,TestCase>();
 //        hm.put("checking_uri_syntax",new CheckingUriSyntax());
 //        hm.put("loss_of_microseconds",new LossOfMicroseconds());
@@ -101,7 +104,8 @@ public class Main {
     }
 
     private static JsonObject loadConfig() {
-        try (FileReader reader = new FileReader("../config.json")) {
+        Path configFilePath = Paths.get("..","config.json");
+        try (FileReader reader = new FileReader(configFilePath.toFile())) {
             return JsonParser.parseReader(reader).getAsJsonObject();
         } catch (IOException e) {
             System.err.println("Error loading the configuration file: " + e.getMessage());
