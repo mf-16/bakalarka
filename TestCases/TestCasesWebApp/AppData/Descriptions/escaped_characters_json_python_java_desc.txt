@@ -1,1 +1,6 @@
-﻿
+﻿Python serializes this document and when deserializing in Java escape characters are added.
+According to PROV-N https://www.w3.org/TR/prov-n/ all these characters should be escaped
+<PN_CHARS_ESC>	   ::=   	"\" ( "=" | "'" | "(" | ")" | "," | "-" | ":" | ";" | "[" | "]" | "." )
+But Java can handle unescaped characters as well, but will escape them in the process of deserialization.
+This is because when using jackson library there is a CustomKeyDeserializer which uses CustomQualifiedNameDeserializer which uses method public QualifiedName stringToQualifiedName(String id, ProvFactory pFactory, boolean isEscaped) with the isEscaped flag being false.
+This method escapes the local part of the qualified name if isEscaped is false.

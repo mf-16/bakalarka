@@ -13,7 +13,7 @@ namespace TestCases
     {
         private Dictionary<string, Tuple<string, string>> config = new Dictionary<string, Tuple<string, string>> {
             { "python",new Tuple<string, string>("main.py",Path.Combine("python-prov", "src"))},
-            { "java", new Tuple<string, string>("-jar target\\test-1.0-SNAPSHOT.jar", "java-prov")}
+            { "java", new Tuple<string, string>(Path.Combine("-jar target","test-1.0-SNAPSHOT.jar"), "java-prov")}
         };
         public TestRunnerService() { }
         private void ConfigureProcess(Process process, string executable, string testScenario, string technique, string format)

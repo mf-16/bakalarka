@@ -1,1 +1,5 @@
-﻿
+﻿Python serializes the object and when deserializing in Java it escapes all the characters.
+According to PROV-N https://www.w3.org/TR/prov-n/ all these characters should be escaped
+<PN_CHARS_ESC>	   ::=   	"\" ( "=" | "'" | "(" | ")" | "," | "-" | ":" | ";" | "[" | "]" | "." )
+When deserializing XML jackson library is used. While deserializing the entity CustomQualifiedNameDeserializer is used.
+Then public static QualifiedName unescapeQualifiedName(QualifiedName id) is applied to the Qualified name which escaped all characters.
