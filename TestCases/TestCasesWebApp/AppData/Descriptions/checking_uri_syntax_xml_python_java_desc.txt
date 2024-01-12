@@ -1,0 +1,7 @@
+﻿When serializing in Python, we get exception:
+ValueError: Invalid namespace URI 'http://www.w3. org/ns/prov#'
+
+This is because Pyhton is using the lxml library when working with xml. 
+And in def serialize_bundle(self, bundle, element=None, force_types=False): method when this line of code is executed:
+xml_bundle_root = etree.Element(_ns_prov("document"), nsmap=nsmap), where nsmap is a map of all prefixes and namespace URIs.
+When calling etree.Element() it throws the exception above.

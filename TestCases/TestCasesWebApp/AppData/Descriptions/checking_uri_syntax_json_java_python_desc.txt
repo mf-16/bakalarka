@@ -1,0 +1,1 @@
+﻿When serializing, Java allows URI to have a space. Python deserializes this without any issues.

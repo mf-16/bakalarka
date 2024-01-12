@@ -17,8 +17,8 @@ import java.nio.file.Paths;
 public class Main {
     public static void main(String[] args) {
         args = new String[3];
-        args[0] = "escaped_characters";
-        args[1] = "xml";
+        args[0] = "checking_uri_syntax";
+        args[1] = "provn";
         args[2] = "d";
         var config = loadConfig();
         var javaClass = "cz.muni.fi.bthesis." + config.get(args[0]).getAsString();

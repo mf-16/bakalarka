@@ -1,0 +1,6 @@
+﻿When serializing, Java allows URI to have a space. 
+
+But when deserializing this in Python, we get exception:
+lxml.etree.XMLSyntaxError: xmlns:ex: 'http://www.w3. org/ns/prov#' is not a valid URI, line 3, column 51
+
+Since Python is using the lxml library, it check whether the URI is valid or not when using the etree.parse() method in the def deserialize(self, stream, **kwargs): method in provxml module.
