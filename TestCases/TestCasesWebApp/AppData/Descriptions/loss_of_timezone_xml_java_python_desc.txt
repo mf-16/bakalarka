@@ -1,0 +1,4 @@
+Test Case: loss_of_timezone
+Format: xml
+Serialize In: java
+Deserialize In: python

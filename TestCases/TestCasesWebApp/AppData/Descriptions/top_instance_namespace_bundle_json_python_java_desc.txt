@@ -1,0 +1,4 @@
+Test Case: top_instance_namespace_bundle
+Format: json
+Serialize In: python
+Deserialize In: java

@@ -1,0 +1,4 @@
+Test Case: space_in_prefix
+Format: json
+Serialize In: python
+Deserialize In: java
