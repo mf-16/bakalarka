@@ -1,4 +1,6 @@
-Test Case: loss_of_microseconds
-Format: json
-Serialize In: java
-Deserialize In: python
+Java implements date times as XMLGregorianCalendar, which represents microseconds as BigDecimal.
+Java does not have problem with serializing high precision times because of CustomDateSerializer which basically does XMLGregorianCalendar.toString().
+
+Python uses dateutil.parser for parsing xsd datetimes. This parser converts microseconds like this int(f.ljust(6, "0")[:6]. This means that microseconds will always be 6 characters long.
+This is why we lose some precision in Python.
+

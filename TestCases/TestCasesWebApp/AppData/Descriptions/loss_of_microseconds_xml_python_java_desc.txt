@@ -1,4 +1,8 @@
-Test Case: loss_of_microseconds
-Format: xml
-Serialize In: python
-Deserialize In: java
+When creating the document in Python using
+document.activity("ex:a", "2023-09-08T14:12:45.10931231236545213876", "2023-09-08T14:12:45.109321321312321432523")
+This parses the time calling the def _ensure_datetime(value): method which uses dateutil.parser for parsing xsd datetimes.
+The dateutil.parser converts microseconds like this:
+int(f.ljust(6, "0")[:6]
+This means that microseconds will always be 6 characters long. Therefore, some precision is lost.
+
+Java uses jackson library for and deserialization which uses  method protected Date _parseAsISO8601(String dateStr, ParsePosition bogus); and this method cuts the microseconds to 3 decimal points.

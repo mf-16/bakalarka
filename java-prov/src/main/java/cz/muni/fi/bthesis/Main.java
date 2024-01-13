@@ -17,9 +17,9 @@ import java.nio.file.Paths;
 public class Main {
     public static void main(String[] args) {
         args = new String[3];
-        args[0] = "local_part_of_id_with_space";
-        args[1] = "provn";
-        args[2] = "d";
+        args[0] = "loss_of_microseconds";
+        args[1] = "json";
+        args[2] = "s";
         var config = loadConfig();
         var javaClass = "cz.muni.fi.bthesis." + config.get(args[0]).getAsString();
 

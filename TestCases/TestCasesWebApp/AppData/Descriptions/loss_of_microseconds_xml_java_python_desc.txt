@@ -1,4 +1,4 @@
-Test Case: loss_of_microseconds
-Format: xml
-Serialize In: java
-Deserialize In: python
+Java implements date times as XMLGregorianCalendar, which represents microseconds as BigDecimal.
+Java does not have problem with serializing high precision times because of CustomDateSerializer which basically does XMLGregorianCalendar.toString().
+
+Python deserialization does not work, more about this issue is in the implicit_existence_of_prov_namespace test case, with XML when serializing in java and deserializing in python.
