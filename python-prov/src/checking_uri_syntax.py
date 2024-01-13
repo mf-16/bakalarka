@@ -1,8 +1,4 @@
-import sys
-
-import prov.dot
 from prov.model import ProvDocument
-import prov.graph
 
 from test_case import TestCase
 
@@ -16,4 +12,3 @@ class CheckingUriSyntax(TestCase):
         document.add_namespace("ex", "http://www.w3. org/ns/prov#")
         document.entity("ex:e")
         return document
-

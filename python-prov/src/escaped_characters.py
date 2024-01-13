@@ -1,11 +1,3 @@
-import sys
-
-import prov.dot
-from prov.model import ProvDocument
-import prov.graph
-
-import checking_uri_syntax
-import provn_deserializer_not_implemented
 from prov.model import ProvDocument
 
 from test_case import TestCase

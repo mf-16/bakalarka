@@ -1,1 +1,6 @@
-﻿When serializing, Python allows URI to have a space. Java deserializes this without any issues.
+﻿Java serializes the document.
+
+PROVN deserialization in Python is not implemented yet. 
+As stated in https://pypi.org/project/prov/, "In-memory classes for PROV assertions, which can then be output as PROV-N", implicating that only PROV-N serialization is supported.
+It has been worked on but abandoned as you can see in this issue on libraries github https://github.com/trungdong/prov/issues/122.
+

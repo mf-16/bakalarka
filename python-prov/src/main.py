@@ -2,10 +2,6 @@ import importlib
 import json
 import os
 import sys
-import checking_uri_syntax
-from prov.model import ProvDocument
-
-from test_case import TestCase
 
 if __name__ == "__main__":
     # document = ProvDocument()
@@ -25,7 +21,7 @@ if __name__ == "__main__":
     config_file_path = os.path.join('..', '..', 'config.json')
     with open(config_file_path, 'r') as f:
         config = json.load(f)
-    #sys.argv = [".\main.py","checking_uri_syntax","xml","s"]
+    # sys.argv = [".\main.py","local_part_of_id_with_space","provn","d"]
     key = sys.argv[1]
     if key in config:
         class_name = config[key]
@@ -41,4 +37,3 @@ if __name__ == "__main__":
             raise e
     else:
         print(f"Key {key} not found in the configuration.")
-

@@ -1,1 +1,2 @@
-﻿When serializing, Python allows URI to have a space. Java deserializes this without any issues.
+﻿Java serializes the document.
+Python deserializes it without issue.

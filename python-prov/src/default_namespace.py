@@ -1,9 +1,4 @@
-import datetime
-import sys
-
-import prov.dot
 from prov.model import ProvDocument
-import prov.graph
 
 from test_case import TestCase
 
@@ -19,4 +14,3 @@ class DefaultNamespace(TestCase):
         document.add_namespace("ex", "https://example.org/")
         document.entity("ex:e")
         return document
-

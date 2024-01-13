@@ -17,7 +17,7 @@ import java.nio.file.Paths;
 public class Main {
     public static void main(String[] args) {
         args = new String[3];
-        args[0] = "checking_uri_syntax";
+        args[0] = "local_part_of_id_with_space";
         args[1] = "provn";
         args[2] = "d";
         var config = loadConfig();

@@ -1,9 +1,4 @@
-import datetime
-import sys
-
-import prov.dot
 from prov.model import ProvDocument
-import prov.graph
 
 from test_case import TestCase
 
