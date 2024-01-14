@@ -1,4 +1,3 @@
-Test Case: loss_of_timezone
-Format: xml
-Serialize In: java
-Deserialize In: python
+Java serializes the document with the correct timezones using CustomDateSerializer.
+
+Python deserialization does not work, more about this issue is in the implicit_existence_of_prov_namespace test case, with XML when serializing in java and deserializing in python.

@@ -1,4 +1,4 @@
-Test Case: loss_of_timezone
-Format: json
-Serialize In: java
-Deserialize In: python
+Java serializes the document with the correct timezones using CustomDateSerializer.
+
+Python deserializes date times with method def parse_xsd_datetime(value): which uses dateutil.parser for parsing the date.
+When parsing the date dateutil.parser sets the timezone accordingly 

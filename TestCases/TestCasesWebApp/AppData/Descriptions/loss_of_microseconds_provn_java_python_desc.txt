@@ -1,5 +1,8 @@
 Java implements date times as XMLGregorianCalendar, which represents microseconds as BigDecimal.
-Java does not have problem with serializing high precision times because of CustomDateSerializer which basically does XMLGregorianCalendar.toString().
+Java does not have problem with serializing high precision times because of time being converted like this:
+public String timeOrMarker(XMLGregorianCalendar time) {
+        return time == null ? "-" : time.toString();
+}
 
 PROVN deserialization in Python is not implemented yet. 
 As stated in https://pypi.org/project/prov/, "In-memory classes for PROV assertions, which can then be output as PROV-N", implicating that only PROV-N serialization is supported.

@@ -17,9 +17,9 @@ import java.nio.file.Paths;
 public class Main {
     public static void main(String[] args) {
         args = new String[3];
-        args[0] = "loss_of_microseconds";
-        args[1] = "json";
-        args[2] = "s";
+        args[0] = "loss_of_timezone";
+        args[1] = "xml";
+        args[2] = "d";
         var config = loadConfig();
         var javaClass = "cz.muni.fi.bthesis." + config.get(args[0]).getAsString();
 

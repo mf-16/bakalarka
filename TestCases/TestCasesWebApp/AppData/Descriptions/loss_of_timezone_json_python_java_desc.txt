@@ -1,4 +1,6 @@
-Test Case: loss_of_timezone
-Format: json
-Serialize In: python
-Deserialize In: java
+Python serializes the timezone correctly.
+
+Java when deserializing is using default jackson deserializer where it uses method protected Date _parseAsISO8601(String dateStr, ParsePosition bogus).
+This method sets timezone to UTC, so the timezone information is lost. This was fixed by author of ProvToolbox, in the issue https://github.com/lucmoreau/ProvToolbox/issues/209.
+More about this issue in the loss_of_timezone provn python java test case.
+This was the commit that added CustomXMLGregorianCalendarDeserializer for json https://github.com/lucmoreau/ProvToolbox/commit/d981e1821b86c187e7d24d73fb1a064aa8ad754c
