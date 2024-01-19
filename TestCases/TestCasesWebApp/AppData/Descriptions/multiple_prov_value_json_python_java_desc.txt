@@ -1,4 +1,22 @@
-Test Case: multiple_prov_value
-Format: json
-Serialize In: python
-Deserialize In: java
+Python represents prov:value attributes in the _attributes dictionary
+This is how the dictionary is intialized: self._attributes = defaultdict(set).
+This means that the values will be of type set, therefore more prov:value attributes are possible which is not complaint with the PROV-N which states:
+"The attribute prov:value may occur at most once in a set of attribute-value pairs."
+When serializing this to json Python uses json library, more specifically json.dump() with specific ProvJSONEncoder.
+This encoder does not have problem with multiple values.
+
+When deserializing, Java throws exception:
+Null namespace for prov:value namespace [Namespace (null) {ex=https://example.org/}, parent: null] (through reference chain: org.openprovenance.prov.core.json.serialization.SortedDocument["entity"]->java.util.LinkedHashMap["ex:e"]->org.openprovenance.prov.vanilla.Entity["prov:value"])
+This is because Python serializes without known namespaces, and Java expects those namespaces to be defined.
+When deserializing this, Java uses CustomQualifiedNameDeserializer
+
+public QualifiedName deserialize(String s, DeserializationContext deserializationContext) throws IOException {
+        Namespace ns = (Namespace)((Map)CustomThreadConfig.getAttributes().get()).get("JSON_CONTEXT_KEY_NAMESPACE");
+        return "type".equals(s) ? PROV_TYPE : ns.stringToQualifiedName(s, pf, false);
+    }
+
+When using its deserialize method, it creates namespace that only has the ex url in it. That means, using the stringToQualifiedName() where s="prov:value" prov is not known namespace and will throw an exception.
+This issue was reported to the author of ProvToolbox and was resolved by adding, known namespaces to the CustomNamespacePrefixDeserializer#deserialize method in commit https://github.com/lucmoreau/ProvToolbox/commit/33907ad41c75c0cf246e2f67c045889408235b5b.
+
+
+

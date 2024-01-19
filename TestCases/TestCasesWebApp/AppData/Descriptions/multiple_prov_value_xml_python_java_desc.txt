@@ -1,4 +1,19 @@
-Test Case: multiple_prov_value
-Format: xml
-Serialize In: python
-Deserialize In: java
+Python represents prov:value attributes in the _attributes dictionary
+This is how the dictionary is intialized: self._attributes = defaultdict(set).
+This means that the values will be of type set, therefore more prov:value attributes are possible which is not complaint with the PROV-N which states:
+"The attribute prov:value may occur at most once in a set of attribute-value pairs."
+When serializing XML Python uses the custom provxml module, which has no problem with serializing multiple prov:values.
+
+Since Java represents prov:value attribute as field value which has type Optional<Value> there can be only one value.
+Java when deserializing  XML uses the method.
+public void setIndexedAttributes(Object qn, Set<Attribute> attributes) {
+        List<Value> values_discard = new LinkedList();
+        List<Role> roles_discard = new LinkedList();
+        u.distribute((QualifiedName)qn, attributes, this.getLabel(), values_discard, this.getLocation(), this.getType(), roles_discard, this.getOther());
+        if (!values_discard.isEmpty()) {
+            this.value = Optional.of((Value)values_discard.get(0));
+        }
+
+    }
+
+Where attributes='the latest prov:value' and what u.distribute does is puts the newest prov:value to values_discard. Thats why the last prov:value is serialized as opposed to PROVN where only the first prov:value is serialized 

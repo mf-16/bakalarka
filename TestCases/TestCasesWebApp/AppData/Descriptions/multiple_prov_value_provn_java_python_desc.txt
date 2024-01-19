@@ -1,4 +1,27 @@
-Test Case: multiple_prov_value
-Format: provn
-Serialize In: java
-Deserialize In: python
+PROV-N states: "The attribute prov:value may occur at most once in a set of attribute-value pairs."
+The Entity in Java has field private Optional<Value> value = Optional.empty();
+This means that prov:value may occur at most once and is compliant with the PROV-N definition.
+When trying to put multiple prov:value attributes in java, when creating the entity:
+public Entity(QualifiedName id, Collection<Attribute> attributes) {
+        this.setId(id);
+        this.location = new LinkedList();
+        this.type = new LinkedList();
+        this.other = new LinkedList();
+        Value[] valueHolder = new Value[]{null};
+        u.populateAttributes(attributes, this.labels, this.location, this.type, new LinkedList(), this.other, valueHolder);
+        this.value = Optional.ofNullable(valueHolder[0]);
+    }
+The populateAttributes method iterates through all attributes and assigns only first occurance of prov:value like this in switch
+case PROV_VALUE:
+	if (!foundValue) {
+                            foundValue = true;
+                            value[0] = (org.openprovenance.prov.model.Value)attribute;
+                        }
+
+PROVN deserialization in python is not implemented yet. 
+As stated in https://pypi.org/project/prov/, "In-memory classes for PROV assertions, which can then be output as PROV-N", implicating that only PROV-N serialization is supported.
+It has been worked on but abandoned as you can see in this issue on libraries github https://github.com/trungdong/prov/issues/122.
+
+
+
+

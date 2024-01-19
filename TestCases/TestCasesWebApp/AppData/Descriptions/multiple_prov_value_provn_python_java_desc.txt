@@ -1,4 +1,24 @@
-Test Case: multiple_prov_value
-Format: provn
-Serialize In: python
-Deserialize In: java
+Python represents prov:value attributes in the _attributes dictionary
+This is how the dictionary is intialized: self._attributes = defaultdict(set).
+This means that the values will be of type set, therefore more prov:value attributes are possible which is not complaint with the PROV-N which states:
+"The attribute prov:value may occur at most once in a set of attribute-value pairs."
+
+Java when deserializing, after reading Pythons the document has 3 prov:value attributes, but creates the document using Entity class constructor, when creating the entity:
+public Entity(QualifiedName id, Collection<Attribute> attributes) {
+        this.setId(id);
+        this.location = new LinkedList();
+        this.type = new LinkedList();
+        this.other = new LinkedList();
+        Value[] valueHolder = new Value[]{null};
+        u.populateAttributes(attributes, this.labels, this.location, this.type, new LinkedList(), this.other, valueHolder);
+        this.value = Optional.ofNullable(valueHolder[0]);
+    }
+The populateAttributes method iterates through all attributes and assigns only first occurance of prov:value like this in switch
+case PROV_VALUE:
+	if (!foundValue) {
+                            foundValue = true;
+                            value[0] = (org.openprovenance.prov.model.Value)attribute;
+                        }
+
+This means that only first prov:value will be in the document.
+When Java creates document for comparsion it can't create a document with multiple prov:value attributes, therefore compares both documents with 1 prov:value and the result is that they are equal, even tho they should not be.
