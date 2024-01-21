@@ -1,4 +1,17 @@
-Test Case: prov_record_without_id
-Format: provn
-Serialize In: java
-Deserialize In: python
+When Java serializes PROVN, it uses the NotationConstructor#newWasGeneratedBy() method.
+public WasGeneratedBy newWasGeneratedBy(QualifiedName id, QualifiedName entity, QualifiedName activity, XMLGregorianCalendar time, Collection<Attribute> attributes) {
+        String var10000 = this.keyword("wasGeneratedBy");
+        String s = var10000 + "(" + this.optionalId(id) + this.idOrMarker(entity) + "," + this.idOrMarker(activity) + "," + this.timeOrMarker(time) + this.optionalAttributes(attributes) + ")";
+        this.writeln(s);
+        return null;
+    }
+this method uses NotationConstructor#optionalId() method, which does not add identifier if identifier is not present 
+private String optionalId(QualifiedName id) {
+        return id == null ? "" : Namespace.getThreadNamespace().qualifiedNameToString(id) + ";";
+    }
+This is valid according to PROVN.
+
+PROVN deserialization in python is not implemented yet. 
+As stated in https://pypi.org/project/prov/, "In-memory classes for PROV assertions, which can then be output as PROV-N", implicating that only PROV-N serialization is supported.
+It has been worked on but abandoned as you can see in this issue on libraries github https://github.com/trungdong/prov/issues/122.
+

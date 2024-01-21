@@ -21,17 +21,9 @@ public class TestTestCase extends TestCase {
         var ns = new Namespace();
         ns.addKnownNamespaces();
         ns.register("ex", "https://example.org/");
-        var e = ns.qualifiedName("ex", "e", factory);
-        var col_id = ns.qualifiedName("ex", "c", factory);
-        var col_prefix = ns.qualifiedName("prov", "Collection", factory);
-        var provqn = ns.qualifiedName("prov", "QUALIFIED_NAME", factory);
-        Entity collection = factory.newEntity(col_id);
+        var e = ns.qualifiedName("ex", "1ahoj", factory);
         Entity entity = factory.newEntity(e);
-        collection.getType().add(factory.newType(col_prefix, provqn));
-        HadMember hadMember = factory.newHadMember(col_id, e);
-        document.getStatementOrBundle().add(collection);
         document.getStatementOrBundle().add(entity);
-        document.getStatementOrBundle().add(hadMember);
         document.setNamespace(ns);
         return document;
     }

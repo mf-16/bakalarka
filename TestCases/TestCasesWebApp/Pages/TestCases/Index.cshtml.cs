@@ -16,7 +16,7 @@ namespace TestCasesWebApp.Pages.TestCases
             new SelectListItem { Value = "checking_uri_syntax", Text = "Checking uri syntax" },
             new SelectListItem { Value = "local_part_of_id_with_space", Text = "Local part of id with space" },
             new SelectListItem { Value = "loss_of_microseconds", Text = "Loss of microseconds" },
-            new SelectListItem { Value = "loss_of_timezone", Text = "Loss of timeozone" },
+            new SelectListItem { Value = "loss_of_timezone", Text = "Loss of timezone" },
             new SelectListItem { Value = "multiple_prov_value", Text = "Multiple prov value" },
             new SelectListItem { Value = "nonsense_prov_records", Text = "Nonsense prov records" },
             new SelectListItem { Value = "prov_record_without_id", Text = "Prov record without id" },

@@ -1,4 +1,25 @@
-Test Case: prov_record_without_id
-Format: provn
-Serialize In: python
-Deserialize In: java
+Python serializes relation without id with no problems. It handles it in method def get_provn(self): where self is the wasGeneratedBy relation.
+items = []
+
+        # Generating identifier
+        relation_id = ""  # default blank
+        if self._identifier:
+            identifier = str(self._identifier)  # TODO: QName export
+            if self.is_element():
+                items.append(identifier)
+            else:
+                # this is a relation
+                # relations use ; to separate identifiers
+                relation_id = identifier + "; "
+
+if relation has identifier then it appends it to item, and if the identifier is null, it does not.
+
+after that provn string representation is created like this: 
+prov_n = "%s(%s%s)" % (
+            PROV_N_MAP[self.get_type()],
+            relation_id,
+            ", ".join(items),
+        )
+prov_n is then written into the output stream.
+
+Java then deserializes this with ANTLR generated deserializer, which has no problem rocognizing the blank id.

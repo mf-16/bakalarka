@@ -17,7 +17,7 @@ import java.nio.file.Paths;
 public class Main {
     public static void main(String[] args) {
         args = new String[3];
-        args[0] = "multiple_prov_value";
+        args[0] = "prov_value_not_in_entity";
         args[1] = "xml";
         args[2] = "d";
         var config = loadConfig();

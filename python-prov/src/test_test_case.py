@@ -12,6 +12,6 @@ class TestTestCase(TestCase):
         document = ProvDocument()
         document.add_namespace("ex", "https://example.org/")
         c = document.collection("ex:c")
-        e = document.entity("ex:e")
+        e = document.entity("ex:1ahoj")
         c.hadMember(e)
         return document
