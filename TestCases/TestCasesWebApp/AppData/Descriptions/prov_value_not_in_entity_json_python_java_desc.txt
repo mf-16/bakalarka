@@ -1,4 +1,25 @@
-Test Case: prov_value_not_in_entity
-Format: json
-Serialize In: python
-Deserialize In: java
+In Python every records is a subclass of ProvRecord, which has value property
+
+@property
+    def value(self):
+        """Value of the record."""
+        return self._attributes[PROV_VALUE]
+
+value property is a set because _attributes is a defaultdict, where values are sets:
+self._attributes = defaultdict(set)
+
+So every ProvRecord object has a value property. This is why prov:value is serialized as well, which is not compatible with PROV-N.
+
+
+When deserializing, Java throws exception:
+Namespace.stringToQualifiedName(): Null namespace for prov:value namespace [Namespace (null) {ex=https://example.org/}, parent: null] (through reference chain: org.openprovenance.prov.core.json.serialization.SortedDocument["activity"]->java.util.LinkedHashMap["ex:ac"]->org.openprovenance.prov.vanilla.Activity["prov:value"])
+This is because Python serializes without known namespaces, and Java expects those namespaces to be defined.
+When deserializing this, Java uses CustomQualifiedNameDeserializer
+
+public QualifiedName deserialize(String s, DeserializationContext deserializationContext) throws IOException {
+        Namespace ns = (Namespace)((Map)CustomThreadConfig.getAttributes().get()).get("JSON_CONTEXT_KEY_NAMESPACE");
+        return "type".equals(s) ? PROV_TYPE : ns.stringToQualifiedName(s, pf, false);
+    }
+
+When using its deserialize method, it creates namespace that only has the ex url in it. That means, using the stringToQualifiedName() where s="prov:value" prov is not known namespace and will throw an exception.
+This issue was reported to the author of ProvToolbox and was resolved by adding, known namespaces to the CustomNamespacePrefixDeserializer#deserialize method in commit https://github.com/lucmoreau/ProvToolbox/commit/33907ad41c75c0cf246e2f67c045889408235b5b.

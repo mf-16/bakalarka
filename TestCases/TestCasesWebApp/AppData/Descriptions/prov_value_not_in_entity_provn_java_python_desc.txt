@@ -1,4 +1,20 @@
-Test Case: prov_value_not_in_entity
-Format: provn
-Serialize In: java
-Deserialize In: python
+In Java object that have value implement interface HasValue which looks like this:
+public interface HasValue {
+    Value getValue();
+
+    void setValue(Value var1);
+}
+Only Entity class implements HasValue, since PROV-N states that prov:value arguments should only be in entity.
+So when trying to create a document with prov:value as a argument, Java in public void setAttributes(HasOther res, Collection<Attribute> attributes) method always checks if the object implements HasValue like this:
+
+HasValue aval = res instanceof HasValue ? (HasValue)res : null;
+when it does not implement HasValue, in our case Activity, just ignore it.
+case PROV_VALUE:
+                            if (aval != null) {
+                                aval.setValue(this.newValue(aValue, attr.getType()));
+                            }
+                            break;
+
+So the serialized document has no value.
+
+Python then deserializes this without any issue.

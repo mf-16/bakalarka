@@ -1,4 +1,21 @@
-Test Case: prov_value_not_in_entity
-Format: xml
-Serialize In: python
-Deserialize In: java
+In Python every records is a subclass of ProvRecord, which has value property
+
+@property
+    def value(self):
+        """Value of the record."""
+        return self._attributes[PROV_VALUE]
+
+value property is a set because _attributes is a defaultdict, where values are sets:
+self._attributes = defaultdict(set)
+
+So every ProvRecord object has a value property. This is why prov:value is serialized as well, which is not compatible with PROV-N.
+
+When deserializing in java with jackson library, it finds the value element and calls method 
+public void setIndexedAttributes(Object qn, Set<Attribute> attributes) {
+        List<Value> values_discard = new LinkedList();
+        List<Role> roles_discard = new LinkedList();
+        u.distribute((QualifiedName)qn, attributes, this.getLabel(), values_discard, this.getLocation(), this.getType(), roles_discard, this.getOther());
+    }
+
+TheProvUtilities#distribute() method just adds the value into the values_discard list.
+And then we just ignore it, not set anything. Thats why the prov:value attribute is ignored.
