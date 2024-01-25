@@ -1,4 +1,39 @@
-Test Case: space_in_prefix
-Format: xml
-Serialize In: python
-Deserialize In: java
+Python when creating the document in memory uses def add_namespace(self, namespace): method, which does not validate the prefix, so it allows prefix with the space.
+
+Python when serializing in PROVN just writes all namespaces and does no validation
+if registered_namespaces:
+            lines.extend(
+                [
+                    "prefix %s <%s>" % (namespace.prefix, namespace.uri)
+                    for namespace in registered_namespaces
+                ]
+            )
+
+When serializing this document into XML, Python uses method def serialize_bundle(self, bundle, element=None, force_types=False):
+In this method it creates the nsmap, which is map containing all hte namespaces
+
+nsmap = {
+            ns.prefix: ns.uri
+            for ns in self.document._namespaces.get_registered_namespaces()
+        }
+        if self.document._namespaces._default:
+            nsmap[None] = self.document._namespaces._default.uri
+        for namespace in bundle.namespaces:
+            if namespace not in nsmap:
+                nsmap[namespace.prefix] = namespace.uri
+
+        for key, value in DEFAULT_NAMESPACES.items():
+            uri = value.uri
+            if value.prefix == "xsd":
+                # The XSD namespace for some reason has no hash at the end
+                # for PROV XML, but for all other serializations it does.
+                uri = uri.rstrip("#")
+            nsmap[value.prefix] = uri
+
+and then uses etree from lxml library to create xml root element.
+
+xml_bundle_root = etree.Element(_ns_prov("document"), nsmap=nsmap)
+
+But somewhere in this method validation on prefix takes place and it throws exception:  ValueError: Invalid namespace prefix 'ex ex' 
+
+Java does not have any file to deserialize.

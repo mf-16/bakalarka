@@ -1,4 +1,32 @@
-Test Case: space_in_prefix
-Format: json
-Serialize In: java
-Deserialize In: python
+Java allows to create prefix with space in memory, because it does no validation in the register method.
+
+public void register(String prefix, String namespace) {
+        if (prefix != null && !prefix.equals("")) {
+            String old = (String)this.prefixes.get(prefix);
+            if (old == null) {
+                this.prefixes.put(prefix, namespace);
+                if (this.namespaces.get(namespace) == null) {
+                    this.namespaces.put(namespace, prefix);
+                }
+            } else {
+                this.newPrefix(namespace);
+            }
+        } else if (this.defaultNamespace == null) {
+            this.defaultNamespace = namespace;
+        } else {
+            this.newPrefix(namespace);
+        }
+
+    }
+
+When serializing this document, using jackson library, Java does no validation of the prefix, because its using defualt string serializer for prefixes.
+
+Python when deserializing this, in the def decode_json_container(jc, bundle): method, uses the add_namespace() method, which does not validation of prefix.
+    if "prefix" in jc:
+        prefixes = jc["prefix"]
+        for prefix, uri in prefixes.items():
+            if prefix != "default":
+                bundle.add_namespace(Namespace(prefix, uri))
+            else:
+                bundle.set_default_namespace(uri)
+        del jc["prefix"]

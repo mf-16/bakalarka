@@ -1,0 +1,6 @@
+document
+prefix ex ex <https://example.org/>
+prefix ex <https://example.com/>
+entity(ex ex:e)
+activity(ex:a,-,-)
+endDocument

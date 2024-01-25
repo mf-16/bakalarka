@@ -1,0 +1,7 @@
+<document xmlns="http://www.w3.org/ns/prov#" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:prov="http://www.w3.org/ns/prov#" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  
+    <entity xmlns:ex="https://example.org/" prov:id="ex:e">
+      <type xsi:type="xsd:int">1</type>
+    </entity>
+  
+</document>

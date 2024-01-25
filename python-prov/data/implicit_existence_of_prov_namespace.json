@@ -1,0 +1,15 @@
+{
+  "prefix" : {
+    "xsd" : "http://www.w3.org/2001/XMLSchema#",
+    "ex" : "https://example.org/",
+    "prov" : "http://www.w3.org/ns/prov#"
+  },
+  "entity" : {
+    "ex:e" : {
+      "prov:type" : [ {
+        "type" : "xsd:int",
+        "$" : "1"
+      } ]
+    }
+  }
+}

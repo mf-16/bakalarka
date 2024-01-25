@@ -1,4 +1,46 @@
-Test Case: space_in_prefix
-Format: json
-Serialize In: python
-Deserialize In: java
+Python when creating the document in memory uses def add_namespace(self, namespace): method, which does not validate the prefix, so it allows prefix with the space.
+
+Python when serializing in PROVN just writes all namespaces and does no validation
+if registered_namespaces:
+            lines.extend(
+                [
+                    "prefix %s <%s>" % (namespace.prefix, namespace.uri)
+                    for namespace in registered_namespaces
+                ]
+            )
+
+When serializing this document to JSON, uses json.dump() with custom encoder ProvJSONEncoder which uses method def encode_json_container(bundle):, which does no validation and just adds the namespaces as they are.
+
+prefixes = {}
+    for namespace in bundle._namespaces.get_registered_namespaces():
+        prefixes[namespace.prefix] = namespace.uri
+    if bundle._namespaces._default:
+        prefixes["default"] = bundle._namespaces._default.uri
+    if prefixes:
+        container["prefix"] = prefixes
+
+The prefixes are then written into the outputstream.
+
+Java when deserializing this using jackson library uses CustomNamespacePrefixDeserializer
+
+public Map<String, String> deserialize(JsonParser jp, DeserializationContext deserializationContext) throws IOException {
+        JsonNode prefixes = (JsonNode)jp.readValueAsTree();
+        Namespace parentNs = (Namespace)((Map)CustomThreadConfig.getAttributes().get()).get("JSON_CONTEXT_KEY_NAMESPACE");
+        Namespace ns = new Namespace();
+        ns.setParent(parentNs);
+        ((Map)CustomThreadConfig.getAttributes().get()).put("JSON_CONTEXT_KEY_NAMESPACE", ns);
+        Hashtable<String, String> map = new Hashtable();
+        Iterator<String> it = prefixes.fieldNames();
+
+        while(it.hasNext()) {
+            String prefix = (String)it.next();
+            String namespace = prefixes.get(prefix).textValue();
+            map.put(prefix, namespace);
+            ns.register(prefix, namespace);
+        }
+
+        return map;
+    }
+
+This method uses ns.register(prefix, namespace); method when creating the namespaces, which does not validate the prefix.
+
