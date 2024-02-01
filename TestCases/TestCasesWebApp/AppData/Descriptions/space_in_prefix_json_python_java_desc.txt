@@ -1,46 +1,11 @@
-Python when creating the document in memory uses def add_namespace(self, namespace): method, which does not validate the prefix, so it allows prefix with the space.
+When creating the document in memory Python uses [NamespaceManager#add_namespace()](https://github.com/trungdong/prov/blob/master/src/prov/model.py#L1080) method, which does not validate the prefix, so it allows prefix with the space.
 
-Python when serializing in PROVN just writes all namespaces and does no validation
-if registered_namespaces:
-            lines.extend(
-                [
-                    "prefix %s <%s>" % (namespace.prefix, namespace.uri)
-                    for namespace in registered_namespaces
-                ]
-            )
 
-When serializing this document to JSON, uses json.dump() with custom encoder ProvJSONEncoder which uses method def encode_json_container(bundle):, which does no validation and just adds the namespaces as they are.
+When serializing JSON format, Python uses [json](https://docs.python.org/3/library/json.html) library, more specifically the json.dump() method.
+This method takes custom encoder. The custom encoder for JSON format in Python is [ProvJSONEncoder](https://github.com/trungdong/prov/blob/1cb710a26c623c5c706b1c6945c645efd9e925c0/src/prov/serializers/provjson.py#L93).
+This encoder uses the [encode_json_container()](https://github.com/trungdong/prov/blob/1cb710a26c623c5c706b1c6945c645efd9e925c0/src/prov/serializers/provjson.py#L126) function in the [provjson](https://github.com/trungdong/prov/blob/master/src/prov/serializers/provjson.py) module, which does no validation and just adds the namespaces as they are. The prefixes are then written into the outputstream.
 
-prefixes = {}
-    for namespace in bundle._namespaces.get_registered_namespaces():
-        prefixes[namespace.prefix] = namespace.uri
-    if bundle._namespaces._default:
-        prefixes["default"] = bundle._namespaces._default.uri
-    if prefixes:
-        container["prefix"] = prefixes
+When deserializing JSON format, Java uses [jackson](https://github.com/FasterXML/jackson) library. When deserializing the prefixes it uses [CustomNamespacePrefixDeserializer#deserialize()](https://github.com/lucmoreau/ProvToolbox/blob/96dd235aba6072c6e7671929b57b61088b9f6a38/modules-core/prov-jsonld/src/main/java/org/openprovenance/prov/core/json/serialization/deserial/CustomNamespacePrefixDeserializer.java#L34) method.
 
-The prefixes are then written into the outputstream.
-
-Java when deserializing this using jackson library uses CustomNamespacePrefixDeserializer
-
-public Map<String, String> deserialize(JsonParser jp, DeserializationContext deserializationContext) throws IOException {
-        JsonNode prefixes = (JsonNode)jp.readValueAsTree();
-        Namespace parentNs = (Namespace)((Map)CustomThreadConfig.getAttributes().get()).get("JSON_CONTEXT_KEY_NAMESPACE");
-        Namespace ns = new Namespace();
-        ns.setParent(parentNs);
-        ((Map)CustomThreadConfig.getAttributes().get()).put("JSON_CONTEXT_KEY_NAMESPACE", ns);
-        Hashtable<String, String> map = new Hashtable();
-        Iterator<String> it = prefixes.fieldNames();
-
-        while(it.hasNext()) {
-            String prefix = (String)it.next();
-            String namespace = prefixes.get(prefix).textValue();
-            map.put(prefix, namespace);
-            ns.register(prefix, namespace);
-        }
-
-        return map;
-    }
-
-This method uses ns.register(prefix, namespace); method when creating the namespaces, which does not validate the prefix.
+This method uses \`ns.register(prefix, namespace);\` on line 53 for creating the namespaces. [Namespace#register()](https://github.com/lucmoreau/ProvToolbox/blob/master/modules-core/prov-model/src/main/java/org/openprovenance/prov/model/Namespace.java#L124) does not validate the prefix.
 

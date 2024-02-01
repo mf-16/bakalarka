@@ -2,6 +2,11 @@
 @model TestCasesWebApp.Pages.TestCases.ResultModel
 @{
 }
+<style>
+    p code {
+        color: darkblue;
+    }
+</style>
 
 <body style="background-color: @(Model.TestCaseResult.Result ? "#eaf7ea" : "#f7eaea")">
     <div class="container">
@@ -41,16 +46,16 @@
         <div class="col-6">
             <dialog id="desModal">
                 <div>
-                    <button onclick="closeModal('desModal')">Close</button>
-                    <div id="markdownContent"></div>
+                    <button class="btn btn-secondary mb-3" onclick="closeModal('desModal')">Close</button>
+                    <div class="form-control" id="markdownContent"></div>
                 </div>
             </dialog>
         </div>
         <div class="col-6">
             <dialog id="exModal">
                 <div>
-                    <button onclick="closeModal('exModal')">Close</button>
-                    <p>@Model.TestCaseResult.Exception</p>
+                    <button class="btn btn-secondary mb-3" onclick="closeModal('exModal')">Close</button>
+                    <textarea readonly rows="20" cols="100" class="form-control">@Model.TestCaseResult.Exception</textarea>
                 </div>
             </dialog>
         </div>
