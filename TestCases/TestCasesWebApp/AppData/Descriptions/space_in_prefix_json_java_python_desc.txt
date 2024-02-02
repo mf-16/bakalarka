@@ -3,5 +3,5 @@ Java allows to create prefix with space in memory, because it does no validation
 When serializing JSON format, Java uses [jackson](https://github.com/FasterXML/jackson) library, Java does no validation of the prefix, because its using defualt string serializer for prefixes.
 
 When deserializing JSON format Python uses the [json](https://docs.python.org/3/library/json.html) library, more specifically the json.load() function which takes custom decoder.
-Everything related to JSON is in the [provjson](https://github.com/trungdong/prov/blob/master/src/prov/serializers/provjson.py) module. And provjson specifies the custom decoder [ProvJSONDecoder](https://github.com/trungdong/prov/blob/master/src/prov/serializers/provjson.py#L101).
+The custom decoder in [provjson](https://github.com/trungdong/prov/blob/master/src/prov/serializers/provjson.py) module is [ProvJSONDecoder](https://github.com/trungdong/prov/blob/master/src/prov/serializers/provjson.py#L101).
 When deserializing prefixes the [decode_json_container()](https://github.com/trungdong/prov/blob/master/src/prov/serializers/provjson.py#L199) function, uses the [NamespaceManager#add_namespace()](https://github.com/trungdong/prov/blob/master/src/prov/model.py#L1080) method, which does not validate prefix.

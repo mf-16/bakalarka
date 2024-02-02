@@ -4,7 +4,7 @@ When serializing PROVN format, Java uses the [custom ProvSerializer](https://git
 
 
 PROVN deserialization in python is not implemented yet. 
-As stated in [ProvPy features](https://pypi.org/project/prov/), "In-memory classes for PROV assertions, which can then be output as PROV-N", implicating that only PROV-N serialization is supported.
-It has been worked on but abandoned as you can see in this issue on libraries [github](https://github.com/trungdong/prov/issues/122).
+As stated in [ProvPy features](https://pypi.org/project/prov/), "In-memory classes for PROV assertions, which can then be output as PROV-N", implying that only PROV-N serialization is supported.
+It has been worked on but abandoned as you can see in this issue on library's [github](https://github.com/trungdong/prov/issues/122).
 
 
