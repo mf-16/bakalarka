@@ -9,9 +9,16 @@ The blank id is created in [SortedBundle#put()](https://github.com/lucmoreau/Pro
 
 When serializing namespaces, Java also adds blank namespace into the them as you can see in serialized document.
 
-Python when deserializing uses __TODOVLOZMENOLIBRARY__ library and when converting string "_:n0" to valid qualified name it used method def valid_qualified_name(self, qname):
+When deserializing JSON format Python uses the [json](https://docs.python.org/3/library/json.html) library, more specifically the json.load() function which takes custom decoder.
+The custom decoder in [provjson](https://github.com/trungdong/prov/blob/master/src/prov/serializers/provjson.py) module is [ProvJSONDecoder](https://github.com/trungdong/prov/blob/master/src/prov/serializers/provjson.py#L101).
+
+When converting identifier \`"_:n0"\` to valid qualified name Python uses method [NamespaceManager#valid_qualified_name()](https://github.com/trungdong/prov/blob/1cb710a26c623c5c706b1c6945c645efd9e925c0/src/prov/model.py#L1139)
+
+On line 1192 where \`str_value="_:n0"\`, Python treats everyting that starts with \`"_:"\` as blank node, so the blank node namespace Java added is not even needed, but its serialized as well.
+
+\`\`\`
 str_value = qname.uri if isinstance(qname, Identifier) else str(qname)
 if str_value.startswith("_:"):
-            # this is a blank node ID
-            return None
-It gets to this line where str_value="_:n0" since its not Identifier but string and Python treats everyting that starts with "_:" as blank node, so the blank node namespace Java added is not even needed, but its serialized as well.
+    # this is a blank node ID
+    return None
+\`\`\`

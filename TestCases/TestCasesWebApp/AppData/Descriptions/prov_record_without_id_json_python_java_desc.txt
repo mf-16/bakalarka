@@ -1,34 +1,25 @@
-Python when serializing in json uses the json library more specifically json.dump method with custom encoder which is ProvJSONEncoder.
-This encoder when serializing identifiers uses method
-id_generator = AnonymousIDGenerator()
+When serializing JSON format, Python uses [json](https://docs.python.org/3/library/json.html) library, more specifically the json.dump() method.
+This method takes custom encoder. The custom encoder for JSON format in Python is [ProvJSONEncoder](https://github.com/trungdong/prov/blob/1cb710a26c623c5c706b1c6945c645efd9e925c0/src/prov/serializers/provjson.py#L93).
+When serializing identifiers in function [encode_json_container()](https://github.com/trungdong/prov/blob/1cb710a26c623c5c706b1c6945c645efd9e925c0/src/prov/serializers/provjson.py#L126) on line 144
 
-def real_or_anon_id(r):
-       return r._identifier if r._identifier else id_generator.get_anon_id(r)
+\`identifier = str(real_or_anon_id(record))\`
 
-of class AnonymousIDGenerator which looks like this:
-class AnonymousIDGenerator:
-    def __init__(self):
-        self._cache = {}
-        self._count = 0
+Python creates id with function [real_or_anon_id()](https://github.com/trungdong/prov/blob/1cb710a26c623c5c706b1c6945c645efd9e925c0/src/prov/serializers/provjson.py#L138). This function uses [AnonymousIDGenerator object](https://github.com/trungdong/prov/blob/master/src/prov/serializers/provjson.py#L32) to generate anonymous id.
 
-    def get_anon_id(self, obj, local_prefix="id"):
-        if obj not in self._cache:
-            self._count += 1
-            self._cache[obj] = Identifier("_:%s%d" % (local_prefix, self._count))
-        return self._cache[obj]
-This generates id like this "_:id1". Python does not add blank namespace like Java does, because it can handle blank namespaces directly.
+This generates id like this \`"_:id1"\`. Python does not add blank namespace like Java does, because it can handle blank namespaces directly.
 
-But this causes problem in Java which expects the blank namespace.
-When deserializing the "_:id1" it uses CustomQualifiedNameDeserializer
+When deserializing JSON format, Java uses [jackson](https://github.com/FasterXML/jackson) library.
+Problem is that Python does not add blank namespace and Java expects it to be serialized.
+When deserializing the \`"_:id1"\` it uses [CustomQualifiedNameDeserializer#deserialize()](https://github.com/lucmoreau/ProvToolbox/blob/ca05849c88a84aae736355569a8bdae78c68b072/modules-core/prov-jsonld/src/main/java/org/openprovenance/prov/core/json/serialization/deserial/CustomQualifiedNameDeserializer.java#L40) method. On line 41:
 
-public QualifiedName deserialize(String s, DeserializationContext deserializationContext) throws IOException {
-        Namespace ns = (Namespace)((Map)CustomThreadConfig.getAttributes().get()).get("JSON_CONTEXT_KEY_NAMESPACE");
-        return "type".equals(s) ? PROV_TYPE : ns.stringToQualifiedName(s, pf, false);
-    }
+\`final Namespace ns = getAttributes().get().get(JSON_CONTEXT_KEY_NAMESPACE);\`
 
-s="_:id1", first namespace is created, ns namespace has only the ex namespace since thats the only thing Python serialized.
-When trying ns.stringToQualifiedName(s, pf, false); it does not find the blank namespace and throws exception:
-Null namespace for _:id1 namespace [Namespace (null) {ex=https://example.org/}, parent: null] (through reference chain: org.openprovenance.prov.core.json.serialization.SortedDocument["wasGeneratedBy"])
+Java gets namespace, which has all namaspaces in it (this means only the \`"ex : https://example.org/\` is in there). So \`s="_:id1"\` and on line 43 [Namespace#stringToQualifiedName()](https://github.com/lucmoreau/ProvToolbox/blob/ca05849c88a84aae736355569a8bdae78c68b072/modules-core/prov-model/src/main/java/org/openprovenance/prov/model/Namespace.java#L220):
 
-This issue was reported to the author of ProvToolbox, then issue was created on github https://github.com/lucmoreau/ProvToolbox/issues/213
-and was resolved by adding the blank node to CustomNamespacePrefixDeserializer in commit https://github.com/lucmoreau/ProvToolbox/commit/9e43ff93cc81bc6d9a49bb3fcb9e7b453ebe4fde#diff-f9193296cfc4a285c9e55e98874b59085741b4deeb144aee9be6b25743f414cd.
+\`return ns.stringToQualifiedName(s, pf, false);\`
+ 
+this method cannot find the blank namespace prefix "_" and throws exception:
+\`Null namespace for _:id1 namespace [Namespace (null) {ex=https://example.org/}, parent: null] (through reference chain: org.openprovenance.prov.core.json.serialization.SortedDocument["wasGeneratedBy"])\`
+
+This issue was reported to the author of ProvToolbox, then this [issue](https://github.com/lucmoreau/ProvToolbox/issues/213) was created on github.
+Issue was resolved by adding the blank node to [CustomNamespacePrefixDeserializer](https://github.com/lucmoreau/ProvToolbox/blob/master/modules-core/prov-jsonld/src/main/java/org/openprovenance/prov/core/json/serialization/deserial/CustomNamespacePrefixDeserializer.java) in this [commit](https://github.com/lucmoreau/ProvToolbox/commit/9e43ff93cc81bc6d9a49bb3fcb9e7b453ebe4fde).

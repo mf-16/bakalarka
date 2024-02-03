@@ -1,3 +1,28 @@
-When serializing this Java uses jackson library and if the wasGeneratedBy has no identifier it just does not add XML attribute prov:id.
+When serializing XML format, Java uses the [jackson](https://github.com/FasterXML/jackson) library.  When record without the identifier is being serialized, in out case wasGeneratedBy, jackson just does not add XML attribute prov:id.
 
-Python deserialization does not work, more about this issue is in the implicit_existence_of_prov_namespace test case, with XML when serializing in java and deserializing in python.
+When deserializing XML format, Python uses custom [ProvXMLSerializer](https://github.com/trungdong/prov/blob/master/src/prov/serializers/provxml.py#L34).
+When deserializing it uses the [ProvXMLSerializer#deserialize()](https://github.com/trungdong/prov/blob/1cb710a26c623c5c706b1c6945c645efd9e925c0/src/prov/serializers/provxml.py#L218) method, which on line 229 uses [etree](https://lxml.de/tutorial.html) from [lxml](https://lxml.de/) library to obtain the etree Element object like this:
+
+\`xml_doc = etree.parse(buf).getroot()\`
+
+After that, on line 239 it uses the [ProvXMLSerializer#deserialize_subtree()](https://github.com/trungdong/prov/blob/master/src/prov/serializers/provxml.py#L242) method, which fills the ProvDocument it gets passed in arguments from the etree Element object.
+
+\`self.deserialize_subtree(xml_doc, document)\`
+
+When extracting attributes from etree Element wasGeneratedBy, Python uses function [_extract_attributes()](https://github.com/trungdong/prov/blob/1cb710a26c623c5c706b1c6945c645efd9e925c0/src/prov/serializers/provxml.py#L321). On line 330:
+
+\`\`\`
+_t = xml_qname_to_QualifiedName(
+            subel, "%s:%s" % (subel.prefix, sqname.localname)
+        )
+\`\`\`
+
+[xml_qname_to_QualifiedName()](https://github.com/trungdong/prov/blob/1cb710a26c623c5c706b1c6945c645efd9e925c0/src/prov/serializers/provxml.py#L362) is called, with \`qname_str="None:activity"\` On line 376 this is done when handling None prefix:
+\`\`\`
+if None in element.nsmap:
+    ns_uri = element.nsmap[None]
+    ns = Namespace("", ns_uri)
+    return ns[qname_str]
+\`\`\`
+
+and QualifiedName \`None:activity\` is returned. The QualifiedName returned, should be \`prov:activity\` and not \`None:activity\` so there is a mistake in handling xml qname to QualifiedName. This problem was reported in this [issue](https://github.com/trungdong/prov/issues/155).
