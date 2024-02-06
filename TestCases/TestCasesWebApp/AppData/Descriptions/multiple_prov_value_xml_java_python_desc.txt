@@ -1,21 +1,48 @@
-PROV-N states: "The attribute prov:value may occur at most once in a set of attribute-value pairs."
-The Entity in Java has field private Optional<Value> value = Optional.empty();
-This means that prov:value may occur at most once and is compliant with the PROV-N definition.
-When trying to put multiple prov:value attributes in java, when creating the entity:
-public Entity(QualifiedName id, Collection<Attribute> attributes) {
-        this.setId(id);
-        this.location = new LinkedList();
-        this.type = new LinkedList();
-        this.other = new LinkedList();
-        Value[] valueHolder = new Value[]{null};
-        u.populateAttributes(attributes, this.labels, this.location, this.type, new LinkedList(), this.other, valueHolder);
-        this.value = Optional.ofNullable(valueHolder[0]);
-    }
-The populateAttributes method iterates through all attributes and assigns only first occurance of prov:value like this in switch
-case PROV_VALUE:
-	if (!foundValue) {
-                            foundValue = true;
-                            value[0] = (org.openprovenance.prov.model.Value)attribute;
-                        }
+PROV-DM states: ["The attribute prov:value may occur at most once in a set of attribute-value pairs."](https://www.w3.org/TR/prov-dm/#term-attribute-value)
 
-Python deserialization does not work, more about this issue is in the implicit_existence_of_prov_namespace test case, with XML when serializing in java and deserializing in python.
+
+The [Entity](https://github.com/lucmoreau/ProvToolbox/blob/20a9edf219e84c383d28283bc199d9ac32903687/modules-core/prov-model/src/main/java/org/openprovenance/prov/vanilla/Entity.java) class in Java has private field [value](https://github.com/lucmoreau/ProvToolbox/blob/20a9edf219e84c383d28283bc199d9ac32903687/modules-core/prov-model/src/main/java/org/openprovenance/prov/vanilla/Entity.java#L22).
+This means that prov:value may occur at most once and is compliant with the PROV-DM.
+When trying to put multiple prov:value attributes in java, when creating the entity in [constructor](https://github.com/lucmoreau/ProvToolbox/blob/20a9edf219e84c383d28283bc199d9ac32903687/modules-core/prov-model/src/main/java/org/openprovenance/prov/vanilla/Entity.java#L31):
+On line 39, the [ProvUtilities#populateAttributes()](https://github.com/lucmoreau/ProvToolbox/blob/20a9edf219e84c383d28283bc199d9ac32903687/modules-core/prov-model/src/main/java/org/openprovenance/prov/vanilla/ProvUtilities.java#L141) method is used
+
+\`u.populateAttributes(attributes, labels, location, type, new LinkedList<>(), other, valueHolder);\`
+
+It iterates through all attributes and assigns only first occurance of prov:value like this in switch on line 165:
+\`\`\`
+case PROV_VALUE:
+    if (!foundValue) {
+        foundValue = true;
+        value[0] = (org.openprovenance.prov.model.Value)attribute;
+    }
+\`\`\`
+
+
+And then in constructor, prov:value is assigned on line 40:
+
+\`value=Optional.ofNullable(valueHolder[0]);\`
+
+This means that the first value in attributes will be the value of entity.
+
+When serializing XML format, Java uses [jackson](https://github.com/FasterXML/jackson) library.
+Java have no problem serializing document with entity with one prov:value.
+
+Python deserialization does not work, here is brief explanation:
+
+When extracting sub elements from etree Element entity, Python uses function [_extract_attributes()](https://github.com/trungdong/prov/blob/1cb710a26c623c5c706b1c6945c645efd9e925c0/src/prov/serializers/provxml.py#L321). On line 330:
+
+\`\`\`
+_t = xml_qname_to_QualifiedName(
+            subel, "%s:%s" % (subel.prefix, sqname.localname)
+        )
+\`\`\`
+
+[xml_qname_to_QualifiedName()](https://github.com/trungdong/prov/blob/1cb710a26c623c5c706b1c6945c645efd9e925c0/src/prov/serializers/provxml.py#L362) is called, with \`qname_str="None:value"\` On line 376 this is done when handling None prefix:
+\`\`\`
+if None in element.nsmap:
+    ns_uri = element.nsmap[None]
+    ns = Namespace("", ns_uri)
+    return ns[qname_str]
+\`\`\`
+
+and QualifiedName \`None:value\` is returned. The QualifiedName returned, should be \`prov:value\` and not \`None:value\` so there is a mistake in handling xml qname to QualifiedName. This problem was reported in this [issue](https://github.com/trungdong/prov/issues/155).

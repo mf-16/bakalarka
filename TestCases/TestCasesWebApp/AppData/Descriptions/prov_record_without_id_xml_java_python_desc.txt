@@ -9,7 +9,7 @@ After that, on line 239 it uses the [ProvXMLSerializer#deserialize_subtree()](ht
 
 \`self.deserialize_subtree(xml_doc, document)\`
 
-When extracting attributes from etree Element wasGeneratedBy, Python uses function [_extract_attributes()](https://github.com/trungdong/prov/blob/1cb710a26c623c5c706b1c6945c645efd9e925c0/src/prov/serializers/provxml.py#L321). On line 330:
+When extracting sub elements from etree Element wasGeneratedBy, Python uses function [_extract_attributes()](https://github.com/trungdong/prov/blob/1cb710a26c623c5c706b1c6945c645efd9e925c0/src/prov/serializers/provxml.py#L321). On line 330:
 
 \`\`\`
 _t = xml_qname_to_QualifiedName(
