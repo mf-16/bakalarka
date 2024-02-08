@@ -1,6 +1,22 @@
-Python serializes the timezone correctly.
+Python represents the startTime and endTime as datetime.datetime(https://docs.python.org/3/library/datetime.html#datetime-objects)
+Because when creating activity it uses the [_ensure_datetime()](https://github.com/trungdong/prov/blob/1cb710a26c623c5c706b1c6945c645efd9e925c0/src/prov/model.py#L34) function, which uses [dateutil.parser](https://dateutil.readthedocs.io/en/stable/parser.html). This parser returns datetime.datetime object.
 
-Java when deserializing is using default jackson deserializer where it uses method protected Date _parseAsISO8601(String dateStr, ParsePosition bogus).
-This method sets timezone to UTC, so the timezone information is lost. This was fixed by author of ProvToolbox, in the issue https://github.com/lucmoreau/ProvToolbox/issues/209.
-More about this issue in the loss_of_timezone provn python java test case.
-This was the commit that added CustomXMLGregorianCalendarDeserializer for xml https://github.com/lucmoreau/ProvToolbox/commit/cad043a5aadb471bd0a460ac7957d4c440962c64
+When serializing XML format, Python uses the custom XML deserializer [ProvXMLSerializer](https://github.com/trungdong/prov/blob/master/src/prov/serializers/provxml.py#L34).
+When serializing the startTime and endTime, Python uses method [ProvXMLSerializer#serialize_bundle()](https://github.com/trungdong/prov/blob/1cb710a26c623c5c706b1c6945c645efd9e925c0/src/prov/serializers/provxml.py#L70), on line 149:
+
+\`v = value.isoformat()\`
+
+method [datetime.isoformat()](https://docs.python.org/3/library/datetime.html#datetime.datetime.isoformat) is used, which does not lose the timezone.
+
+When deserializing XML format, Java uses [jackson](https://github.com/FasterXML/jackson) library. Default deserializer is used for startTime and endTime, where timezone is set to UTC, therefore timezone information is lost.
+
+This was fixed by author of ProvToolbox, in the [issue](https://github.com/lucmoreau/ProvToolbox/issues/209)
+More about this issue
+\`\`\`
+name: Loss of timezone
+format: provn
+serialize: python
+deserialize: java
+\`\`\` 
+
+This issue was resolved in this [commit](https://github.com/lucmoreau/ProvToolbox/commit/cad043a5aadb471bd0a460ac7957d4c440962c64) by adding [CustomXMLGregorianCalendarDeserializer](https://github.com/lucmoreau/ProvToolbox/blob/master/modules-core/prov-jsonld-xml/src/main/java/org/openprovenance/prov/core/xml/serialization/deserial/CustomXMLGregorianCalendarDeserializer.java) for xml, when deserializing startTime and endTime. 

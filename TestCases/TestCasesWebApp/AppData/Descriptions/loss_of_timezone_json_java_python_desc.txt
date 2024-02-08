@@ -1,4 +1,12 @@
-Java serializes the document with the correct timezones using CustomDateSerializer.
+Java represents the startTime and endTime as [XMLGregorianCalendar](https://docs.oracle.com/javase/8/docs/api/javax/xml/datatype/XMLGregorianCalendar.html). Therefore, we have no problem creating document with timezones as we want.
+When serializing JSON format, Java uses [jackson](https://github.com/FasterXML/jackson) library.
+When serializing the startTime and endTime Java uses [CustomDateSerializer#serialize()]() method.
+This method just uses toString() method on the XMLGregorianCalendar object. So there is no timezone loss.
 
-Python deserializes date times with method def parse_xsd_datetime(value): which uses dateutil.parser for parsing the date.
-When parsing the date dateutil.parser sets the timezone accordingly 
+When deserializing JSON format Python uses the [json](https://docs.python.org/3/library/json.html) library, more specifically the json.load() function which takes custom decoder.
+The custom decoder in [provjson](https://github.com/trungdong/prov/blob/master/src/prov/serializers/provjson.py) module is [ProvJSONDecoder](https://github.com/trungdong/prov/blob/master/src/prov/serializers/provjson.py#L101).
+Python deserializes the startTime and endTime with function [parse_xsd_datetime()](https://github.com/trungdong/prov/blob/1cb710a26c623c5c706b1c6945c645efd9e925c0/src/prov/model.py#L41) which uses [dateutil.parser](https://dateutil.readthedocs.io/en/stable/parser.html) for parsing the date on line 43:
+
+\` return dateutil.parser.parse(value)\`
+
+When parsing the date dateutil.parser sets the timezone with no loss.

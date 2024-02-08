@@ -1,6 +1,24 @@
-Python serializes the timezone correctly.
+Python represents the startTime and endTime as datetime.datetime(https://docs.python.org/3/library/datetime.html#datetime-objects)
+Because when creating activity it uses the [_ensure_datetime()](https://github.com/trungdong/prov/blob/1cb710a26c623c5c706b1c6945c645efd9e925c0/src/prov/model.py#L34) function, which uses [dateutil.parser](https://dateutil.readthedocs.io/en/stable/parser.html). This parser returns datetime.datetime object.
 
-Java when deserializing is using default jackson deserializer where it uses method protected Date _parseAsISO8601(String dateStr, ParsePosition bogus).
-This method sets timezone to UTC, so the timezone information is lost. This was fixed by author of ProvToolbox, in the issue https://github.com/lucmoreau/ProvToolbox/issues/209.
-More about this issue in the loss_of_timezone provn python java test case.
-This was the commit that added CustomXMLGregorianCalendarDeserializer for json https://github.com/lucmoreau/ProvToolbox/commit/d981e1821b86c187e7d24d73fb1a064aa8ad754c
+When serializing JSON format, Python uses [json](https://docs.python.org/3/library/json.html) library, more specifically the json.dump() method.
+This method takes custom encoder. The custom encoder for JSON format in Python is [ProvJSONEncoder](https://github.com/trungdong/prov/blob/1cb710a26c623c5c706b1c6945c645efd9e925c0/src/prov/serializers/provjson.py#L93).
+When serializing startTime and endTime in function [encode_json_container()](https://github.com/trungdong/prov/blob/1cb710a26c623c5c706b1c6945c645efd9e925c0/src/prov/serializers/provjson.py#L126), on line 156:
+
+\`record_json[attr_name] = first(values).isoformat()\`
+
+Method [datetime#isoformat()](https://docs.python.org/3/library/datetime.html#datetime.datetime.isoformat) is used. This method does not lose information about timezone.
+
+When deserializing JSON format, Java uses [jackson](https://github.com/FasterXML/jackson) library.
+When deserializing the startTime and endTime, Java uses default jackson deserializer. This deserializer sets timezone to UTC, so the timezone information is lost.
+
+This was fixed by author of ProvToolbox, in the [issue](https://github.com/lucmoreau/ProvToolbox/issues/209).
+More about this issue
+\`\`\`
+name: Loss of timezone
+format: provn
+serialize: python
+deserialize: java
+\`\`\` 
+
+This issue was resolved in this [commit](https://github.com/lucmoreau/ProvToolbox/commit/d981e1821b86c187e7d24d73fb1a064aa8ad754c) by adding [CustomXMLGregorianCalendarDeserializer](https://github.com/lucmoreau/ProvToolbox/blob/master/modules-core/prov-jsonld/src/main/java/org/openprovenance/prov/core/json/serialization/deserial/CustomXMLGregorianCalendarDeserializer.java) for json, when deserializing startTime and endTime. 
