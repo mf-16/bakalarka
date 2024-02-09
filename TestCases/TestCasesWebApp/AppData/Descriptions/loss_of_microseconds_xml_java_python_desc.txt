@@ -1,4 +1,24 @@
-Java implements date times as XMLGregorianCalendar, which represents microseconds as BigDecimal.
-Java does not have problem with serializing high precision times because of CustomDateSerializer which basically does XMLGregorianCalendar.toString().
+Java represents the startTime and endTime as [XMLGregorianCalendar](https://docs.oracle.com/javase/8/docs/api/javax/xml/datatype/XMLGregorianCalendar.html), which represents microseconds as [BigDecimal](https://docs.oracle.com/javase/8/docs/api/java/math/BigDecimal.html).
+When serializing XML format, Java uses [jackson](https://github.com/FasterXML/jackson) library.
+When serializing the startTime and endTime Java uses [CustomDateSerializer#serialize()](https://github.com/lucmoreau/ProvToolbox/blob/ca05849c88a84aae736355569a8bdae78c68b072/modules-core/prov-jsonld-xml/src/main/java/org/openprovenance/prov/core/xml/serialization/serial/CustomDateSerializer.java#L22) method.
+This method just uses toString() method on the XMLGregorianCalendar object. So there is no timezone loss.
 
-Python deserialization does not work, more about this issue is in the implicit_existence_of_prov_namespace test case, with XML when serializing in java and deserializing in python.
+Python deserialization does not work, here is brief explanation:
+
+When extracting sub elements from etree Element activity, Python uses function [_extract_attributes()](https://github.com/trungdong/prov/blob/1cb710a26c623c5c706b1c6945c645efd9e925c0/src/prov/serializers/provxml.py#L321). On line 330:
+
+\`\`\`
+_t = xml_qname_to_QualifiedName(
+            subel, "%s:%s" % (subel.prefix, sqname.localname)
+        )
+\`\`\`
+
+[xml_qname_to_QualifiedName()](https://github.com/trungdong/prov/blob/1cb710a26c623c5c706b1c6945c645efd9e925c0/src/prov/serializers/provxml.py#L362) is called, with \`qname_str="None:endTime"\` On line 376 this is done when handling None prefix:
+\`\`\`
+if None in element.nsmap:
+    ns_uri = element.nsmap[None]
+    ns = Namespace("", ns_uri)
+    return ns[qname_str]
+\`\`\`
+
+and QualifiedName \`None:endTime\` is returned. The QualifiedName returned, should be \`prov:endTime\` and not \`None:endTime\` so there is a mistake in handling xml qname to QualifiedName. This problem was reported in this [issue](https://github.com/trungdong/prov/issues/155).
