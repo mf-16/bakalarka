@@ -1,4 +1,0 @@
-document
-prefix ex <https://example.org/>
-activity(ex:ac,-,-)
-endDocument
