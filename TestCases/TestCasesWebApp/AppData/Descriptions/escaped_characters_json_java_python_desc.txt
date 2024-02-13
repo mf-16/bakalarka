@@ -1,1 +1,15 @@
-﻿
+﻿All the characters used should be escaped according to [PROV-N](https://www.w3.org/TR/prov-n/#prod-PN_CHARS_ESC).
+
+\`<PN_CHARS_ESC>	   ::=   	"\" ( "=" | "'" | "(" | ")" | "," | "-" | ":" | ";" | "[" | "]" | "." )\`
+
+We first create a entity in Java with identifier, which has all the characters that should be escaped in local part of identifier.
+
+When serializing JSON format, Java uses [jackson](https://github.com/FasterXML/jackson) library.
+When serializing the identifier, Java uses [CustomQualifiedNameSerializer#serialize()](https://github.com/lucmoreau/ProvToolbox/blob/96dd235aba6072c6e7671929b57b61088b9f6a38/modules-core/prov-jsonld/src/main/java/org/openprovenance/prov/core/json/serialization/serial/CustomQualifiedNameSerializer.java#L22) method. This method just combines prefix and local part on line 23:
+
+\`String s=q.getPrefix() + ":" + q.getLocalPart();\`
+
+Therefore, we get JSON serialization with characters that should be escaped according to PROV-N, but are not.
+
+
+How Python deserializes this document is irrelevant, because Java should not have produced document with unescaped characters in a first place.

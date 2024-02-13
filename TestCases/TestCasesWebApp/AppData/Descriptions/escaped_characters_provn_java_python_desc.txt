@@ -1,4 +1,22 @@
-﻿PROVN deserialization in python is not implemented yet. 
-As stated in https://pypi.org/project/prov/, "In-memory classes for PROV assertions, which can then be output as PROV-N", implicating that only PROV-N serialization is supported.
-It has been worked on but abandoned as you can see in this issue on libraries github https://github.com/trungdong/prov/issues/122.
+﻿All the characters used should be escaped according to [PROV-N](https://www.w3.org/TR/prov-n/#prod-PN_CHARS_ESC).
+
+\`<PN_CHARS_ESC>	   ::=   	"\" ( "=" | "'" | "(" | ")" | "," | "-" | ":" | ";" | "[" | "]" | "." )\`
+
+We first create a entity in Java with identifier, which has all the characters that should be escaped in local part of identifier.
+
+When serializing PROVN format, Java uses the [custom ProvSerializer](https://github.com/lucmoreau/ProvToolbox/blob/master/modules-core/prov-n/src/main/java/org/openprovenance/prov/notation/ProvSerialiser.java).
+When serializing entity, Java uses the [NotationConstructor#newEntity()](https://github.com/lucmoreau/ProvToolbox/blob/96dd235aba6072c6e7671929b57b61088b9f6a38/modules-core/prov-n/src/main/java/org/openprovenance/prov/notation/NotationConstructor.java#L255) method,  which on line 256 when serializing identifier uses [Namespace#qualifiedNameToString()](https://github.com/lucmoreau/ProvToolbox/blob/96dd235aba6072c6e7671929b57b61088b9f6a38/modules-core/prov-model/src/main/java/org/openprovenance/prov/model/Namespace.java#L330):
+
+\`final String s = keyword("entity") + "(" + idOrMarker(id);\`
+
+Namespace#qualifiedNameToString() does no escaping and just combines prefix with local part on line 337:
+
+\`return pref + ":" + name.getLocalPart();\`
+
+Therefore, we get entity with identifier, which has characters that should be escaped according to PROV-N, but are not.
+
+PROVN deserialization in python is not implemented yet. 
+As stated in [ProvPy features](https://pypi.org/project/prov/), "In-memory classes for PROV assertions, which can then be output as PROV-N", implying that only PROV-N serialization is supported.
+It has been worked on but abandoned as you can see in this issue on library's [github](https://github.com/trungdong/prov/issues/122).
+
 

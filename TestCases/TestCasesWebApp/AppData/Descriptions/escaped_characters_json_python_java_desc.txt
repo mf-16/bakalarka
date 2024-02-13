@@ -1,6 +1,16 @@
-﻿Python serializes this document and when deserializing in Java escape characters are added.
-According to PROV-N https://www.w3.org/TR/prov-n/ all these characters should be escaped
-<PN_CHARS_ESC>	   ::=   	"\" ( "=" | "'" | "(" | ")" | "," | "-" | ":" | ";" | "[" | "]" | "." )
-But Java can handle unescaped characters as well, but will escape them in the process of deserialization.
-This is because when using jackson library there is a CustomKeyDeserializer which uses CustomQualifiedNameDeserializer which uses method public QualifiedName stringToQualifiedName(String id, ProvFactory pFactory, boolean isEscaped) with the isEscaped flag being false.
-This method escapes the local part of the qualified name if isEscaped is false.
+﻿All the characters used should be escaped according to [PROV-N](https://www.w3.org/TR/prov-n/#prod-PN_CHARS_ESC).
+
+\`<PN_CHARS_ESC>	   ::=   	"\" ( "=" | "'" | "(" | ")" | "," | "-" | ":" | ";" | "[" | "]" | "." )\`
+
+We first create a entity in Python with identifier, which has all the characters that should be escaped in local part of identifier.
+
+When serializing JSON format, Python uses [json](https://docs.python.org/3/library/json.html) library, more specifically the json.dump() method.
+This method takes custom encoder. The custom encoder for JSON format in Python is [ProvJSONEncoder](https://github.com/trungdong/prov/blob/1cb710a26c623c5c706b1c6945c645efd9e925c0/src/prov/serializers/provjson.py#L93).
+When serializing identifier of entity in [encode_json_container()](https://github.com/trungdong/prov/blob/1cb710a26c623c5c706b1c6945c645efd9e925c0/src/prov/serializers/provjson.py#L126), on line 144:
+
+\`identifier = str(real_or_anon_id(record))\`
+
+Python just uses the real_or_anon_id(), which in this case just returns the identifier back and then converts it to string.
+This is not the right solution according to PROV-N.
+
+How Java deserializes this document is irrelevant, because Python should not have produced document with unescaped characters in a first place.

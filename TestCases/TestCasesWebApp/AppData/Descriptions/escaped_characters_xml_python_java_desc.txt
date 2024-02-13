@@ -1,5 +1,26 @@
-﻿Python serializes the object and when deserializing in Java it escapes all the characters.
-According to PROV-N https://www.w3.org/TR/prov-n/ all these characters should be escaped
-<PN_CHARS_ESC>	   ::=   	"\" ( "=" | "'" | "(" | ")" | "," | "-" | ":" | ";" | "[" | "]" | "." )
-When deserializing XML jackson library is used. While deserializing the entity CustomQualifiedNameDeserializer is used.
-Then public static QualifiedName unescapeQualifiedName(QualifiedName id) is applied to the Qualified name which escaped all characters.
+﻿All the characters used should be escaped according to [PROV-N](https://www.w3.org/TR/prov-n/#prod-PN_CHARS_ESC).
+
+\`<PN_CHARS_ESC>	   ::=   	"\" ( "=" | "'" | "(" | ")" | "," | "-" | ":" | ";" | "[" | "]" | "." )\`
+
+We first create a entity in Python with identifier, which has all the characters that should be escaped in local part of identifier.
+
+When serializing XML format, Python uses the custom XML deserializer [ProvXMLSerializer](https://github.com/trungdong/prov/blob/master/src/prov/serializers/provxml.py#L34).
+Python turns [ProvDocument](https://github.com/trungdong/prov/blob/1cb710a26c623c5c706b1c6945c645efd9e925c0/src/prov/model.py#L2262) representation of PROV document into [etree](https://lxml.de/tutorial.html) from [lxml](https://lxml.de/) library.
+
+When identifier of entity is being serialized [ProvXMLSerializer#serialize_bundle()](https://github.com/trungdong/prov/blob/1cb710a26c623c5c706b1c6945c645efd9e925c0/src/prov/serializers/provxml.py#L70) is used. Identifier is just turned into string on line 117:
+\`\`\`
+identifier = str(record._identifier) if record._identifier else None
+
+if identifier:
+    attrs = {_ns_prov("id"): identifier}
+else:
+    attrs = None
+\`\`\`
+
+Then on line 129 element is created:
+
+\`elem = etree.SubElement(xml_bundle_root, _ns_prov(rec_label), attrs)\`
+
+This is not right solution according to PROV-N.
+
+How Java deserializes this document is irrelevant, because Python should not have produced document with unescaped characters in a first place.
