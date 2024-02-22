@@ -1,4 +1,13 @@
+Java stores default namespace in the Namespace#defaultNamespace field.
+
+When serializing PROVN format, Java uses the [custom ProvSerializer](https://github.com/lucmoreau/ProvToolbox/blob/master/modules-core/prov-n/src/main/java/org/openprovenance/prov/notation/ProvSerialiser.java).
+When serializing the default namesapce, Java uses the [NotationConstructor#processNamespaces()](https://github.com/lucmoreau/ProvToolbox/blob/96dd235aba6072c6e7671929b57b61088b9f6a38/modules-core/prov-n/src/main/java/org/openprovenance/prov/notation/NotationConstructor.java#L493), which on line 499:
+
+\` s = s + convertDefaultNamespace("<" + def + ">") + breakline();\`
+
+uses the [NotationConstructor#convertDefaultNamespace()](https://github.com/lucmoreau/ProvToolbox/blob/96dd235aba6072c6e7671929b57b61088b9f6a38/modules-core/prov-n/src/main/java/org/openprovenance/prov/notation/NotationConstructor.java#L78). This method just combines keyword \`"default"\` and the URI.
+
 PROVN deserialization in python is not implemented yet. 
-As stated in [ProvPy features](https://pypi.org/project/prov/), "In-memory classes for PROV assertions, which can then be output as PROV-N", implicating that only PROV-N serialization is supported.
-It has been worked on but abandoned as you can see in this issue on libraries [github](https://github.com/trungdong/prov/issues/122).
+As stated in [ProvPy features](https://pypi.org/project/prov/), "In-memory classes for PROV assertions, which can then be output as PROV-N", implying that only PROV-N serialization is supported.
+It has been worked on but abandoned as you can see in this issue on library's [github](https://github.com/trungdong/prov/issues/122).
 

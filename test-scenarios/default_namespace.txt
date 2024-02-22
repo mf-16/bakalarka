@@ -6,7 +6,7 @@ document
   default <https://default.org/>
   prefix ex <https://example.org/>
 
-  entity(ex:e)
+  entity(e)
 endDocument
 
 

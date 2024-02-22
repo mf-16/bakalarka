@@ -12,5 +12,6 @@
   "space_in_prefix": "SpaceInPrefix",
   "top_instance_namespace_bundle": "TopInstanceNamespaceBundle",
   "test_test_case": "TestTestCase",
-  "implicit_existence_of_prov_namespace": "ImplicitExistenceOfProvNamespace"
+  "implicit_existence_of_prov_namespace": "ImplicitExistenceOfProvNamespace",
+  "identifier_without_prefix": "IdentifierWithoutPrefix"
 }

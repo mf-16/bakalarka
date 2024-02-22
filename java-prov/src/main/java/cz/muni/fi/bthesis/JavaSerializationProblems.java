@@ -34,7 +34,7 @@ public class JavaSerializationProblems {
         File file = new File("../python-prov/java_serialization_problems.xml");
         try {
             OutputStream outputStream = new FileOutputStream(file);
-            inf.writeDocument(outputStream, Formats.ProvFormat.XML, document);
+            //inf.writeDocument(outputStream, Formats.ProvFormat.XML, document);
         } catch (IOException e) {
             e.printStackTrace();
         }
