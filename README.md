@@ -18,7 +18,7 @@ All you need to do is download Docker for your operating system and pull an imag
 
 This pulls the image from Docker Hub to your images locally (check with `docker images`). Now you have the image locally, and you just run the web application with the command:
 
-`docker run -it --rm 5000:80 m16f/prov:1.0.1`
+`docker run -it --rm -p 5000:80 m16f/prov:1.0.1`
 
 The web application is now running on `http://localhost:5000/`. So just put the URL to the browser of your choice.
 
