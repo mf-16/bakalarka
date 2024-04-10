@@ -11,7 +11,8 @@ class TestTestCase(TestCase):
     def create_document(self):
         document = ProvDocument()
         document.add_namespace("ex", "https://example.org/")
-        c = document.collection("ex:c")
-        e = document.entity("ex:1ahoj")
-        c.hadMember(e)
+        rw = document.agent("ex:rw")
+        mf = document.agent("ex:mf")
+        wr = document.activity("ex:writing")
+        document.delegation(mf,rw,wr)
         return document

@@ -6,34 +6,39 @@
 <div class="container text-center">
     <form method="post" class="mt-5">
         <div class="row mb-5">
-            <div class="col-md-6">
+            <div class="col-12 col-lg-6">
                 <div class="form-group">
                     <label>Test Case:</label>
-                    <select class="form-control" asp-for="TestCase" asp-items="@Model.testCaseComboBox"></select>
+                    <select id="test-case" class="form-control" asp-for="TestCase" asp-items="@Model.testCaseComboBox"></select>
                 </div>
             </div>
-            <div class="col-md-2">
+            <div class="col-12 col-lg-2">
                 <div class="form-group">
                     <label>Format:</label>
-                    <select class="form-control" asp-for="Format" asp-items="@Model.formatComboBox"></select>
+                    <select id="format" class="form-control" asp-for="Format" asp-items="@Model.formatComboBox"></select>
                 </div>
             </div>
-            <div class="col-md-2">
+            <div class="col-12 col-lg-2">
                 <div class="form-group">
-                    <label>Serialize in library:</label>
+                    <label>Serialize in:</label>
                     <select id="serialize" class="form-control" asp-for="SerializeIn" asp-items="@Model.executableCombobox"></select>
                 </div>
             </div>
-            <div class="col-md-2">
+            <div class="col-12 col-lg-2">
                 <div class="form-group">
-                    <label>Deserialize in library:</label>
+                    <label class="d-inline-block">Deserialize in:</label>
                     <input id="deserialize" class="form-control" asp-for="DeserializeIn" asp-items="@Model.executableCombobox" readonly />
                 </div>
             </div>
         </div>
         <div class="row">
             <div class="col-md-12 text-center">
-                <button type="submit" class="btn btn-primary mx-auto">Run Test Case</button>
+                <p id="description" class="h3 mt-5 mb-5"></p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 text-center mt-5 mb-5">
+                <button type="submit" class="btn btn-primary mx-auto btn-lg">Run Test Case</button>
             </div>
         </div>
     </form>
@@ -41,10 +46,60 @@
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script>
     $(document).ready(function () {
+        var serializeValue = sessionStorage.getItem('serialize');
+        var testCaseValue = sessionStorage.getItem('test-case');
+        var formatValue = sessionStorage.getItem('format');
+        var description = sessionStorage.getItem('desc');
+        console.log(serializeValue === 'java' || serializeValue === null ? 'python' : 'java');
+        console.log(serializeValue);
+
+        $("#serialize").val(serializeValue || 'java');
+        $("#deserialize").val(serializeValue === 'java' || serializeValue === null ? 'python' : 'java');
+        $("#test-case").val(testCaseValue || 'default_namespace');
+        $("#format").val(formatValue || 'provn');
+        $("#description").text(description || 'This test evaluates library`s capability to safely use and preserve default namespace.');
+
+
         $("#serialize").change(function () {
             var selectedValue = $(this).val();
             console.log("Selected value: " + selectedValue);
             $("#deserialize").val(selectedValue === "java" ? "python" : "java");
+
+            sessionStorage.setItem('serialize', selectedValue);
         });
+
+        async function getDescription(selectedTestCase) {
+            try {
+                const response = await fetch(`/TestCases/Index?handler=Description&selectedTestCase=${selectedTestCase}`);
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                const data = await response.json();
+                document.getElementById('description').textContent = data;
+                sessionStorage.setItem('desc', data);
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        $("#test-case").change(function () {
+            var selectedValue = $(this).val();
+            getDescription(selectedValue);
+
+            console.log("Selected value: " + selectedValue);
+
+            sessionStorage.setItem('test-case', selectedValue);
+        });
+
+        $("#format").change(function () {
+            var selectedValue = $(this).val();
+            console.log("Selected value: " + selectedValue);
+
+            sessionStorage.setItem('format', selectedValue);
+        });
+
     });
 </script>
+

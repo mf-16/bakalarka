@@ -50,6 +50,20 @@ namespace TestCasesWebApp.Pages.TestCases
 
         private CommandProcessor CommandProcessor { get; set; }
 
+        public Dictionary<string, string> testCaseDescriptions = new Dictionary<string, string>()
+        {
+            { "default_namespace","This test evaluates library`s capability to safely use and preserve default namespace." },
+            { "escaped_characters","This test examines capability of library to escape characters that should be escaped"},
+            { "checking_uri_syntax","This test checks if library is validating the IRI when creating namespaces. The objective is to ensure that the library correctly identifies IRIs which are not correct."},
+            {"local_part_of_id_with_space", "This test verifies whether the libraries correctly identifiu and reject identifier with space in its local part. For example: \"ex: a b c\" " },
+            {"loss_of_microseconds","This test evaluates if the library is capable of not losing the microseconds when working with time instants." },
+            {"loss_of_timezone","This test evaluates the ability of library to preserve timezones."},
+            {"multiple_prov_value","This test evaluates the capability of library to correctly identify and reject entity records that contain multiple prov:value attributes, which is not allowed according to PROV-DM"},
+            {"prov_record_without_id","This test evaluates ability to correctly handle relations without identifier."},
+            {"prov_value_not_in_entity","The test evaluates the capability of library to identify and reject prov:value attributes not in entity, which is not allowed according to PROV-DM"},
+            {"space_in_prefix","This test checks if library is validation the prefix during namespace declaration" },
+        };
+
         public IndexModel()
         {
             TestRunnerService = new TestRunnerService();
@@ -58,8 +72,6 @@ namespace TestCasesWebApp.Pages.TestCases
 
         public void OnGet()
         {
-            SerializeIn = "java";
-            DeserializeIn = "python";
 
         }
         public IActionResult OnPost()
@@ -71,11 +83,26 @@ namespace TestCasesWebApp.Pages.TestCases
             string descFilePath = Path.Combine("AppData", "Descriptions", descFile);
             testCaseResult.Description = System.IO.File.ReadAllText(descFilePath);
 
+            string startDocument = TestCase + ".provn";
+            string startDocumentPath = Path.Combine("AppData", "ProvnFiles", startDocument);
+            testCaseResult.StartDocument = System.IO.File.ReadAllText(startDocumentPath);
+
             string testCaseResultJson = JsonConvert.SerializeObject(testCaseResult);
             string filePath = Path.Combine("AppData", "testCaseResult.json");
             System.IO.File.WriteAllText(filePath, testCaseResultJson);
             
             return RedirectToPage("/TestCases/Result");
+        }
+        public IActionResult OnGetDescription(string selectedTestCase)
+        {
+            if (testCaseDescriptions.ContainsKey(selectedTestCase))
+            {
+                return new JsonResult(testCaseDescriptions[selectedTestCase]);
+            }
+            else
+            {
+                return new NotFoundResult();
+            }
         }
     }
 }

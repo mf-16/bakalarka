@@ -1,0 +1,5 @@
+document
+  prefix ex <https://example.org/>
+  
+  entity(ex:='(),-:;[].)
+endDocument

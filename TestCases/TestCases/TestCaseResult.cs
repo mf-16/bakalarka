@@ -13,6 +13,8 @@ namespace TestCases
         public bool Result { get; set; }
         public string? SerializedDocument { get; set; }
         public string? DeserializedDocument { get; set; }
+
+        public string? StartDocument { get; set; }
         public string? Exception { get; set; }
         public string?  Description { get; set; }
         public TestCaseResult()

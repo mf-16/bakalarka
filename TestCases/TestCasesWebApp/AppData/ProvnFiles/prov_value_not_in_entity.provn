@@ -1,0 +1,5 @@
+document
+  prefix ex <https://example.org/>
+  
+  activity(ex:ac, -, -, [prov:value=1])
+endDocument

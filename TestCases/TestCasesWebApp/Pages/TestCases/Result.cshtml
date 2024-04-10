@@ -15,35 +15,35 @@
 <body style="background-color: @(Model.TestCaseResult.Result ? "#eaf7ea" : "#f7eaea")">
     <div class="container">
         <div class="row text-center">
-            <div class="col-6">
-                <div class="textarea">
-                    <h4>Serialized Document</h4>
-                    <textarea readonly rows="10" class="form-control">@Model.TestCaseResult.SerializedDocument</textarea>
-                </div>
+            <div class="col-12 col-lg-4">
+                <h4>Start Document</h4>
+                <textarea readonly rows="10" class="form-control">@Model.TestCaseResult.StartDocument</textarea>
             </div>
-            <div class="col-6">
-                <div class="textarea">
-                    <h4>Deserialized Document</h4>
-                    <textarea readonly rows="10" class="form-control">@Model.TestCaseResult.DeserializedDocument</textarea>
-                </div>
+            <div class="col-12 col-lg-4">
+                <h4>Serialized Document</h4>
+                <textarea readonly rows="10" class="form-control">@Model.TestCaseResult.SerializedDocument</textarea>
+            </div>
+            <div class="col-12 col-lg-4">
+                <h4>Deserialized Document</h4>
+                <textarea readonly rows="10" class="form-control">@Model.TestCaseResult.DeserializedDocument</textarea>
             </div>
         </div>
         @if (Model.TestCaseResult.Exception != null)
         {
             <div class="row">
-                <div class="col-12 text-center mt-3">
-                    <button type="button" class="btn btn-danger" onclick="openModal('exModal')">Exceptions</button>
+                <div class="col-12 text-center mt-5">
+                    <button type="button" class="btn btn-danger btn-lg" onclick="openModal('exModal')">Exceptions</button>
                 </div>
             </div>
         }
         <div class="row">
-            <div class="col-12 text-center mt-3">
-                <button type="button" class="btn btn-primary" onclick="openModal('desModal')">Description</button>
+            <div class="col-12 text-center mt-5">
+                <button type="button" class="btn btn-primary btn-lg" onclick="openModal('desModal')">Description</button>
             </div>
         </div>
         <div class="row">
-            <div class="col-12 text-center mt-3">
-                <a asp-page="/TestCases/Index" class="btn btn-secondary">Back</a>
+            <div class="col-12 text-center mt-5">
+                <a asp-page="/TestCases/Index" class="btn btn-secondary btn-lg">Back</a>
             </div>
         </div>
 

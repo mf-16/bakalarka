@@ -78,7 +78,7 @@ namespace TestCases
         }
         public static string GetRootDirectory(string startingDirectory)
         {
-            string resultDirectory = Path.Combine(startingDirectory, "..", "..", "..", "..", "..");
+            string resultDirectory = Path.Combine(startingDirectory, "..", "..", "..","..","..");
 
             resultDirectory = Path.GetFullPath(resultDirectory);
 

@@ -21,7 +21,7 @@ if __name__ == "__main__":
     config_file_path = os.path.join('..', '..', 'config.json')
     with open(config_file_path, 'r') as f:
         config = json.load(f)
-    #sys.argv = [".\main.py","space_in_prefix","xml","s"]
+    #sys.argv = [".\main.py","escaped_characters","xml","d"]
     key = sys.argv[1]
     if key in config:
         class_name = config[key]

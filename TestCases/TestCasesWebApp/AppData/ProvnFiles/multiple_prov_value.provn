@@ -1,0 +1,4 @@
+document
+  prefix ex <https://example.org/>
+  entity(ex:e, [prov:value=1, prov:value=2, prov:value=3])
+endDocument

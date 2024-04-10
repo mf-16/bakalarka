@@ -5,19 +5,19 @@
 }
 
 <div class="container text-center">
-    <h1>Welcome to the PROV Interoperability Tester!</h1>
+    <h1>Welcome to the PROV libraries compatibility Tester!</h1>
 
     <h2>Overview</h2>
     <p>
-        Welcome to the PROV Interoperability Tester, a web application developed as part of my bachelor thesis. This platform
-        is dedicated to evaluating the compatibility between two of the most prominent libraries implementing the PROV standard.
-        The PROV (Provenance) standard, established to represent and interchange provenance information, plays a crucial role in
-        tracking the origins and transformations of digital entities.
+        Welcome to the PROV libraries compatibility Tester, a web application developed as part of my bachelor thesis. This web page
+        showcases compatibility issues I found during my bachelor thesis.
     </p>
     <p>
-        In the landscape of PROV libraries, ProvToolbox and ProvPy stand out as two of the most comprehensive and widely-used
-        solutions. This tool focuses on meticulously testing the serialization and deserialization capabilities of these
-        libraries across three formats: PROVN, JSON, and XML.
+        The focus of this project revolves around testing the compatibility between two libraries: ProvToolbox and Prov Python, and their compatibility with three serialization formats: PROV-N, PROV-JSON, and PROV-XML.
+        Each issue begins with a PROV-N file, allowing users to visualize the generated content in memory for each library. This PROV document is then serialized into the user's chosen serialization format (PROV-N, PROV-JSON, or PROV-XML).
+        Subsequently, the deserialized document is serialized back to reveal the content stored in memory by that library, allowing user to observe compatibility issues.
+        Finally, a PROV document is created using the starting PROV-N file and compared to the deserialized document, highlighting any compatibility differences between the libraries.
+        Each issue is accompanied by a description explaining its underlying causes, as well as showcasing the exception that occurs when the issue arises.
     </p>
     <div class="mt-5 mb-5">
         <a asp-page="/TestCases/Index" class="btn btn-primary btn-lg">Explore Test Cases</a>
@@ -25,28 +25,27 @@
     <h2>How It Works</h2>
     <div class="container">
         <div class="row">
-            <div class="col-4">
-                <h4>Select a Test Case</h4>
+            <div class="col-12 col-lg-4">
+                <h4>Select a test case, format and library </h4>
                 <p>
-                    Choose a specific test case from the available options to evaluate the interoperability between the two
-                    PROV libraries. Each test case examines the serialization and deserialization processes in PROVN, JSON,
-                    and XML formats.
+
+                    Select a specific issue from the available options, along with the serialization format in which the test case will be executed, and specify the library you intend to use for serialization. The library for deserialization will be automatically determined based on your selection.
                 </p>
             </div>
-            <div class="col-4">
-                <h4>Run the Test</h4>
+            <div class="col-12 col-lg-4">
+                <h4>Run the test case</h4>
                 <p>
-                    With a simple click, initiate the test and watch as the application executes the selected test case against
-                    the two libraries. The results will be displayed promptly, showcasing the serialized and deserialized
-                    documents.
+                    With a click, initiate the test. Application executes the selected test case against
+                    the two libraries. The results will be displayed showcasing the serialized and deserialized documents, along with additional information.
                 </p>
             </div>
-            <div class="col-4">
+            <div class="col-12 col-lg-4">
                 <h4>Interpret the Results</h4>
                 <p>
-                    If the test is successful, you'll see the serialized and deserialized documents for each format. In case of
-                    failure, a detailed exception message will be presented along with a brief description to help you understand
-                    the root cause of the issue.
+                    You are given a starting PROV-N file to visualize the content generated within the library.
+                    Additionally, you will receive both the serialized and deserialized documents, providing insights into both the serialization and deserialization processes.
+                    In the end, if the documents are identical in memory, the background will be green; otherwise, it will be red.
+                    Moreover, you can review the description for further insights into the issue's occurrence and observe any exceptions thrown.
                 </p>
             </div>
         </div>

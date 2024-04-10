@@ -10,20 +10,20 @@ import org.openprovenance.prov.vanilla.ProvFactory;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException, InstantiationException {
         args = new String[3];
-        args[0] = "space_in_prefix";
-        args[1] = "json";
-        args[2] = "d";
+        args[0] = "escaped_characters";
+        args[1] = "xml";
+        args[2] = "s";
         var config = loadConfig();
         var javaClass = "cz.muni.fi.bthesis." + config.get(args[0]).getAsString();
 
-        try {
             Class<?> clazz = Class.forName(javaClass);
             Object instance = clazz.getDeclaredConstructor().newInstance();
             Method method = null;
@@ -33,9 +33,6 @@ public class Main {
                 method = clazz.getMethod("deserialize", String.class);
             }
             method.invoke(instance, args[1]);
-        } catch (Exception e) {
-            throw new RuntimeException("Error running Java class", e);
-        }
     }
 
     private static JsonObject loadConfig() {
