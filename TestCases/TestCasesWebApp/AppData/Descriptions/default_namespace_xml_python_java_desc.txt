@@ -1,31 +1,31 @@
-﻿Python stores default namespace in property NamespaceManager#default_ns_uri
+﻿Prov Python stores default namespace in property NamespaceManager#default_ns_uri
 
-When serializing XML format, Python uses the custom XML deserializer [ProvXMLSerializer](https://github.com/trungdong/prov/blob/master/src/prov/serializers/provxml.py#L34).
-When serializing default namespace in method [ProvXMLSerializer#serialize_bundle()](https://github.com/trungdong/prov/blob/master/src/prov/serializers/provxml.py#L70), it creates the nsmap on line 87, which is map containing all the namespaces.
-Then on line 92 adds defualt namespace if it exists:
+When serializing to PROV-XML, Prov Python uses the custom XML deserializer [ProvXMLSerializer](https://github.com/trungdong/prov/blob/master/src/prov/serializers/provxml.py#L34).
+When serializing the default namespace in method [ProvXMLSerializer#serialize_bundle()](https://github.com/trungdong/prov/blob/master/src/prov/serializers/provxml.py#L70), it creates the nsmap on line 87, which is a map containing all the namespaces.
+Then, on line 92, adds the default namespace if it exists:
 
 \`nsmap[None] = self.document._namespaces._default.uri\`
 
-Then on line 110 uses [etree](https://lxml.de/tutorial.html) from [lxml](https://lxml.de/) library to create XML root element, lxml library will asign default namespace to the one with None prefix in nsmap.
+After that, on line 110 uses [etree](https://lxml.de/tutorial.html) from [lxml](https://lxml.de/) library to create the XML root element, lxml library will assign the default namespace to the one with None prefix in nsmap.
 
 \`xml_bundle_root = etree.Element(_ns_prov("document"), nsmap=nsmap)\`
 
-Therefore, default namespace is preserved.
+Therefore, the default namespace is preserved.
 
-When deserializing XML format, Java uses [jackson](https://github.com/FasterXML/jackson) library.
-When deserializing namespaces Java only creates temporary namespaces and then does not add it to namespace at the end.
+ProvToolbox uses [jackson](https://github.com/FasterXML/jackson) library when deserializing from PROV-XML.
+When deserializing namespaces, ProvToolbox only creates temporary namespaces and then does not add them to the namespace at the end.
 
 Here is how this works:
 
-Java only work with namespaces when deserializing identifiers and uses the [CustomQualifiedNameDeserializer#deserialize()](https://github.com/lucmoreau/ProvToolbox/blob/e00294b3a2442915a57cff4840a58e96f0739fad/modules-core/prov-jsonld-xml/src/main/java/org/openprovenance/prov/core/xml/serialization/deserial/CustomQualifiedNameDeserializer.java#L23) method. It gets the namespace on line 24:
+ProvToolbox only works with namespaces when deserializing identifiers and uses the [CustomQualifiedNameDeserializer#deserialize()](https://github.com/lucmoreau/ProvToolbox/blob/e00294b3a2442915a57cff4840a58e96f0739fad/modules-core/prov-jsonld-xml/src/main/java/org/openprovenance/prov/core/xml/serialization/deserial/CustomQualifiedNameDeserializer.java#L23) method. It gets the namespace on line 24:
 
 \`Namespace ns = DeserializerUtil.getNamespace(deserializationContext);\`
 
 [DeserializerUtil#getNamespace()](https://github.com/lucmoreau/ProvToolbox/blob/26c48162902a8f115b6d4c882ef91eb1f4e1884a/modules-core/prov-jsonld-xml/src/main/java/org/openprovenance/prov/core/xml/serialization/deserial/DeserializerUtil.java#L19) creates the namespace if it is null, by adding known namespaces, if it is not null it just returns the already created namespace.
 
-After this it uses method [DeserializerUtil#getAttributeValue()](https://github.com/lucmoreau/ProvToolbox/blob/26c48162902a8f115b6d4c882ef91eb1f4e1884a/modules-core/prov-jsonld-xml/src/main/java/org/openprovenance/prov/core/xml/serialization/deserial/DeserializerUtil.java#L29), which registers the namespace of prefix (in this case \`ex\`) on line 34:
+After this, it uses method [DeserializerUtil#getAttributeValue()](https://github.com/lucmoreau/ProvToolbox/blob/26c48162902a8f115b6d4c882ef91eb1f4e1884a/modules-core/prov-jsonld-xml/src/main/java/org/openprovenance/prov/core/xml/serialization/deserial/DeserializerUtil.java#L29), which registers the namespace of the prefix (in this case \`ex\`) on line 34:
 
 \`ns.register(prefix,ans);\`
 
-This means that entity with identifier \`ex:e\` will be created, because namespace \`ex : https://example.org/\` exists during deserialization, but after the deserialization process namespace for document is not set.
-Therefore we obtain [Document](https://github.com/lucmoreau/ProvToolbox/blob/master/modules-core/prov-model/src/main/java/org/openprovenance/prov/vanilla/Document.java) object with empty namespace.
+This means that an entity with identifier \`ex:e\` will be created because namespace \`ex : https://example.org/\` exists during deserialization, but after the deserialization process, the namespace for the document is not set.
+Therefore we obtain [Document](https://github.com/lucmoreau/ProvToolbox/blob/master/modules-core/prov-model/src/main/java/org/openprovenance/prov/vanilla/Document.java) object with an empty namespace.

@@ -1,10 +1,7 @@
-﻿Java stores default namespace in the Namespace#defaultNamespace field.
+﻿ProvToolbox stores the default namespace in the Namespace#defaultNamespace field.
 
-When serializing XML format, Java uses [jackson](https://github.com/FasterXML/jackson) library.
-When setting default namespace jackson just uses namespace of root element. Since root element is prov:document, jackson choses prov as default namespace and overrides the default namespace which was set.
-Jackson does not allow you to set your own default namespace. So we lose information about default namespace.
+ProvToolbox uses [jackson](https://github.com/FasterXML/jackson) library when serializing to PROV-XML.
+When setting the default namespace, jackson uses the root element's namespace. Since the root element is prov:document, jackson chooses prov as the default namespace and overrides the default namespace which was set.
+Jackson does not allow you to set your own default namespace. So, we lose information about default namespace.
 
-Python deserializes the file without any issues.
-
-
-
+ProvToolbox deserializes the file without any issues.

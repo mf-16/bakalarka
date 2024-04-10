@@ -1,7 +1,7 @@
-﻿Python stores default namespace in property NamespaceManager#default_ns_uri
+﻿Prov Python stores default namespace in property NamespaceManager#default_ns_uri
 
-When serializing JSON format, Python uses [json](https://docs.python.org/3/library/json.html) library, more specifically the json.dump() method.
-This method takes custom encoder. The custom encoder for JSON format in Python is [ProvJSONEncoder](https://github.com/trungdong/prov/blob/1cb710a26c623c5c706b1c6945c645efd9e925c0/src/prov/serializers/provjson.py#L93).
+When serializing to PROV-JSON, Prov Python uses [json](https://docs.python.org/3/library/json.html) library, specifically the json.dump() method.
+This method takes a custom encoder. The custom encoder for PROV-JSON format in Prov Python is [ProvJSONEncoder](https://github.com/trungdong/prov/blob/1cb710a26c623c5c706b1c6945c645efd9e925c0/src/prov/serializers/provjson.py#L93).
 When serializing default namespace in [encode_json_container()](https://github.com/trungdong/prov/blob/1cb710a26c623c5c706b1c6945c645efd9e925c0/src/prov/serializers/provjson.py#L126), on line 131:
 
 \`\`\`
@@ -9,14 +9,14 @@ if bundle._namespaces._default:
     prefixes["default"] = bundle._namespaces._default.uri
 \`\`\`
 
-if there is a default namespace serialize its URI into default node. Everything is [PROV-JSON](https://www.w3.org/submissions/prov-json/#prov-dm-namespace) compliant.
+if there is a default namespace, serialize its IRI into the default node. Everything is [PROV-JSON](https://www.w3.org/submissions/prov-json/#prov-dm-namespace) compliant.
 
-When deserializing JSON format, Java uses [jackson](https://github.com/FasterXML/jackson) library.
-When deserializing namespaces Java uses [CustomNamespacePrefixDeserializer#deserialize()](https://github.com/lucmoreau/ProvToolbox/blob/96dd235aba6072c6e7671929b57b61088b9f6a38/modules-core/prov-jsonld/src/main/java/org/openprovenance/prov/core/json/serialization/deserial/CustomNamespacePrefixDeserializer.java#L34). On line 53:
+ProvToolbox uses [jackson](https://github.com/FasterXML/jackson) library when deserializing from PROV-JSON.
+When deserializing namespaces ProvToolbox uses [CustomNamespacePrefixDeserializer#deserialize()](https://github.com/lucmoreau/ProvToolbox/blob/96dd235aba6072c6e7671929b57b61088b9f6a38/modules-core/prov-jsonld/src/main/java/org/openprovenance/prov/core/json/serialization/deserial/CustomNamespacePrefixDeserializer.java#L34). On line 53:
 
 \`ns.register(prefix,namespace);\`
 
-It uses [Namespace#register()](https://github.com/lucmoreau/ProvToolbox/blob/ca05849c88a84aae736355569a8bdae78c68b072/modules-core/prov-model/src/main/java/org/openprovenance/prov/model/Namespace.java#L124) with prefix \`"default"\`, but the Namespace#defaultNamespace field, where Java stores default namespace is only set when calling Namespace#registerDefault() or Namespace#register() with null prefix.
-Therefore defaultNamespace is not set. Even if it might look like it, because there is a namespace with prefix \`"default"\`.
+It uses [Namespace#register()](https://github.com/lucmoreau/ProvToolbox/blob/ca05849c88a84aae736355569a8bdae78c68b072/modules-core/prov-model/src/main/java/org/openprovenance/prov/model/Namespace.java#L124) with prefix \`"default"\`, but the Namespace#defaultNamespace field, where ProvToolbox stores default namespace is only set when calling Namespace#registerDefault() or Namespace#register() with null prefix.
+Therefore defaultNamespace is not set. Even if it might look like it, because now there is a namespace with prefix \`"default"\`, which is not the default namespace in memory.
 
-This issue was reported to author of ProvToolbox and was resolved in this [commit](https://github.com/lucmoreau/ProvToolbox/commit/20a9edf219e84c383d28283bc199d9ac32903687). The issue was resolved by adding namespace with method [Namespace#registerDefault()], when \`"default"\` prefix is detected in  [CustomNamespacePrefixDeserializer#deserialize()](https://github.com/lucmoreau/ProvToolbox/blob/20a9edf219e84c383d28283bc199d9ac32903687/modules-core/prov-jsonld/src/main/java/org/openprovenance/prov/core/json/serialization/deserial/CustomNamespacePrefixDeserializer.java)
+This issue was reported to the author of ProvToolbox and was resolved in this [commit](https://github.com/lucmoreau/ProvToolbox/commit/20a9edf219e84c383d28283bc199d9ac32903687). The issue was resolved by adding namespace with method [Namespace#registerDefault()], when \`"default"\` prefix is detected in  [CustomNamespacePrefixDeserializer#deserialize()](https://github.com/lucmoreau/ProvToolbox/blob/20a9edf219e84c383d28283bc199d9ac32903687/modules-core/prov-jsonld/src/main/java/org/openprovenance/prov/core/json/serialization/deserial/CustomNamespacePrefixDeserializer.java)

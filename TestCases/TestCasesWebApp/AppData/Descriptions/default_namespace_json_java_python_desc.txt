@@ -1,13 +1,12 @@
-Java stores default namespace in the Namespace#defaultNamespace field.
+ProvToolbox stores the default namespace in the Namespace#defaultNamespace field.
 
-When serializing JSON format, Java uses [jackson](https://github.com/FasterXML/jackson) library.
-When serializing defaultNamespace, Java uses [ProvSerializer#serialize()](https://github.com/lucmoreau/ProvToolbox/blob/ca05849c88a84aae736355569a8bdae78c68b072/modules-core/prov-jsonld/src/main/java/org/openprovenance/prov/core/json/serialization/ProvSerialiser.java#L49). On line 54 you can see that [SortedDocument](https://github.com/lucmoreau/ProvToolbox/blob/master/modules-core/prov-jsonld/src/main/java/org/openprovenance/prov/core/json/serialization/SortedDocument.java) object is created:
+ProvToolbox uses [jackson](https://github.com/FasterXML/jackson) library when serializing to PROV-JSON.
+When serializing default namespace, ProvToolbox uses [ProvSerializer#serialize()](https://github.com/lucmoreau/ProvToolbox/blob/ca05849c88a84aae736355569a8bdae78c68b072/modules-core/prov-jsonld/src/main/java/org/openprovenance/prov/core/json/serialization/ProvSerialiser.java#L49). On line 54 you can see that [SortedDocument](https://github.com/lucmoreau/ProvToolbox/blob/master/modules-core/prov-jsonld/src/main/java/org/openprovenance/prov/core/json/serialization/SortedDocument.java) object is created:
 
 \`mapper.writeValue(out, new SortedDocument(document));\`
 
 SortedDocument extends [SortedBundle](https://github.com/lucmoreau/ProvToolbox/blob/master/modules-core/prov-jsonld/src/main/java/org/openprovenance/prov/core/json/serialization/SortedBundle.java). SortedBundle has a getter for default namespace [SortedBundle#getDefaulNamespace()](https://github.com/lucmoreau/ProvToolbox/blob/ca05849c88a84aae736355569a8bdae78c68b072/modules-core/prov-jsonld/src/main/java/org/openprovenance/prov/core/json/serialization/SortedBundle.java#L161) and jackson library serializes every public getter if it is not ignored with annotations.
-When serializing the defaultNamespace property, Java uses default StringSerializer. Therefore node is created called defaultNamespace.
-According to [PROV-JSON](https://www.w3.org/submissions/prov-json/#prov-dm-namespace) default namespace should be in prefix like this:
+When serializing the defaultNamespace property, ProvToolbox uses the default StringSerializer. Consequently, a node is created with the name defaultNamespace. However, according to the [PROV-JSON](https://www.w3.org/submissions/prov-json/#prov-dm-namespace), the default namespace should be represented using prefixes like this:
 
 \`\`\`
 {
@@ -20,15 +19,15 @@ According to [PROV-JSON](https://www.w3.org/submissions/prov-json/#prov-dm-names
 }
 \`\`\`
 
-When deserializing JSON format Python uses the [json](https://docs.python.org/3/library/json.html) library, more specifically the json.load() function which takes custom decoder.
+When deserializing from PROV-JSON format, Prov Python uses the [json](https://docs.python.org/3/library/json.html) library, more specifically, the json.load() function, which takes a custom decoder.
 The custom decoder in [provjson](https://github.com/trungdong/prov/blob/master/src/prov/serializers/provjson.py) module is [ProvJSONDecoder](https://github.com/trungdong/prov/blob/master/src/prov/serializers/provjson.py#L101).
-When deserializing the defualt namespace in function [decode_json_container()](https://github.com/trungdong/prov/blob/1cb710a26c623c5c706b1c6945c645efd9e925c0/src/prov/serializers/provjson.py#L199),  deserializer expects it to be in prefix node and not in defaultNamespace. Therefore on line 210:
+When deserializing the default namespace in function [decode_json_container()](https://github.com/trungdong/prov/blob/1cb710a26c623c5c706b1c6945c645efd9e925c0/src/prov/serializers/provjson.py#L199),  deserializer expects it to be in prefix node and not in defaultNamespace. Therefore, on line 210:
 
 \`rec_type = PROV_RECORD_IDS_MAP[rec_type_str]\`
 
-it does not find it in map PROV_RECORD_IDS_MAP and throws exception:
+it does not find it in map PROV_RECORD_IDS_MAP and throws the exception:
 
 \`KeyError: 'defaultNamespace'\`
 
-Thiss issue was reported to author  of ProvToolbox and was resolved in [commit](https://github.com/lucmoreau/ProvToolbox/commit/20a9edf219e84c383d28283bc199d9ac32903687), the issue was resolved by adding the getDefaultNamespace() method to [JSON_SortedDocument](https://github.com/lucmoreau/ProvToolbox/blob/ca05849c88a84aae736355569a8bdae78c68b072/modules-core/prov-jsonld/src/main/java/org/openprovenance/prov/core/json/JSON_SortedDocument.java#L26) interface and adding @JsonIgnore annotation.
-This annotation is used in jackson ignore this element in the process of serialization and deserialization.
+This issue was reported to the author  of ProvToolbox and was resolved in [commit](https://github.com/lucmoreau/ProvToolbox/commit/20a9edf219e84c383d28283bc199d9ac32903687); the issue was resolved by adding the getDefaultNamespace() method to [JSON_SortedDocument](https://github.com/lucmoreau/ProvToolbox/blob/ca05849c88a84aae736355569a8bdae78c68b072/modules-core/prov-jsonld/src/main/java/org/openprovenance/prov/core/json/JSON_SortedDocument.java#L26) interface and adding @JsonIgnore annotation.
+This annotation is used in jackson to ignore this element in the process of serialization and deserialization.
