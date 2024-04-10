@@ -1,16 +1,15 @@
-﻿Python allows to create a document with invalid URI in memory. When registering namespace in Python, we use [ProvBundle#add_namespace()](https://github.com/trungdong/prov/blob/1cb710a26c623c5c706b1c6945c645efd9e925c0/src/prov/model.py#L1335) method, which just uses [NamespaceManager#add_namespace()](https://github.com/trungdong/prov/blob/master/src/prov/model.py#L1080) method and [Namespace constructor](https://github.com/trungdong/prov/blob/1cb710a26c623c5c706b1c6945c645efd9e925c0/src/prov/identifier.py#L85C9-L85C17) on line 1347:
+﻿Prov Python allows the creation of a document with an invalid IRI in memory. When registering a namespace in Prov Python, we use [ProvBundle#add_namespace()](https://github.com/trungdong/prov/blob/1cb710a26c623c5c706b1c6945c645efd9e925c0/src/prov/model.py#L1335) method, which just uses [NamespaceManager#add_namespace()](https://github.com/trungdong/prov/blob/master/src/prov/model.py#L1080) method and [Namespace constructor](https://github.com/trungdong/prov/blob/1cb710a26c623c5c706b1c6945c645efd9e925c0/src/prov/identifier.py#L85C9-L85C17) on line 1347:
 
 \`return self._namespaces.add_namespace(Namespace(namespace_or_prefix, uri))\`
 
-In both Namespace constructor and NamespaceManager#add_namespace(), there is no validation of URI.
+There is no validation of IRI in both Namespace constructor and NamespaceManager#add_namespace().
 
-When serializing XML format, Python uses the custom XML deserializer [ProvXMLSerializer](https://github.com/trungdong/prov/blob/master/src/prov/serializers/provxml.py#L34).
-When serializing namespaces in method [ProvXMLSerializer#serialize_bundle()](https://github.com/trungdong/prov/blob/master/src/prov/serializers/provxml.py#L70), it creates the nsmap on line 87, which is map containing all the namespaces.
-In this method it creates the nsmap, which is map containing all the namespaces and then on line 110 uses [etree](https://lxml.de/tutorial.html) from [lxml](https://lxml.de/) library to create XML root element.
+When serializing to PROV-XML, Prov Python uses the custom XML deserializer [ProvXMLSerializer](https://github.com/trungdong/prov/blob/master/src/prov/serializers/provxml.py#L34).
+When serializing namespaces in method [ProvXMLSerializer#serialize_bundle()](https://github.com/trungdong/prov/blob/master/src/prov/serializers/provxml.py#L70), it creates the nsmap on line 87, which is a map containing all the namespaces and then on line 110 uses [etree](https://lxml.de/tutorial.html) from [lxml](https://lxml.de/) library to create XML root element.
 
 \`xml_bundle_root = etree.Element(_ns_prov("document"), nsmap=nsmap)\`
 
-But in this method validation of URI takes place and it throws exception:  \`ValueError: Invalid namespace URI 'http://www.w3. org/ns/prov#'\`
+But in this method, validation of IRI takes place, and it throws an exception:  \`ValueError: Invalid namespace URI 'http://www.w3. org/ns/prov#'\`
 
-Java has no file to deserialize.
+ProvToolbox has no file to deserialize.
 
