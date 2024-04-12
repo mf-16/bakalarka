@@ -1,25 +1,26 @@
-When serializing JSON format, Python uses [json](https://docs.python.org/3/library/json.html) library, more specifically the json.dump() method.
-This method takes custom encoder. The custom encoder for JSON format in Python is [ProvJSONEncoder](https://github.com/trungdong/prov/blob/1cb710a26c623c5c706b1c6945c645efd9e925c0/src/prov/serializers/provjson.py#L93).
-When serializing identifiers in function [encode_json_container()](https://github.com/trungdong/prov/blob/1cb710a26c623c5c706b1c6945c645efd9e925c0/src/prov/serializers/provjson.py#L126) on line 144
+When serializing to PROV-JSON, Prov Python uses [json](https://docs.python.org/3/library/json.html) library, specifically the json.dump() method.
+This method takes a custom encoder. The custom encoder for PROV-JSON format in Prov Python is [ProvJSONEncoder](https://github.com/trungdong/prov/blob/1cb710a26c623c5c706b1c6945c645efd9e925c0/src/prov/serializers/provjson.py#L93).
+When serializing identifiers in function [encode_json_container()](https://github.com/trungdong/prov/blob/1cb710a26c623c5c706b1c6945c645efd9e925c0/src/prov/serializers/provjson.py#L126) on line 144:
 
 \`identifier = str(real_or_anon_id(record))\`
 
-Python creates id with function [real_or_anon_id()](https://github.com/trungdong/prov/blob/1cb710a26c623c5c706b1c6945c645efd9e925c0/src/prov/serializers/provjson.py#L138). This function uses [AnonymousIDGenerator object](https://github.com/trungdong/prov/blob/master/src/prov/serializers/provjson.py#L32) to generate anonymous id.
+Prov Python creates identifier with function [real_or_anon_id()](https://github.com/trungdong/prov/blob/1cb710a26c623c5c706b1c6945c645efd9e925c0/src/prov/serializers/provjson.py#L138). This function uses [AnonymousIDGenerator object](https://github.com/trungdong/prov/blob/master/src/prov/serializers/provjson.py#L32) to generate the anonymous identifier.
 
-This generates id like this \`"_:id1"\`. Python does not add blank namespace like Java does, because it can handle blank namespaces directly.
+This generates an identifier like this \`"_:id1"\`. Prov Python does not add a blank namespace like ProvToolbox because it can handle it directly.
 
-When deserializing JSON format, Java uses [jackson](https://github.com/FasterXML/jackson) library.
-Problem is that Python does not add blank namespace and Java expects it to be serialized.
+ProvToolbox uses [jackson](https://github.com/FasterXML/jackson) library when deserializing from PROV-JSON.
+The problem is that Prov Python does not add a blank namespace, and ProvToolbox expects it to be serialized.
 When deserializing the \`"_:id1"\` it uses [CustomQualifiedNameDeserializer#deserialize()](https://github.com/lucmoreau/ProvToolbox/blob/ca05849c88a84aae736355569a8bdae78c68b072/modules-core/prov-jsonld/src/main/java/org/openprovenance/prov/core/json/serialization/deserial/CustomQualifiedNameDeserializer.java#L40) method. On line 41:
 
 \`final Namespace ns = getAttributes().get().get(JSON_CONTEXT_KEY_NAMESPACE);\`
 
-Java gets namespace, which has all namaspaces in it (this means only the \`"ex : https://example.org/\` is in there). So \`s="_:id1"\` and on line 43 [Namespace#stringToQualifiedName()](https://github.com/lucmoreau/ProvToolbox/blob/ca05849c88a84aae736355569a8bdae78c68b072/modules-core/prov-model/src/main/java/org/openprovenance/prov/model/Namespace.java#L220):
+ProvToolbox gets a namespace, which has all namespaces in it (this means only the \`"ex : https://example.org/\` is in there). So, when converting the string \`s="_:id1"\` to qualified name on line 43 [Namespace#stringToQualifiedName()](https://github.com/lucmoreau/ProvToolbox/blob/ca05849c88a84aae736355569a8bdae78c68b072/modules-core/prov-model/src/main/java/org/openprovenance/prov/model/Namespace.java#L220):
 
 \`return ns.stringToQualifiedName(s, pf, false);\`
  
-this method cannot find the blank namespace prefix "_" and throws exception:
+This method cannot find the blank namespace prefix \`"_"\` and throws an exception:
+
 \`Null namespace for _:id1 namespace [Namespace (null) {ex=https://example.org/}, parent: null] (through reference chain: org.openprovenance.prov.core.json.serialization.SortedDocument["wasGeneratedBy"])\`
 
 This issue was reported to the author of ProvToolbox, then this [issue](https://github.com/lucmoreau/ProvToolbox/issues/213) was created on github.
-Issue was resolved by adding the blank node to [CustomNamespacePrefixDeserializer](https://github.com/lucmoreau/ProvToolbox/blob/master/modules-core/prov-jsonld/src/main/java/org/openprovenance/prov/core/json/serialization/deserial/CustomNamespacePrefixDeserializer.java) in this [commit](https://github.com/lucmoreau/ProvToolbox/commit/9e43ff93cc81bc6d9a49bb3fcb9e7b453ebe4fde).
+The issue was resolved by adding the blank node to [CustomNamespacePrefixDeserializer](https://github.com/lucmoreau/ProvToolbox/blob/master/modules-core/prov-jsonld/src/main/java/org/openprovenance/prov/core/json/serialization/deserial/CustomNamespacePrefixDeserializer.java) in this [commit](https://github.com/lucmoreau/ProvToolbox/commit/9e43ff93cc81bc6d9a49bb3fcb9e7b453ebe4fde).

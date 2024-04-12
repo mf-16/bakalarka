@@ -1,20 +1,20 @@
-When serializing JSON format, Java uses [jackson](https://github.com/FasterXML/jackson) library. Before serialization, [SortedDocument](https://github.com/lucmoreau/ProvToolbox/blob/8b35e876dbda7f55a95dd182b78f7a28a5147a21/modules-core/prov-jsonld/src/main/java/org/openprovenance/prov/core/json/serialization/SortedDocument.java) object is creted on line 45 in [ProvSerializer#serialiseDocument()](https://github.com/lucmoreau/ProvToolbox/blob/8b35e876dbda7f55a95dd182b78f7a28a5147a21/modules-core/prov-jsonld/src/main/java/org/openprovenance/prov/core/json/serialization/ProvSerialiser.java#L38) method.
+ProvToolbox uses [jackson](https://github.com/FasterXML/jackson) library when serializing to PROV-JSON.
+Before serialization, [SortedDocument](https://github.com/lucmoreau/ProvToolbox/blob/8b35e876dbda7f55a95dd182b78f7a28a5147a21/modules-core/prov-jsonld/src/main/java/org/openprovenance/prov/core/json/serialization/SortedDocument.java) object is created on line 45 in [ProvSerializer#serialiseDocument()](https://github.com/lucmoreau/ProvToolbox/blob/8b35e876dbda7f55a95dd182b78f7a28a5147a21/modules-core/prov-jsonld/src/main/java/org/openprovenance/prov/core/json/serialization/ProvSerialiser.java#L38) method.
 
 \`mapper.writeValue(out,new SortedDocument(document));\`
 
-The SortedDocument is subclass of [SortedBundle](https://github.com/lucmoreau/ProvToolbox/blob/8b35e876dbda7f55a95dd182b78f7a28a5147a21/modules-core/prov-jsonld/src/main/java/org/openprovenance/prov/core/json/serialization/SortedBundle.java), which has all records in HashMaps, ready for JSON serialization.
-The blank id is created in [SortedBundle#put()](https://github.com/lucmoreau/ProvToolbox/blob/8b35e876dbda7f55a95dd182b78f7a28a5147a21/modules-core/prov-jsonld/src/main/java/org/openprovenance/prov/core/json/serialization/SortedBundle.java#L40) method on line 44, by [SortedBundle#gensym()](https://github.com/lucmoreau/ProvToolbox/blob/8b35e876dbda7f55a95dd182b78f7a28a5147a21/modules-core/prov-jsonld/src/main/java/org/openprovenance/prov/core/json/serialization/SortedBundle.java#L57) method.
+The SortedDocument is subclass of [SortedBundle](https://github.com/lucmoreau/ProvToolbox/blob/8b35e876dbda7f55a95dd182b78f7a28a5147a21/modules-core/prov-jsonld/src/main/java/org/openprovenance/prov/core/json/serialization/SortedBundle.java), which has all records in HashMaps, ready for PROV-JSON serialization.
+The blank identifier is created in [SortedBundle#put()](https://github.com/lucmoreau/ProvToolbox/blob/8b35e876dbda7f55a95dd182b78f7a28a5147a21/modules-core/prov-jsonld/src/main/java/org/openprovenance/prov/core/json/serialization/SortedBundle.java#L40) method on line 44, by [SortedBundle#gensym()](https://github.com/lucmoreau/ProvToolbox/blob/8b35e876dbda7f55a95dd182b78f7a28a5147a21/modules-core/prov-jsonld/src/main/java/org/openprovenance/prov/core/json/serialization/SortedBundle.java#L57) method.
 
 \`map.put(gensym(), (T) s);\`
 
-When serializing namespaces, Java also adds blank namespace into the them as you can see in serialized document.
+When serializing namespaces, ProvToolbox also adds blank namespace into them, as you can see in the serialized document.
 
-When deserializing JSON format Python uses the [json](https://docs.python.org/3/library/json.html) library, more specifically the json.load() function which takes custom decoder.
+When deserializing from PROV-JSON format, Prov Python uses the [json](https://docs.python.org/3/library/json.html) library, more specifically, the json.load() function, which takes a custom decoder.
 The custom decoder in [provjson](https://github.com/trungdong/prov/blob/master/src/prov/serializers/provjson.py) module is [ProvJSONDecoder](https://github.com/trungdong/prov/blob/master/src/prov/serializers/provjson.py#L101).
+When converting identifier \`"_:n0"\` to valid qualified name Prov Python uses a method [NamespaceManager#valid_qualified_name()](https://github.com/trungdong/prov/blob/1cb710a26c623c5c706b1c6945c645efd9e925c0/src/prov/model.py#L1139)
 
-When converting identifier \`"_:n0"\` to valid qualified name Python uses method [NamespaceManager#valid_qualified_name()](https://github.com/trungdong/prov/blob/1cb710a26c623c5c706b1c6945c645efd9e925c0/src/prov/model.py#L1139)
-
-On line 1192 where \`str_value="_:n0"\`, Python treats everyting that starts with \`"_:"\` as blank node, so the blank node namespace Java added is not even needed, but its serialized as well.
+On line 1192 where \`str_value="_:n0"\`, Prov Python treats everything that starts with \`"_:"\` as a blank node, so the blank node namespace ProvToolbox added is not even needed, but its serialized as well.
 
 \`\`\`
 str_value = qname.uri if isinstance(qname, Identifier) else str(qname)

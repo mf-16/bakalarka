@@ -1,12 +1,12 @@
-In Java, records that can have prov:value as attribute (only entity) implement interface [HasValue](https://github.com/lucmoreau/ProvToolbox/blob/20a9edf219e84c383d28283bc199d9ac32903687/modules-core/prov-model/src/main/java/org/openprovenance/prov/model/HasValue.java).
+In ProvToolbox, records that can have prov:value as attribute (only entity) implement interface [HasValue](https://github.com/lucmoreau/ProvToolbox/blob/20a9edf219e84c383d28283bc199d9ac32903687/modules-core/prov-model/src/main/java/org/openprovenance/prov/model/HasValue.java).
 
-Only [Entity](https://github.com/lucmoreau/ProvToolbox/blob/20a9edf219e84c383d28283bc199d9ac32903687/modules-core/prov-model/src/main/java/org/openprovenance/prov/model/Entity.java) implements HasValue, since PROV-DM states that prov:value attribute [should only be in entity](https://www.w3.org/TR/prov-dm/#term-attribute-value).
-Therefore it is not possible for any other record to have prov:value attribute, which is compatible with [PROV-DM](https://www.w3.org/TR/prov-dm/).
-This is enforced in [ProvFactory#setAttributes()](https://github.com/lucmoreau/ProvToolbox/blob/20a9edf219e84c383d28283bc199d9ac32903687/modules-core/prov-model/src/main/java/org/openprovenance/prov/model/ProvFactory.java#L1600) method. So when trying to create a document with prov:value this method always checks if the object implements HasValue on line 1606:
+Only [Entity](https://github.com/lucmoreau/ProvToolbox/blob/20a9edf219e84c383d28283bc199d9ac32903687/modules-core/prov-model/src/main/java/org/openprovenance/prov/model/Entity.java) class implements HasValue interface since PROV-DM states that prov:value attribute [should only be in entity](https://www.w3.org/TR/prov-dm/#term-attribute-value).
+Therefore, no other record can have prov:value attribute, which is compatible with PROV-DM.
+This is enforced in [ProvFactory#setAttributes()](https://github.com/lucmoreau/ProvToolbox/blob/20a9edf219e84c383d28283bc199d9ac32903687/modules-core/prov-model/src/main/java/org/openprovenance/prov/model/ProvFactory.java#L1600) method. So when trying to create a document with prov:value, this method always checks if the object implements HasValue on line 1606:
 
 \`HasValue aval=(res instanceof HasValue)? (HasValue)res : null;\`
 
-when it does not implement HasValue, in our case [Activity](https://github.com/lucmoreau/ProvToolbox/blob/20a9edf219e84c383d28283bc199d9ac32903687/modules-core/prov-model/src/main/java/org/openprovenance/prov/model/Activity.java), just ignore it on line 1646.
+When it does not implement HasValue, in our case [Activity](https://github.com/lucmoreau/ProvToolbox/blob/20a9edf219e84c383d28283bc199d9ac32903687/modules-core/prov-model/src/main/java/org/openprovenance/prov/model/Activity.java), just ignore it on line 1646.
 \`\`\`
 case PROV_VALUE:
     if (aval!=null) {
@@ -15,8 +15,10 @@ case PROV_VALUE:
     break;
 \`\`\`
 
-So the serialized document has no value.
+So, the serialized document has no value.
 
-PROVN deserialization in python is not implemented yet. 
-As stated in [ProvPy features](https://pypi.org/project/prov/), "In-memory classes for PROV assertions, which can then be output as PROV-N", implying that only PROV-N serialization is supported.
-It has been worked on but abandoned as you can see in this issue on library's [github](https://github.com/trungdong/prov/issues/122).
+PROV-N deserialization in Prov Python has not yet been implemented. 
+As stated in [Prov Python features](https://pypi.org/project/prov/), "In-memory classes for PROV assertions, which can then be output as PROV-N," implying that only PROV-N serialization is supported.
+It has been worked on but abandoned, as you can see in this issue on the library's [github](https://github.com/trungdong/prov/issues/122).
+
+

@@ -1,6 +1,7 @@
-Java represents the startTime and endTime as [XMLGregorianCalendar](https://docs.oracle.com/javase/8/docs/api/javax/xml/datatype/XMLGregorianCalendar.html), which represents microseconds as [BigDecimal](https://docs.oracle.com/javase/8/docs/api/java/math/BigDecimal.html).
-When serializing PROVN format, Java uses the [custom ProvSerializer](https://github.com/lucmoreau/ProvToolbox/blob/master/modules-core/prov-n/src/main/java/org/openprovenance/prov/notation/ProvSerialiser.java).
-When serializing activity, Java uses method [NotationConstructor#newActivity()](https://github.com/lucmoreau/ProvToolbox/blob/ca05849c88a84aae736355569a8bdae78c68b072/modules-core/prov-n/src/main/java/org/openprovenance/prov/notation/NotationConstructor.java#L135) and when serializing the startTime and endTime on line 139:
+ProvToolbox represents the prov:startTime and prov:endTime attributes as [XMLGregorianCalendar](https://docs.oracle.com/javase/8/docs/api/javax/xml/datatype/XMLGregorianCalendar.html), which represents microseconds as [BigDecimal](https://docs.oracle.com/javase/8/docs/api/java/math/BigDecimal.html).
+
+When serializing to PROV-N, ProvToolbox uses the [custom ProvSerializer](https://github.com/lucmoreau/ProvToolbox/blob/master/modules-core/prov-n/src/main/java/org/openprovenance/prov/notation/ProvSerialiser.java).
+When serializing activity, ProvToolbox uses a method [NotationConstructor#newActivity()](https://github.com/lucmoreau/ProvToolbox/blob/ca05849c88a84aae736355569a8bdae78c68b072/modules-core/prov-n/src/main/java/org/openprovenance/prov/notation/NotationConstructor.java#L135) and when serializing the prov:startTime and prov:endTime attributes on line 139:
 
 \`\`\`
 final String s = keyword("activity") + "(" + idOrMarker(id) + ","
@@ -9,10 +10,7 @@ final String s = keyword("activity") + "(" + idOrMarker(id) + ","
 
 method [NotationConstructor#timeOrMarker()](https://github.com/lucmoreau/ProvToolbox/blob/ca05849c88a84aae736355569a8bdae78c68b072/modules-core/prov-n/src/main/java/org/openprovenance/prov/notation/NotationConstructor.java#L544) is used. There is no problem with high precision times.
 
-
-PROVN deserialization in python is not implemented yet. 
-As stated in [ProvPy features](https://pypi.org/project/prov/), "In-memory classes for PROV assertions, which can then be output as PROV-N", implying that only PROV-N serialization is supported.
-It has been worked on but abandoned as you can see in this issue on library's [github](https://github.com/trungdong/prov/issues/122).
-
-
+PROV-N deserialization in Prov Python has not yet been implemented. 
+As stated in [Prov Python features](https://pypi.org/project/prov/), "In-memory classes for PROV assertions, which can then be output as PROV-N," implying that only PROV-N serialization is supported.
+It has been worked on but abandoned, as you can see in this issue on the library's [github](https://github.com/trungdong/prov/issues/122).
 

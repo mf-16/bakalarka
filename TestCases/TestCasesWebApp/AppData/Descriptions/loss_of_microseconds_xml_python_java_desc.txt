@@ -1,4 +1,4 @@
-Python represents the startTime and endTime as datetime.datetime(https://docs.python.org/3/library/datetime.html#datetime-objects)
+Prov Python represents the prov:startTime and prov:endTime attributes as datetime.datetime(https://docs.python.org/3/library/datetime.html#datetime-objects)
 Because when creating activity it uses the [_ensure_datetime()](https://github.com/trungdong/prov/blob/1cb710a26c623c5c706b1c6945c645efd9e925c0/src/prov/model.py#L34) function, which uses [dateutil.parser](https://dateutil.readthedocs.io/en/stable/parser.html), on line 36:
 
 \` return dateutil.parser.parse(value)\`
@@ -7,13 +7,11 @@ The dateutil.parser#parse() method converts microseconds like this:
 
 \`int(f.ljust(6, "0")[:6]\`
 
-where \`f=microseconds\`. Therefore, the length of microseconds will always be 6 and high precision is lost.
+where \`f=microseconds\`. Therefore, the length of microseconds will always be six, and high precision will be lost.
 
-This means that microseconds will always be 6 characters long. Therefore, some precision is lost.
-
-When deserializing XML format, Java uses [jackson](https://github.com/FasterXML/jackson) library.
-When deserializing the startTime and endTime, Java uses default jackson deserializer. 
-When deserializing microseconds, this deserializer uses method protected StdDateFormat#_parseAsISO8601() and this method cuts the microseconds to 3 decimal points. And can do at most 9 digits.
+ProvToolbox uses [jackson](https://github.com/FasterXML/jackson) library when deserializing from PROV-XML.
+When deserializing the prov:startTime and prov:endTime, ProvToolbox uses default jackson deserializer. 
+When deserializing microseconds, this deserializer uses method StdDateFormat#_parseAsISO8601(), and this method cuts the microseconds to 3 decimal points:
 \`\`\`
 int msecs = 0;
 int fractLen = end - start;
@@ -33,4 +31,4 @@ switch (fractLen) {
 }
 \`\`\`
 
-So we lose high precision here.
+Therefore, some precision is lost here.

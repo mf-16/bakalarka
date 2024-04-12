@@ -9,7 +9,7 @@ When deserializing it uses the [ProvXMLSerializer#deserialize()](https://github.
 
 \`xml_doc = etree.parse(buf).getroot()\`
 
-When using the [parse()](https://lxml.de/tutorial.html#the-parse-function) function, it does validate the IRI somewhere. Therefore we get an exception:
+When using the [parse()](https://lxml.de/tutorial.html#the-parse-function) function, it does validate the IRI somewhere. Therefore, we get an exception:
 
 \`lxml.etree.XMLSyntaxError: xmlns:ex: 'http://www.w3. org/ns/prov#' is not a valid URI, line 3, column 51\`
 

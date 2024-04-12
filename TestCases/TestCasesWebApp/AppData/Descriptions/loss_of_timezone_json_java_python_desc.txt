@@ -1,11 +1,12 @@
-Java represents the startTime and endTime as [XMLGregorianCalendar](https://docs.oracle.com/javase/8/docs/api/javax/xml/datatype/XMLGregorianCalendar.html). Therefore, we have no problem creating document with timezones as we want.
-When serializing JSON format, Java uses [jackson](https://github.com/FasterXML/jackson) library.
-When serializing the startTime and endTime Java uses [CustomDateSerializer#serialize()]() method.
-This method just uses toString() method on the XMLGregorianCalendar object. So there is no timezone loss.
+ProvToolbox represents the prov:startTime and prov:endTime attributes as [XMLGregorianCalendar](https://docs.oracle.com/javase/8/docs/api/javax/xml/datatype/XMLGregorianCalendar.html). Therefore, we have no problem creating a document with timezones as we want in memory.
 
-When deserializing JSON format Python uses the [json](https://docs.python.org/3/library/json.html) library, more specifically the json.load() function which takes custom decoder.
+ProvToolbox uses [jackson](https://github.com/FasterXML/jackson) library when serializing to PROV-JSON.
+When serializing the prov:startTime and prov:endTime attributes, ProvToolbox uses [CustomDateSerializer#serialize()]() method.
+This method uses the toString() method on the XMLGregorianCalendar object. So, there is no timezone loss.
+
+When deserializing from PROV-JSON format, Prov Python uses the [json](https://docs.python.org/3/library/json.html) library, more specifically, the json.load() function, which takes a custom decoder.
 The custom decoder in [provjson](https://github.com/trungdong/prov/blob/master/src/prov/serializers/provjson.py) module is [ProvJSONDecoder](https://github.com/trungdong/prov/blob/master/src/prov/serializers/provjson.py#L101).
-Python deserializes the startTime and endTime with function [parse_xsd_datetime()](https://github.com/trungdong/prov/blob/1cb710a26c623c5c706b1c6945c645efd9e925c0/src/prov/model.py#L41) which uses [dateutil.parser](https://dateutil.readthedocs.io/en/stable/parser.html) for parsing the date on line 43:
+Prov Python deserializes the prov:startTime and prov:endTime attributes with function [parse_xsd_datetime()](https://github.com/trungdong/prov/blob/1cb710a26c623c5c706b1c6945c645efd9e925c0/src/prov/model.py#L41) which uses [dateutil.parser](https://dateutil.readthedocs.io/en/stable/parser.html) for parsing the date on line 43:
 
 \` return dateutil.parser.parse(value)\`
 

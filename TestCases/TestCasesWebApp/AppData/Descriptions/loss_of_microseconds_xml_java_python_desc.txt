@@ -1,11 +1,12 @@
-Java represents the startTime and endTime as [XMLGregorianCalendar](https://docs.oracle.com/javase/8/docs/api/javax/xml/datatype/XMLGregorianCalendar.html), which represents microseconds as [BigDecimal](https://docs.oracle.com/javase/8/docs/api/java/math/BigDecimal.html).
-When serializing XML format, Java uses [jackson](https://github.com/FasterXML/jackson) library.
-When serializing the startTime and endTime Java uses [CustomDateSerializer#serialize()](https://github.com/lucmoreau/ProvToolbox/blob/ca05849c88a84aae736355569a8bdae78c68b072/modules-core/prov-jsonld-xml/src/main/java/org/openprovenance/prov/core/xml/serialization/serial/CustomDateSerializer.java#L22) method.
-This method just uses toString() method on the XMLGregorianCalendar object. So there is no timezone loss.
+ProvToolbox represents the prov:startTime and prov:endTime attributes as [XMLGregorianCalendar](https://docs.oracle.com/javase/8/docs/api/javax/xml/datatype/XMLGregorianCalendar.html), which represents microseconds as [BigDecimal](https://docs.oracle.com/javase/8/docs/api/java/math/BigDecimal.html).
 
-Python deserialization does not work, here is brief explanation:
+ProvToolbox uses [jackson](https://github.com/FasterXML/jackson) library when serializing from PROV-XML.
+When serializing the prov:startTime and prov:endTime, ProvToolbox uses [CustomDateSerializer#serialize()](https://github.com/lucmoreau/ProvToolbox/blob/ca05849c88a84aae736355569a8bdae78c68b072/modules-core/prov-jsonld-xml/src/main/java/org/openprovenance/prov/core/xml/serialization/serial/CustomDateSerializer.java#L22) method.
+This method uses the toString() method on the XMLGregorianCalendar object. So, there is no timezone loss.
 
-When extracting sub elements from etree Element activity, Python uses function [_extract_attributes()](https://github.com/trungdong/prov/blob/1cb710a26c623c5c706b1c6945c645efd9e925c0/src/prov/serializers/provxml.py#L321). On line 330:
+Prov Python deserialization is not functioning as expected. Below is an explanation of the issue:
+
+When extracting sub-elements from etree Element activity, Prov Python uses function [_extract_attributes()](https://github.com/trungdong/prov/blob/1cb710a26c623c5c706b1c6945c645efd9e925c0/src/prov/serializers/provxml.py#L321). On line 330:
 
 \`\`\`
 _t = xml_qname_to_QualifiedName(
@@ -13,7 +14,7 @@ _t = xml_qname_to_QualifiedName(
         )
 \`\`\`
 
-[xml_qname_to_QualifiedName()](https://github.com/trungdong/prov/blob/1cb710a26c623c5c706b1c6945c645efd9e925c0/src/prov/serializers/provxml.py#L362) is called, with \`qname_str="None:endTime"\` On line 376 this is done when handling None prefix:
+[xml_qname_to_QualifiedName()](https://github.com/trungdong/prov/blob/1cb710a26c623c5c706b1c6945c645efd9e925c0/src/prov/serializers/provxml.py#L362) is called, with \`qname_str="None:endTime"\` On line 376, following is done when handling None prefix:
 \`\`\`
 if None in element.nsmap:
     ns_uri = element.nsmap[None]
@@ -21,4 +22,4 @@ if None in element.nsmap:
     return ns[qname_str]
 \`\`\`
 
-and QualifiedName \`None:endTime\` is returned. The QualifiedName returned, should be \`prov:endTime\` and not \`None:endTime\` so there is a mistake in handling xml qname to QualifiedName. This problem was reported in this [issue](https://github.com/trungdong/prov/issues/155).
+and QualifiedName \`None:endTime\` is returned. The QualifiedName returned should be \`prov:endTime\` and not \`None:endTime\`, so there is a mistake in handling XML Qname to QualifiedName. This problem was reported in this [issue](https://github.com/trungdong/prov/issues/155).
