@@ -1,11 +1,11 @@
-When creating the document in memory Python uses [NamespaceManager#add_namespace()](https://github.com/trungdong/prov/blob/master/src/prov/model.py#L1080) method, which does not validate the prefix, so it allows prefix with the space.
+When creating a new namespace in memory, Prov Python uses [NamespaceManager#add_namespace()](https://github.com/trungdong/prov/blob/master/src/prov/model.py#L1080) method, which does not validate the prefix, so it allows prefix with the space.
 
-When serializing XML format, Python uses the custom XML deserializer [ProvXMLSerializer](https://github.com/trungdong/prov/blob/master/src/prov/serializers/provxml.py#L34).
-When serializing namespaces in method [ProvXMLSerializer#serialize_bundle()](https://github.com/trungdong/prov/blob/master/src/prov/serializers/provxml.py#L70), it creates the nsmap on line 87, which is map containing all the namespaces.
-In this method it creates the nsmap, which is map containing all the namespaces and then on line 110 uses [etree](https://lxml.de/tutorial.html) from [lxml](https://lxml.de/) library to create XML root element.
+When serializing to PROV-XML, Prov Python uses the custom XML deserializer [ProvXMLSerializer](https://github.com/trungdong/prov/blob/master/src/prov/serializers/provxml.py#L34).
+When serializing namespaces in method [ProvXMLSerializer#serialize_bundle()](https://github.com/trungdong/prov/blob/master/src/prov/serializers/provxml.py#L70), it creates the nsmap on line 87, which is a map containing all the namespaces.
+In this method, it creates the nsmap, which is a map containing all the namespaces, and then on line 110 uses [etree](https://lxml.de/tutorial.html) from [lxml](https://lxml.de/) library to create XML root element.
 
 \`xml_bundle_root = etree.Element(_ns_prov("document"), nsmap=nsmap)\`
 
-But in this method validation on prefix takes place and it throws exception:  \`ValueError: Invalid namespace prefix 'ex ex'\`
+But in this method, validation on prefix takes place, and it throws an exception:  \`ValueError: Invalid namespace prefix 'ex ex'\`
 
-Java does not have any file to deserialize.
+ProvToolbox does not have any file to deserialize.

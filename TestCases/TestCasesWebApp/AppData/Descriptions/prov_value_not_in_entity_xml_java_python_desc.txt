@@ -1,12 +1,12 @@
-In Java, records that can have prov:value as attribute (only entity) implement interface [HasValue](https://github.com/lucmoreau/ProvToolbox/blob/20a9edf219e84c383d28283bc199d9ac32903687/modules-core/prov-model/src/main/java/org/openprovenance/prov/model/HasValue.java).
+In ProvToolbox, records that can have prov:value as attribute (only entity) implement interface [HasValue](https://github.com/lucmoreau/ProvToolbox/blob/20a9edf219e84c383d28283bc199d9ac32903687/modules-core/prov-model/src/main/java/org/openprovenance/prov/model/HasValue.java).
 
-Only [Entity](https://github.com/lucmoreau/ProvToolbox/blob/20a9edf219e84c383d28283bc199d9ac32903687/modules-core/prov-model/src/main/java/org/openprovenance/prov/model/Entity.java) implements HasValue, since PROV-N states that prov:value attribute [should only be in entity](https://www.w3.org/TR/2013/REC-prov-dm-20130430/#term-attribute-value).
-Therefore it is not possible for any other record to have prov:value attribute.
-This is enforced in [ProvFactory#setAttributes()](https://github.com/lucmoreau/ProvToolbox/blob/20a9edf219e84c383d28283bc199d9ac32903687/modules-core/prov-model/src/main/java/org/openprovenance/prov/model/ProvFactory.java#L1600) method. So when trying to create a document with prov:value this method always checks if the object implements HasValue on line 1606:
+Only [Entity](https://github.com/lucmoreau/ProvToolbox/blob/20a9edf219e84c383d28283bc199d9ac32903687/modules-core/prov-model/src/main/java/org/openprovenance/prov/model/Entity.java) class implements HasValue interface since PROV-DM states that prov:value attribute [should only be in entity](https://www.w3.org/TR/prov-dm/#term-attribute-value).
+Therefore, no other record can have prov:value attribute, which is compatible with PROV-DM.
+This is enforced in [ProvFactory#setAttributes()](https://github.com/lucmoreau/ProvToolbox/blob/20a9edf219e84c383d28283bc199d9ac32903687/modules-core/prov-model/src/main/java/org/openprovenance/prov/model/ProvFactory.java#L1600) method. So when trying to create a document with prov:value, this method always checks if the object implements HasValue on line 1606:
 
 \`HasValue aval=(res instanceof HasValue)? (HasValue)res : null;\`
 
-when it does not implement HasValue, in our case [Activity](https://github.com/lucmoreau/ProvToolbox/blob/20a9edf219e84c383d28283bc199d9ac32903687/modules-core/prov-model/src/main/java/org/openprovenance/prov/model/Activity.java), just ignore it on line 1646.
+When it does not implement HasValue, in our case [Activity](https://github.com/lucmoreau/ProvToolbox/blob/20a9edf219e84c383d28283bc199d9ac32903687/modules-core/prov-model/src/main/java/org/openprovenance/prov/model/Activity.java), just ignore it on line 1646.
 \`\`\`
 case PROV_VALUE:
     if (aval!=null) {
@@ -15,15 +15,15 @@ case PROV_VALUE:
     break;
 \`\`\`
 
-So the serialized document has no value.
+So, the serialized document has no value.
 
-When deserializing XML format, Python uses custom [ProvXMLSerializer](https://github.com/trungdong/prov/blob/master/src/prov/serializers/provxml.py#L34).
+When deserializing from PROV-XML, Prov Python uses custom [ProvXMLSerializer](https://github.com/trungdong/prov/blob/master/src/prov/serializers/provxml.py#L34).
 When deserializing it uses the [ProvXMLSerializer#deserialize()](https://github.com/trungdong/prov/blob/1cb710a26c623c5c706b1c6945c645efd9e925c0/src/prov/serializers/provxml.py#L218) method, which on line 229 uses [etree](https://lxml.de/tutorial.html) from [lxml](https://lxml.de/) library to obtain the etree Element object like this:
 
 \`xml_doc = etree.parse(buf).getroot()\`
 
-After that, on line 239 it uses the [ProvXMLSerializer#deserialize_subtree()](https://github.com/trungdong/prov/blob/master/src/prov/serializers/provxml.py#L242) method, which fills the ProvDocument it gets passed in arguments from the etree Element object.
+After that, on line 239, it uses the [ProvXMLSerializer#deserialize_subtree()](https://github.com/trungdong/prov/blob/master/src/prov/serializers/provxml.py#L242) method, which fills the ProvDocument it gets passed in arguments from the etree Element object.
 
 \`self.deserialize_subtree(xml_doc, document)\`
 
-Python has no problem deserializing this document.
+Prov Python has no problem deserializing this document.

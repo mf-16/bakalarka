@@ -1,4 +1,4 @@
-When serializing XML format, Prov Python uses the custom XML deserializer [ProvXMLSerializer](https://github.com/trungdong/prov/blob/master/src/prov/serializers/provxml.py#L34).
+When serializing to PROV-XML, Prov Python uses the custom XML deserializer [ProvXMLSerializer](https://github.com/trungdong/prov/blob/master/src/prov/serializers/provxml.py#L34).
 Prov Python turns [ProvDocument](https://github.com/trungdong/prov/blob/1cb710a26c623c5c706b1c6945c645efd9e925c0/src/prov/model.py#L2262) representation of PROV document into [etree](https://lxml.de/tutorial.html) from [lxml](https://lxml.de/) library.
 
 When wasGeneratedBy record is being serialized [ProvXMLSerializer#serialize_bundle()](https://github.com/trungdong/prov/blob/1cb710a26c623c5c706b1c6945c645efd9e925c0/src/prov/serializers/provxml.py#L70) is used. On line 119, if the identifier is null, there is no XML attribute being created:

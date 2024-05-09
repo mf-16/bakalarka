@@ -1,10 +1,8 @@
-Java allows to create prefix with space in memory, because it does no validation in the [Namespace#register()](https://github.com/lucmoreau/ProvToolbox/blob/master/modules-core/prov-model/src/main/java/org/openprovenance/prov/model/Namespace.java#L124).
+ProvToolbox allows creating prefix with space in memory because it does not validate the [Namespace#register()](https://github.com/lucmoreau/ProvToolbox/blob/master/modules-core/prov-model/src/main/java/org/openprovenance/prov/model/Namespace.java#L124).
 
-When serializing PROVN format, Java uses the [custom ProvSerializer](https://github.com/lucmoreau/ProvToolbox/blob/master/modules-core/prov-n/src/main/java/org/openprovenance/prov/notation/ProvSerialiser.java), Java does not do any validation either, in the [NotationConstructor#processNamespace()](https://github.com/lucmoreau/ProvToolbox/blob/master/modules-core/prov-n/src/main/java/org/openprovenance/prov/notation/NotationConstructor.java#L491).
+When serializing to PROV-N, ProvToolbox uses the [custom ProvSerializer](https://github.com/lucmoreau/ProvToolbox/blob/master/modules-core/prov-n/src/main/java/org/openprovenance/prov/notation/ProvSerialiser.java).
+During serialization, ProvToolbox does not do any validation either, when constructing namespaces to the PROV-N format In the [NotationConstructor#processNamespace()](https://github.com/lucmoreau/ProvToolbox/blob/master/modules-core/prov-n/src/main/java/org/openprovenance/prov/notation/NotationConstructor.java#L491).
 
-
-PROVN deserialization in python is not implemented yet. 
-As stated in [ProvPy features](https://pypi.org/project/prov/), "In-memory classes for PROV assertions, which can then be output as PROV-N", implying that only PROV-N serialization is supported.
-It has been worked on but abandoned as you can see in this issue on library's [github](https://github.com/trungdong/prov/issues/122).
-
-
+PROV-N deserialization in Prov Python has not yet been implemented. 
+As stated in [Prov Python features](https://pypi.org/project/prov/), "In-memory classes for PROV assertions, which can then be output as PROV-N," implying that only PROV-N serialization is supported.
+It has been worked on but abandoned, as you can see in this issue on the library's [github](https://github.com/trungdong/prov/issues/122).

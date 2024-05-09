@@ -1,14 +1,15 @@
-Java allows to create prefix with space in memory, because it does no validation in the [Namespace#register()](https://github.com/lucmoreau/ProvToolbox/blob/master/modules-core/prov-model/src/main/java/org/openprovenance/prov/model/Namespace.java#L124).
+ProvToolbox allows creating prefix with space in memory because it does not validate the [Namespace#register()](https://github.com/lucmoreau/ProvToolbox/blob/master/modules-core/prov-model/src/main/java/org/openprovenance/prov/model/Namespace.java#L124).
 
-When serializing XML format, Java uses the [jackson](https://github.com/FasterXML/jackson) library. When serializing the "ex ex:e" qualified name Java uses [CustomQualifiedNameSerializer#serialize()](https://github.com/lucmoreau/ProvToolbox/blob/60f1e87f9f072ef390ca05c0b39dc5c0a7d17e9c/modules-core/prov-jsonld-xml/src/main/java/org/openprovenance/prov/core/xml/serialization/serial/CustomQualifiedNameSerializer.java#L23) method, which always writes the namespace to the XML document.
-In this method on line 29:
+ProvToolbox uses [jackson](https://github.com/FasterXML/jackson) library when serializing from PROV-XML.
+When serializing the "ex ex:e" qualified name ProvToolbox uses [CustomQualifiedNameSerializer#serialize()](https://github.com/lucmoreau/ProvToolbox/blob/60f1e87f9f072ef390ca05c0b39dc5c0a7d17e9c/modules-core/prov-jsonld-xml/src/main/java/org/openprovenance/prov/core/xml/serialization/serial/CustomQualifiedNameSerializer.java#L23) method, which always writes the namespace to the PROV-XML document.
+In this method, on line 29:
 
 \`\`\`StaxStreamWriterUtil.writeNamespace(jsonGenerator, prefix, q.getNamespaceURI());\`\`\`
  
-the writeNamespace() uses [BufferingXmlWriter#writeAttribute()](https://github.com/FasterXML/woodstox/blob/master/src/main/java/com/ctc/wstx/sw/BufferingXmlWriter.java#L1014) method. In this method the validity of prefix is checked on line 1022.
+the writeNamespace() uses [BufferingXmlWriter#writeAttribute()](https://github.com/FasterXML/woodstox/blob/master/src/main/java/com/ctc/wstx/sw/BufferingXmlWriter.java#L1014) method. In this method, the validity of the prefix is checked on line 1022.
 
 \`\`\`this.verifyNameValidity(localName, this.mNsAware);\`\`\`
 
 This throws the exception:  \`\`\`Illegal name character ' ' (code 32) in name "ex ex" (index #2)\`\`\`
 
-Python does not get any file to deserialize.
+Prov Python does not get any file to deserialize.

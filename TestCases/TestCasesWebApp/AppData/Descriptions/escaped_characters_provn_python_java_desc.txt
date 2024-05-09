@@ -1,4 +1,4 @@
-﻿All the characters \`"='(),-:;[]."\` should be escaped according to [PROV-N](https://www.w3.org/TR/prov-n/#prod-PN_CHARS_ESC).
+﻿PROV-N represents qualified names as prov:QUALIFIED_NAME. All the characters \`"='(),-:;[]."\` should be escaped according to [PROV-N](https://www.w3.org/TR/prov-n/#prod-PN_CHARS_ESC).
 
 \`<PN_CHARS_ESC>	   ::=   	"\" ( "=" | "'" | "(" | ")" | "," | "-" | ":" | ";" | "[" | "]" | "." )\`
 

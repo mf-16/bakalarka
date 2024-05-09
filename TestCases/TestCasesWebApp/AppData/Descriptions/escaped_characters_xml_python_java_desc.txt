@@ -1,13 +1,12 @@
-﻿All the characters used should be escaped according to [PROV-N](https://www.w3.org/TR/prov-n/#prod-PN_CHARS_ESC).
+﻿PROV-XML represents qualified names as xsd:QName.   \`"='(),-:;[]."\`  these characters are escaped in the prov:QUALIFIED_NAME, but some are not permitted in xsd:QName. In the document [Mapping PROV Qualified Names to xsd:QName](https://github.com/lucmoreau/ProvToolbox/wiki/Mapping-PROV-Qualified-Names-to-xsd:QName), the mapping between xsd:QName and prov:QUALIFIED_NAME is explained. 
+All the characters used should be mapped according to Mapping PROV Qualified Names to xsd:QName document.
 
-\`<PN_CHARS_ESC>	   ::=   	"\" ( "=" | "'" | "(" | ")" | "," | "-" | ":" | ";" | "[" | "]" | "." )\`
+We first create an entity in Prov Python with an identifier with all the characters that should be mapped to xsd:QName in the local part of the identifier.
 
-We first create a entity in Python with identifier, which has all the characters that should be escaped in local part of identifier.
-
-When serializing XML format, Python uses the custom XML deserializer [ProvXMLSerializer](https://github.com/trungdong/prov/blob/master/src/prov/serializers/provxml.py#L34).
+When serializing to PROV-XML, Prov Python uses the custom XML deserializer [ProvXMLSerializer](https://github.com/trungdong/prov/blob/master/src/prov/serializers/provxml.py#L34).
 Prov Python turns [ProvDocument](https://github.com/trungdong/prov/blob/1cb710a26c623c5c706b1c6945c645efd9e925c0/src/prov/model.py#L2262) representation of PROV document into [etree](https://lxml.de/tutorial.html) from [lxml](https://lxml.de/) library.
 
-When identifier of entity is being serialized [ProvXMLSerializer#serialize_bundle()](https://github.com/trungdong/prov/blob/1cb710a26c623c5c706b1c6945c645efd9e925c0/src/prov/serializers/provxml.py#L70) is used. Identifier is just turned into string on line 117:
+When identifier of entity is being serialized [ProvXMLSerializer#serialize_bundle()](https://github.com/trungdong/prov/blob/1cb710a26c623c5c706b1c6945c645efd9e925c0/src/prov/serializers/provxml.py#L70) is used. The identifier is just turned into a string on line 117:
 \`\`\`
 identifier = str(record._identifier) if record._identifier else None
 
@@ -17,10 +16,10 @@ else:
     attrs = None
 \`\`\`
 
-Then on line 129 element is created:
+Then, on line 129, the element is created:
 
 \`elem = etree.SubElement(xml_bundle_root, _ns_prov(rec_label), attrs)\`
 
-This is not right solution according to PROV-N.
+According to the document Mapping PROV Qualified Names to xsd:QName, this is not the right solution.
 
-How Java deserializes this document is irrelevant, because Python should not have produced document with unescaped characters in a first place.
+How ProvToolbox deserializes this document is irrelevant because Prov Python should not have produced a document without mapping according to Mapping PROV Qualified Names to xsd:QName.

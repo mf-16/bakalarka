@@ -1,11 +1,14 @@
-When creating the document in memory Python uses [NamespaceManager#add_namespace()](https://github.com/trungdong/prov/blob/master/src/prov/model.py#L1080) method, which does not validate the prefix, so it allows prefix with the space.
+When creating a new namespace in memory, Prov Python uses [NamespaceManager#add_namespace()](https://github.com/trungdong/prov/blob/master/src/prov/model.py#L1080) method, which does not validate the prefix, so it allows prefix with the space.
 
+When serializing to PROV-JSON, Prov Python uses [json](https://docs.python.org/3/library/json.html) library, specifically the json.dump() method.
+This method takes a custom encoder. The custom encoder for PROV-JSON format in Prov Python is [ProvJSONEncoder](https://github.com/trungdong/prov/blob/1cb710a26c623c5c706b1c6945c645efd9e925c0/src/prov/serializers/provjson.py#L93).
+This encoder uses the [encode_json_container()](https://github.com/trungdong/prov/blob/1cb710a26c623c5c706b1c6945c645efd9e925c0/src/prov/serializers/provjson.py#L126) function in the [provjson](https://github.com/trungdong/prov/blob/master/src/prov/serializers/provjson.py) module, which does no validation and adds the namespaces as they are. The prefixes are then written into the output stream.
 
-When serializing JSON format, Python uses [json](https://docs.python.org/3/library/json.html) library, more specifically the json.dump() method.
-This method takes custom encoder. The custom encoder for JSON format in Python is [ProvJSONEncoder](https://github.com/trungdong/prov/blob/1cb710a26c623c5c706b1c6945c645efd9e925c0/src/prov/serializers/provjson.py#L93).
-This encoder uses the [encode_json_container()](https://github.com/trungdong/prov/blob/1cb710a26c623c5c706b1c6945c645efd9e925c0/src/prov/serializers/provjson.py#L126) function in the [provjson](https://github.com/trungdong/prov/blob/master/src/prov/serializers/provjson.py) module, which does no validation and just adds the namespaces as they are. The prefixes are then written into the outputstream.
+ProvToolbox uses [jackson](https://github.com/FasterXML/jackson) library when deserializing from PROV-JSON.
+When deserializing the prefixes it uses [CustomNamespacePrefixDeserializer#deserialize()](https://github.com/lucmoreau/ProvToolbox/blob/96dd235aba6072c6e7671929b57b61088b9f6a38/modules-core/prov-jsonld/src/main/java/org/openprovenance/prov/core/json/serialization/deserial/CustomNamespacePrefixDeserializer.java#L34) method.
+This method uses 
 
-When deserializing JSON format, Java uses [jackson](https://github.com/FasterXML/jackson) library. When deserializing the prefixes it uses [CustomNamespacePrefixDeserializer#deserialize()](https://github.com/lucmoreau/ProvToolbox/blob/96dd235aba6072c6e7671929b57b61088b9f6a38/modules-core/prov-jsonld/src/main/java/org/openprovenance/prov/core/json/serialization/deserial/CustomNamespacePrefixDeserializer.java#L34) method.
+\`ns.register(prefix, namespace);\` 
 
-This method uses \`ns.register(prefix, namespace);\` on line 53 for creating the namespaces. [Namespace#register()](https://github.com/lucmoreau/ProvToolbox/blob/master/modules-core/prov-model/src/main/java/org/openprovenance/prov/model/Namespace.java#L124) does not validate the prefix.
+on line 53 for creating the namespaces. [Namespace#register()](https://github.com/lucmoreau/ProvToolbox/blob/master/modules-core/prov-model/src/main/java/org/openprovenance/prov/model/Namespace.java#L124) does not validate the prefix.
 

@@ -1,7 +1,8 @@
-Java allows to create prefix with space in memory, because it does no validation in the [Namespace#register()](https://github.com/lucmoreau/ProvToolbox/blob/master/modules-core/prov-model/src/main/java/org/openprovenance/prov/model/Namespace.java#L124).
+ProvToolbox allows creating prefix with space in memory because it does not validate the [Namespace#register()](https://github.com/lucmoreau/ProvToolbox/blob/master/modules-core/prov-model/src/main/java/org/openprovenance/prov/model/Namespace.java#L124).
 
-When serializing JSON format, Java uses [jackson](https://github.com/FasterXML/jackson) library, Java does no validation of the prefix, because its using defualt string serializer for prefixes.
+ProvToolbox uses [jackson](https://github.com/FasterXML/jackson) library when serializing to PROV-JSON.
+ProvToolbox does not validate the prefix because it uses a default string serializer for prefixes.
 
-When deserializing JSON format Python uses the [json](https://docs.python.org/3/library/json.html) library, more specifically the json.load() function which takes custom decoder.
+When deserializing from PROV-JSON format, Prov Python uses the [json](https://docs.python.org/3/library/json.html) library, more specifically, the json.load() function, which takes a custom decoder.
 The custom decoder in [provjson](https://github.com/trungdong/prov/blob/master/src/prov/serializers/provjson.py) module is [ProvJSONDecoder](https://github.com/trungdong/prov/blob/master/src/prov/serializers/provjson.py#L101).
-When deserializing prefixes the [decode_json_container()](https://github.com/trungdong/prov/blob/master/src/prov/serializers/provjson.py#L199) function, uses the [NamespaceManager#add_namespace()](https://github.com/trungdong/prov/blob/master/src/prov/model.py#L1080) method, which does not validate prefix.
+When deserializing prefixes the [decode_json_container()](https://github.com/trungdong/prov/blob/master/src/prov/serializers/provjson.py#L199) function, Prov Python uses the [NamespaceManager#add_namespace()](https://github.com/trungdong/prov/blob/master/src/prov/model.py#L1080) method, which does not validate prefix.
