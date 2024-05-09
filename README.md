@@ -14,11 +14,11 @@ This repository contains a web application, which is a user interface for showca
 
 All you need to do is download Docker for your operating system and pull an image from Docker Hub. Once you have Docker, just use this command:
 
-`docker pull m16f/prov:1.0.1`
+`docker pull m16f/prov:1.1.1`
 
 This pulls the image from Docker Hub to your images locally (check with `docker images`). Now you have the image locally, and you just run the web application with the command:
 
-`docker run -it --rm -p 5000:80 m16f/prov:1.0.1`
+`docker run -it --rm -p 5000:80 m16f/prov:1.1.1`
 
 The web application is now running on `http://localhost:5000/`. So just put the URL to the browser of your choice.
 
