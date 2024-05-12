@@ -4,15 +4,12 @@ import org.openprovenance.prov.model.*;
 import org.openprovenance.prov.vanilla.Document;
 import org.openprovenance.prov.vanilla.ProvFactory;
 
-import java.util.LinkedList;
-import java.util.List;
-
 /**
  * @author Matus Formanek
  */
-public class TestTestCase extends TestCase {
-    public TestTestCase() {
-        setFilename("test_test_case");
+public class GenericTestCase extends TestCase {
+    public GenericTestCase() {
+        setFilename("generic_test_case");
     }
 
     @Override

@@ -3,10 +3,10 @@ from prov.model import ProvDocument
 from test_case import TestCase
 
 
-class TestTestCase(TestCase):
+class GenericTestCase(TestCase):
 
     def __init__(self):
-        self.filename = "test_test_case"
+        self.filename = "generic_test_case"
 
     def create_document(self):
         document = ProvDocument()
