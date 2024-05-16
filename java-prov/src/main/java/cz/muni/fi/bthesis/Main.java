@@ -17,10 +17,6 @@ import java.nio.file.Paths;
 
 public class Main {
     public static void main(String[] args) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException, InstantiationException {
-//        args = new String[3];
-//        args[0] = "escaped_characters";
-//        args[1] = "xml";
-//        args[2] = "s";
         var config = loadConfig();
         var javaClass = "cz.muni.fi.bthesis." + config.get(args[0]).getAsString();
 

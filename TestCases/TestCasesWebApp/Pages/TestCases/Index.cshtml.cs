@@ -22,8 +22,6 @@ namespace TestCasesWebApp.Pages.TestCases
             new SelectListItem { Value = "prov_record_without_id", Text = "Prov record without id" },
             new SelectListItem { Value = "prov_value_not_in_entity", Text = "Prov value not in entity" },
             new SelectListItem { Value = "space_in_prefix", Text = "Space in prefix" },
-            new SelectListItem { Value = "top_instance_namespace_bundle", Text = "Top instance namespace bundle" },
-            new SelectListItem { Value = "implicit_existence_of_prov_namespace", Text = "Implicit existence of prov namespace" }
 
         }, "Value", "Text");
         public SelectList formatComboBox = new SelectList(new List<SelectListItem>
